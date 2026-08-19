@@ -149,7 +149,7 @@ const footerLabel: Record<typeof type, Record<Locale, string>> = {
     pointer-events: none;
   }
   .mega-menu[hidden] { display: block; } /* override default hidden to allow transition */
-  :global(.has-mega[data-mega-open="true"]) > .mega-menu {
+  .mega-menu[data-mega-open="true"] {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;

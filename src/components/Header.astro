@@ -246,6 +246,7 @@ const isActive = (item: NavItem): boolean => {
         if (link) link.setAttribute('aria-expanded', 'false');
       });
       document.querySelectorAll<HTMLElement>('[data-mega-menu]').forEach((m) => {
+        m.removeAttribute('data-mega-open');
         m.hidden = true;
       });
     };
@@ -257,6 +258,7 @@ const isActive = (item: NavItem): boolean => {
       const menu = document.querySelector<HTMLElement>(`[data-mega-menu="${type}"]`);
       if (!menu || !link || !trigger) return;
       trigger.setAttribute('data-mega-open', 'true');
+      menu.setAttribute('data-mega-open', 'true');
       link.setAttribute('aria-expanded', 'true');
       menu.hidden = false;
     };
@@ -267,6 +269,7 @@ const isActive = (item: NavItem): boolean => {
       const menu = document.querySelector<HTMLElement>(`[data-mega-menu="${type}"]`);
       if (!menu || !link || !trigger) return;
       trigger.removeAttribute('data-mega-open');
+      menu.removeAttribute('data-mega-open');
       link.setAttribute('aria-expanded', 'false');
       menu.hidden = true;
     };
