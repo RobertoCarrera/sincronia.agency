@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  items: Array<{ q: string; a: string }>;
+}
+const { title, items } = Astro.props;
+---
+<section class="faq section section--alt" aria-labelledby="faq-title">
+  <div class="container">
+    <header class="faq__header">
+      <h2 id="faq-title">{title}</h2>
+    </header>
+    <ul class="faq__list">
+      {items.map((item) => (
+        <li class="faq__item">
+          <details>
+            <summary>
+              <span>{item.q}</span>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </summary>
+            <p>{item.a}</p>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+<style>
+  .faq__header { text-align: center; margin-bottom: var(--s-10); }
+  .faq__list { list-style: none; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--s-3); }
+  .faq__item {
+    background: #fff;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+    transition: border-color 0.15s;
+  }
+  .faq__item:hover { border-color: var(--c-navy-800); }
+  .faq__item details summary {
+    list-style: none;
+    cursor: pointer;
+    padding: var(--s-4) var(--s-5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    font-weight: 600;
+    color: var(--c-ink);
+    font-size: 1rem;
+  }
+  .faq__item details summary::-webkit-details-marker { display: none; }
+  .faq__item details summary::marker { display: none; content: ''; }
+  .faq__item details summary .icon { transition: transform 0.2s; flex-shrink: 0; }
+  .faq__item details[open] summary .icon { transform: rotate(180deg); }
+  .faq__item details p {
+    padding: 0 var(--s-5) var(--s-5);
+    color: var(--c-muted);
+    line-height: 1.65;
+  }
+</style>

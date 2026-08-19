@@ -1,0 +1,109 @@
+---
+import { t } from '~/i18n/ui';
+import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
+import { nap } from '~/data/nap';
+
+const locale = getLocaleFromUrl(Astro.url);
+const year = new Date().getFullYear();
+const nav = [
+  { href: localizePath('/servicios', locale), label: t(locale, 'nav.services') },
+  { href: localizePath('/productos', locale), label: t(locale, 'nav.products') },
+  { href: localizePath('/sobre-nosotros', locale), label: t(locale, 'nav.about') },
+  { href: localizePath('/contacto', locale), label: t(locale, 'nav.contact') },
+];
+const legal = [
+  { href: localizePath('/legal/aviso-legal', locale), label: t(locale, 'footer.legal-notice') },
+  { href: localizePath('/legal/politica-privacidad', locale), label: t(locale, 'footer.privacy') },
+  { href: localizePath('/legal/politica-cookies', locale), label: t(locale, 'footer.cookies') },
+];
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <p class="site-footer__name">Sincronia</p>
+        <p class="site-footer__tagline">{t(locale, 'footer.tagline')}</p>
+        <address class="site-footer__contact">
+          {nap.street}<br />
+          {nap.postalCode} {nap.city} ({nap.region})<br />
+          <a href={`tel:${nap.phone.replace(/\s/g, '')}`}>{nap.phoneDisplay}</a><br />
+          <a href={`mailto:${nap.email}`}>{nap.email}</a>
+        </address>
+      </div>
+      <nav class="site-footer__col" aria-label="Servicios">
+        <h2 class="site-footer__heading">{t(locale, 'nav.services')}</h2>
+        <ul>
+          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+      <nav class="site-footer__col" aria-label={t(locale, 'footer.legal')}>
+        <h2 class="site-footer__heading">{t(locale, 'footer.legal')}</h2>
+        <ul>
+          {legal.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+    <div class="site-footer__bottom">
+      <p>© {year} {nap.name} · {t(locale, 'footer.rights')}</p>
+    </div>
+  </div>
+</footer>
+<style>
+  .site-footer {
+    background: var(--c-bg-dark);
+    color: rgba(255,255,255,0.75);
+    padding-block: var(--s-16) var(--s-8);
+    margin-top: var(--s-16);
+  }
+  .site-footer__grid {
+    display: grid;
+    gap: var(--s-10);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) {
+    .site-footer__grid { grid-template-columns: 2fr 1fr 1fr; gap: var(--s-12); }
+  }
+  .site-footer__name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: var(--s-2);
+    letter-spacing: -0.02em;
+  }
+  .site-footer__tagline {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9375rem;
+    margin-bottom: var(--s-4);
+    max-width: 360px;
+  }
+  .site-footer__contact {
+    font-style: normal;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.7);
+  }
+  .site-footer__contact a { color: rgba(255,255,255,0.9); }
+  .site-footer__contact a:hover { color: var(--c-coral-500); }
+  .site-footer__heading {
+    color: #fff;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--s-3);
+    font-weight: 600;
+  }
+  .site-footer__col ul { list-style: none; }
+  .site-footer__col li { margin-bottom: var(--s-2); }
+  .site-footer__col a {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9375rem;
+  }
+  .site-footer__col a:hover { color: var(--c-coral-500); }
+  .site-footer__bottom {
+    margin-top: var(--s-12);
+    padding-top: var(--s-6);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.5);
+  }
+</style>

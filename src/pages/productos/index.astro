@@ -1,0 +1,66 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import CTA from '~/components/CTA.astro';
+import ProductCard from '~/components/ProductCard.astro';
+import { products } from '~/data/products';
+import { t } from '~/i18n/ui';
+import { localizePath } from '~/lib/i18n';
+
+const heroCopy = {
+  es: { eyebrow: 'Productos propios', title: 'Software que hemos construido nosotros', subtitle: 'Dos productos en beta. Si resuelven un problema real para tu negocio, podemos empezar mañana.' },
+  ca: { eyebrow: 'Productes propis', title: 'Programari que hem construït nosaltres', subtitle: 'Dos productes en beta. Si resolen un problema real per al teu negoci, podem començar demà.' },
+  en: { eyebrow: 'Our products', title: 'Software we built ourselves', subtitle: 'Two products in beta. If they solve a real problem for your business, we can start tomorrow.' },
+};
+
+const descs: Record<string, Record<string, { tagline: string; desc: string; accent: 'coral' | 'navy' }>> = {
+  simplifica: {
+    es: { tagline: 'CRM multi-sector', desc: 'El CRM que se adapta a tu sector, no al revés. Implementación personalizada para clínicas, asesorías, talleres y negocios con clientes y citas.', accent: 'coral' },
+    ca: { tagline: 'CRM multi-sector', desc: "El CRM que s'adapta al teu sector, no a l'inrevés. Implementació personalitzada per a clíniques, assessories, tallers i negocis amb clients i cites.", accent: 'coral' },
+    en: { tagline: 'Multi-sector CRM', desc: 'A CRM that adapts to your sector, not the other way round. Custom implementation for clinics, consultancies, workshops and any business with clients and appointments.', accent: 'coral' },
+  },
+  strata: {
+    es: { tagline: 'CMS con IA', desc: 'CMS propio con editor visual y asistente IA. Reduce el coste de tu web a la mitad. Mantenimiento gratuito hasta 2027.', accent: 'navy' },
+    ca: { tagline: 'CMS amb IA', desc: 'CMS propi amb editor visual i assistent IA. Redueix el cost del teu web a la meitat. Manteniment gratuït fins al 2027.', accent: 'navy' },
+    en: { tagline: 'AI-powered CMS', desc: 'Our own CMS with visual editor and AI assistant. Cuts your website cost in half. Free maintenance until 2027.', accent: 'navy' },
+  },
+};
+
+const locale = Astro.url.pathname.startsWith('/ca/') ? 'ca' : Astro.url.pathname.startsWith('/en/') ? 'en' : 'es';
+const h = heroCopy[locale];
+---
+<Base
+  title="Productos — Simplifica CRM y Strata CMS · Sincronia Agency"
+  description="Simplifica (CRM multi-sector) y Strata (CMS con IA): dos productos propios en beta, con implementación personalizada y hosting desde 20€/mes."
+>
+  <Hero eyebrow={h.eyebrow} title={h.title} subtitle={h.subtitle} />
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="grid grid--2">
+        {products.map((p) => {
+          const d = descs[p.slug][locale];
+          return (
+            <ProductCard
+              slug={p.slug}
+              name={p.name}
+              tagline={d.tagline}
+              description={d.desc}
+              status={p.status}
+              priceFrom={p.priceFrom}
+              priceUnit={p.priceUnit}
+              icon={p.icon}
+              accent={d.accent}
+            />
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title={locale === 'es' ? '¿Quieres que te enseñemos un producto a medida?' : locale === 'ca' ? 'Vols que t\'ensenyem un producte a mida?' : 'Want us to show you a tailored product?'}
+    subtitle={locale === 'es' ? 'Hablemos 30 minutos y vemos si encaja con tu negocio. Sin coste.' : locale === 'ca' ? 'Parlem 30 minuts i veiem si encaixa amb el teu negoci. Sense cost.' : 'Let us talk for 30 minutes and see if it fits. No cost.'}
+    primaryCta={{ label: t(locale, 'cta.contact'), href: localizePath('/contacto', locale) }}
+  />
+</Base>

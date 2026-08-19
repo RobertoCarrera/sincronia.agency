@@ -1,0 +1,77 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import CTA from '~/components/CTA.astro';
+import ServiceCard from '~/components/ServiceCard.astro';
+import { services } from '~/data/services';
+import { t } from '~/i18n/ui';
+import { localizePath } from '~/lib/i18n';
+
+const titles = {
+  es: { title: 'Servicios — Diseño, desarrollo y SEO en Tarragona', desc: 'Servicios técnicos de mantenimiento WordPress, desarrollo de aplicaciones web, SEO local y hosting. Atendemos toda la provincia de Tarragona.' },
+  ca: { title: 'Serveis — Disseny, desenvolupament i SEO a Tarragona', desc: 'Serveis tècnics de manteniment WordPress, desenvolupament d\'aplicacions web, SEO local i hosting. Atenem tota la província de Tarragona.' },
+  en: { title: 'Services — Design, development and SEO in Tarragona', desc: 'Technical services for WordPress maintenance, web application development, local SEO and hosting. We serve the whole province of Tarragona.' },
+};
+
+const hero = {
+  es: { eyebrow: 'Servicios', title: 'Lo que hacemos por tu negocio', subtitle: 'Cinco servicios técnicos con la misma profundidad. Elige el que necesitas, o combina varios.' },
+  ca: { eyebrow: 'Serveis', title: 'El que fem pel teu negoci', subtitle: 'Cinc serveis tècnics amb la mateixa profunditat. Tria el que necessites, o combina\'n diversos.' },
+  en: { eyebrow: 'Services', title: 'What we do for your business', subtitle: 'Five technical services with the same depth. Choose the one you need, or combine several.' },
+};
+
+// Descripciones cortas de los servicios para el hub (en 3 idiomas)
+const shortDescriptions: Record<string, Record<string, string>> = {
+  'mantenimiento-wordpress': {
+    es: 'Tu web WordPress actualizada, segura, rápida y monitorizada 24/7.',
+    ca: 'El teu web WordPress actualitzat, segur, ràpid i monitoritzat 24/7.',
+    en: 'Your WordPress site updated, secure, fast and monitored 24/7.',
+  },
+  'desarrollo-wordpress': {
+    es: 'Webs a medida con WordPress: desde landings hasta e-commerce.',
+    ca: 'Llocs web a mida amb WordPress: des de landings fins a e-commerce.',
+    en: 'Custom WordPress sites: from landing pages to e-commerce.',
+  },
+  'desarrollo-aplicaciones-web': {
+    es: 'SPAs, dashboards, plataformas SaaS con Angular, React o Vue.',
+    ca: 'SPAs, dashboards, plataformes SaaS amb Angular, React o Vue.',
+    en: 'SPAs, dashboards, SaaS platforms with Angular, React or Vue.',
+  },
+  'posicionamiento-seo': {
+    es: 'SEO técnico, contenido y link building local para Tarragona y provincia.',
+    ca: 'SEO tècnic, contingut i link building local per a Tarragona i província.',
+    en: 'Technical SEO, content and local link building for Tarragona and the province.',
+  },
+  'hosting': {
+    es: 'Hosting optimizado para WordPress y aplicaciones web, soporte en español.',
+    ca: 'Hosting optimitzat per a WordPress i aplicacions web, suport en espanyol.',
+    en: 'Optimised hosting for WordPress and web applications, support in Spanish.',
+  },
+};
+
+const locale = Astro.url.pathname.startsWith('/ca/') ? 'ca' : Astro.url.pathname.startsWith('/en/') ? 'en' : 'es';
+const m = titles[locale];
+const h = hero[locale];
+---
+<Base title={m.title} description={m.desc}>
+  <Hero
+    eyebrow={h.eyebrow}
+    title={h.title}
+    subtitle={h.subtitle}
+  />
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="grid grid--3">
+        {services.map((s) => (
+          <ServiceCard slug={s.slug} title={s.title} shortDescription={shortDescriptions[s.slug][locale]} icon={s.icon} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title={locale === 'es' ? '¿No sabes qué servicio necesitas?' : locale === 'ca' ? 'No saps quin servei necessites?' : 'Not sure which service you need?'}
+    subtitle={locale === 'es' ? 'Te escuchamos y te recomendamos la mejor combinación. Sin compromiso.' : locale === 'ca' ? 'T\'escoltem i et recomanem la millor combinació. Sense compromís.' : 'We listen and recommend the best combination. No commitment.'}
+    primaryCta={{ label: t(locale, 'cta.quote'), href: localizePath('/contacto', locale) }}
+  />
+</Base>

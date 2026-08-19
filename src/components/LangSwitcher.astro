@@ -1,0 +1,98 @@
+---
+import { locales, localeNames, type Locale } from '~/i18n/locales';
+import { getLocaleFromUrl, getPathWithoutLocale, localizePath } from '~/lib/i18n';
+import { t } from '~/i18n/ui';
+
+const current = getLocaleFromUrl(Astro.url);
+const path = getPathWithoutLocale(Astro.url.pathname);
+---
+<div class="lang-switcher" aria-label={t(current, 'lang.switcher')}>
+  <button class="lang-trigger" type="button" aria-haspopup="true" aria-expanded="false" data-lang-trigger>
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </svg>
+    <span>{localeNames[current]}</span>
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </button>
+  <ul class="lang-menu" role="menu" hidden>
+    {locales.map((loc: Locale) => (
+      <li role="none">
+        <a
+          role="menuitem"
+          href={localizePath(path, loc)}
+          aria-current={loc === current ? 'true' : undefined}
+          class={loc === current ? 'is-current' : ''}
+        >
+          {localeNames[loc]}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+<style>
+  .lang-switcher { position: relative; }
+  .lang-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    background: transparent;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+    color: var(--c-text);
+    font-size: 0.875rem;
+    transition: all 0.15s;
+  }
+  .lang-trigger:hover { border-color: var(--c-navy-800); }
+  .lang-trigger .icon { width: 1rem; height: 1rem; }
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-md);
+    list-style: none;
+    min-width: 140px;
+    z-index: 50;
+    padding: 0.4rem;
+  }
+  .lang-menu li { margin: 0; }
+  .lang-menu a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--r-sm);
+    color: var(--c-text);
+    font-size: 0.875rem;
+  }
+  .lang-menu a:hover { background: var(--c-bg-alt); }
+  .lang-menu a.is-current { color: var(--c-navy-800); font-weight: 600; background: var(--c-navy-50); }
+  :global(.section--dark) .lang-trigger { color: #fff; border-color: rgba(255,255,255,0.2); }
+  :global(.section--dark) .lang-trigger:hover { border-color: #fff; }
+  :global(.section--dark) .lang-menu { background: var(--c-navy-900); border-color: rgba(255,255,255,0.1); }
+  :global(.section--dark) .lang-menu a { color: rgba(255,255,255,0.9); }
+  :global(.section--dark) .lang-menu a:hover { background: rgba(255,255,255,0.05); }
+  :global(.section--dark) .lang-menu a.is-current { background: rgba(255,255,255,0.1); color: #fff; }
+</style>
+<script>
+  const trigger = document.querySelector<HTMLButtonElement>('[data-lang-trigger]');
+  const menu = trigger?.parentElement?.querySelector<HTMLUListElement>('.lang-menu');
+  if (trigger && menu) {
+    const toggle = () => {
+      const isOpen = !menu.hidden;
+      menu.hidden = isOpen;
+      trigger.setAttribute('aria-expanded', String(!isOpen));
+    };
+    trigger.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
+    document.addEventListener('click', (e) => {
+      if (!trigger.contains(e.target as Node) && !menu.contains(e.target as Node)) {
+        menu.hidden = true;
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>

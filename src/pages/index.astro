@@ -1,0 +1,145 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import CTA from '~/components/CTA.astro';
+import ServiceCard from '~/components/ServiceCard.astro';
+import ProductCard from '~/components/ProductCard.astro';
+import { home } from '~/content/home';
+import { services } from '~/data/services';
+import { products } from '~/data/products';
+import { locations } from '~/data/locations';
+import { localizePath } from '~/lib/i18n';
+import { t } from '~/i18n/ui';
+
+const c = home.es;
+const servicesToShow = c.servicePreviews.map((sp) => {
+  const meta = services.find((s) => s.slug === sp.slug)!;
+  return { ...sp, icon: meta.icon };
+});
+const productsToShow = c.productPreviews.map((pp) => {
+  const meta = products.find((p) => p.slug === pp.slug)!;
+  return { ...pp, icon: meta.icon, status: meta.status, priceFrom: meta.priceFrom, priceUnit: meta.priceUnit, accent: 'coral' as const };
+});
+---
+<Base
+  title="Sincronia Agency — Webs y aplicaciones en Tarragona"
+  description="Agencia técnica de diseño, desarrollo y SEO en Tarragona. WordPress, Angular, SEO local y hosting. Presupuesto sin compromiso en menos de 24h."
+>
+  <Hero
+    eyebrow={c.hero.eyebrow}
+    title={c.hero.title}
+    subtitle={c.hero.subtitle}
+    primaryCta={{ label: t('es', 'cta.quote'), href: localizePath('/contacto', 'es') }}
+    secondaryCta={{ label: t('es', 'nav.services'), href: localizePath('/servicios', 'es') }}
+  />
+
+  <section class="section">
+    <div class="container intro-section">
+      <div class="intro-section__content">
+        <span class="eyebrow">{c.intro.eyebrow}</span>
+        <h2>{c.intro.title}</h2>
+        <p class="lead">{c.intro.body}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="services-heading">
+    <div class="container">
+      <header class="section-header">
+        <span class="eyebrow">{c.services.eyebrow}</span>
+        <h2 id="services-heading">{c.services.title}</h2>
+        <p class="lead">{c.services.subtitle}</p>
+      </header>
+      <div class="grid grid--3" style="margin-top: var(--s-10)">
+        {servicesToShow.map((s) => (
+          <ServiceCard slug={s.slug} title={s.title} shortDescription={s.desc} icon={s.icon} />
+        ))}
+      </div>
+      <div class="section-cta">
+        <a href={localizePath('/servicios', 'es')} class="btn btn--secondary btn--lg">{c.services.ctaAll}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="products-heading">
+    <div class="container">
+      <header class="section-header">
+        <span class="eyebrow">{c.products.eyebrow}</span>
+        <h2 id="products-heading">{c.products.title}</h2>
+        <p class="lead">{c.products.subtitle}</p>
+      </header>
+      <div class="grid grid--2" style="margin-top: var(--s-10)">
+        {productsToShow.map((p) => (
+          <ProductCard
+            slug={p.slug}
+            name={p.name}
+            tagline={p.tagline}
+            description={p.desc}
+            status={p.status}
+            priceFrom={p.priceFrom}
+            priceUnit={p.priceUnit}
+            icon={p.icon}
+            accent={p.accent}
+          />
+        ))}
+      </div>
+      <div class="section-cta">
+        <a href={localizePath('/productos', 'es')} class="btn btn--secondary btn--lg">{c.products.ctaAll}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="coverage-heading">
+    <div class="container">
+      <div class="coverage">
+        <div class="coverage__content">
+          <span class="eyebrow">{c.coverage.eyebrow}</span>
+          <h2 id="coverage-heading">{c.coverage.title}</h2>
+          <p class="lead">{c.coverage.body}</p>
+        </div>
+        <ul class="coverage__list" aria-label="Municipios de cobertura">
+          {locations.map((loc) => (
+            <li>{loc.name}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title={c.cta.title}
+    subtitle={c.cta.subtitle}
+    primaryCta={{ label: t('es', 'cta.contact'), href: localizePath('/contacto', 'es') }}
+  />
+</Base>
+
+<style>
+  .intro-section { max-width: 900px; margin: 0 auto; text-align: center; }
+  .intro-section__content h2 { margin-block: var(--s-3) var(--s-4); }
+  .intro-section__content .eyebrow { display: inline-block; }
+  .section-header { max-width: 700px; }
+  .section-header .eyebrow { display: inline-block; }
+  .section-cta { text-align: center; margin-top: var(--s-10); }
+  .coverage {
+    display: grid;
+    gap: var(--s-8);
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  @media (min-width: 768px) { .coverage { grid-template-columns: 1.2fr 1fr; gap: var(--s-12); } }
+  .coverage__content h2 { margin-block: var(--s-3) var(--s-4); }
+  .coverage__list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .coverage__list li {
+    background: #fff;
+    border: 1px solid var(--c-line);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--r-full);
+    font-size: 0.875rem;
+    color: var(--c-text);
+  }
+</style>

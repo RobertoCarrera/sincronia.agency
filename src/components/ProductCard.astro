@@ -1,0 +1,93 @@
+---
+import { t } from '~/i18n/ui';
+import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
+
+interface Props {
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  status: 'beta' | 'estable';
+  priceFrom: number;
+  priceUnit: string;
+  icon: string;
+  accent?: 'coral' | 'navy';
+}
+const { slug, name, tagline, description, status, priceFrom, priceUnit, icon, accent = 'coral' } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+---
+<a href={localizePath(`/productos/${slug}`, locale)} class:list={['product-card', `product-card--${accent}`]}>
+  <div class="product-card__header">
+    <span class="icon-box" aria-hidden="true">
+      <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+        {icon === 'users-round' && <><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></>}
+        {icon === 'layers' && <><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></>}
+      </svg>
+    </span>
+    {status === 'beta' && <span class="product-card__badge">BETA</span>}
+  </div>
+  <h3 class="product-card__name">{name}</h3>
+  <p class="product-card__tagline">{tagline}</p>
+  <p class="product-card__desc">{description}</p>
+  <div class="product-card__footer">
+    <span class="product-card__price">
+      <span class="product-card__price-from">{t(locale, 'common.from')}</span>
+      <span class="product-card__price-amount">{priceFrom}€</span>
+      <span class="product-card__price-unit">{priceUnit}</span>
+    </span>
+    <span class="product-card__cta">
+      {t(locale, 'cta.discover')}
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 12h14m-7-7 7 7-7 7"></path>
+      </svg>
+    </span>
+  </div>
+</a>
+<style>
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    background: #fff;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-lg);
+    color: var(--c-text);
+    transition: all 0.2s ease;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-card--coral { background: linear-gradient(180deg, var(--c-coral-50) 0%, #fff 30%); }
+  .product-card--navy { background: linear-gradient(180deg, var(--c-navy-50) 0%, #fff 30%); }
+  .product-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); color: var(--c-text); border-color: var(--c-navy-800); }
+  .product-card__header { display: flex; align-items: center; justify-content: space-between; }
+  .product-card__badge {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    background: var(--c-coral-500);
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--r-sm);
+  }
+  .product-card__name { color: var(--c-ink); font-size: 1.5rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; }
+  .product-card__tagline { color: var(--c-navy-800); font-size: 0.9375rem; font-weight: 500; }
+  .product-card__desc { color: var(--c-muted); font-size: 0.9375rem; line-height: 1.6; flex: 1; }
+  .product-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--c-line);
+    margin-top: var(--s-3);
+  }
+  .product-card__price { display: inline-flex; flex-direction: column; }
+  .product-card__price-from { font-size: 0.6875rem; color: var(--c-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .product-card__price-amount { font-size: 1.5rem; font-weight: 700; color: var(--c-ink); letter-spacing: -0.02em; }
+  .product-card__price-unit { font-size: 0.75rem; color: var(--c-muted); }
+  .product-card__cta { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--c-navy-800); font-weight: 600; font-size: 0.9375rem; }
+  .product-card__cta .icon { width: 1rem; height: 1rem; transition: transform 0.2s; }
+  .product-card:hover .product-card__cta .icon { transform: translateX(4px); }
+</style>

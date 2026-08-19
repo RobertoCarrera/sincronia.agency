@@ -1,0 +1,117 @@
+---
+import Logo from '~/components/Logo.astro';
+import LangSwitcher from '~/components/LangSwitcher.astro';
+import { t } from '~/i18n/ui';
+import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
+
+const locale = getLocaleFromUrl(Astro.url);
+const navItems = [
+  { href: localizePath('/servicios', locale), key: 'nav.services' as const },
+  { href: localizePath('/productos', locale), key: 'nav.products' as const },
+  { href: localizePath('/sobre-nosotros', locale), key: 'nav.about' as const },
+  { href: localizePath('/contacto', locale), key: 'nav.contact' as const },
+];
+const currentPath = Astro.url.pathname;
+---
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <Logo />
+    <nav class="site-nav" aria-label="Navegación principal">
+      <button class="site-nav__toggle" type="button" aria-label="Abrir menú" data-nav-toggle>
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="site-nav__list" data-nav-list>
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={currentPath.startsWith(item.href) ? 'page' : undefined}
+            >
+              {t(locale, item.key)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="site-header__actions">
+      <LangSwitcher />
+      <a href={localizePath('/contacto', locale)} class="btn btn--primary">
+        {t(locale, 'cta.quote')}
+      </a>
+    </div>
+  </div>
+</header>
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--c-line);
+    z-index: 40;
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-block: var(--s-3);
+  }
+  .site-nav { display: none; }
+  .site-nav__list { list-style: none; display: flex; gap: var(--s-2); }
+  .site-nav__list a {
+    display: inline-block;
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--r-md);
+    color: var(--c-text);
+    font-weight: 500;
+    font-size: 0.9375rem;
+  }
+  .site-nav__list a:hover { background: var(--c-bg-alt); color: var(--c-navy-800); }
+  .site-nav__list a[aria-current="page"] { color: var(--c-navy-800); }
+  .site-nav__toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 22px;
+    background: transparent;
+    border: 0;
+    padding: 0;
+  }
+  .site-nav__toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--c-ink);
+    border-radius: 2px;
+  }
+  .site-header__actions { display: flex; align-items: center; gap: var(--s-3); }
+  .site-header__actions .btn { display: none; }
+  @media (min-width: 768px) {
+    .site-nav { display: flex; flex: 1; justify-content: center; }
+    .site-nav__toggle { display: none; }
+    .site-header__actions .btn { display: inline-flex; }
+  }
+  /* Menú móvil desplegado */
+  :global(.is-nav-open) .site-nav__list {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-bottom: 1px solid var(--c-line);
+    padding: var(--s-4);
+    box-shadow: var(--shadow-md);
+  }
+</style>
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  toggle?.addEventListener('click', () => {
+    header?.classList.toggle('is-nav-open');
+  });
+</script>

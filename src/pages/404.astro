@@ -1,0 +1,42 @@
+---
+import Base from '~/layouts/Base.astro';
+import { getLocaleFromUrl } from '~/lib/i18n';
+import { localizePath } from '~/lib/i18n';
+
+const locale = getLocaleFromUrl(Astro.url);
+const messages = {
+  es: { title: 'Página no encontrada', desc: 'La página que buscas no existe o se ha movido. Te ayudamos a volver al sitio correcto.', cta: 'Volver al inicio' },
+  ca: { title: 'Pàgina no trobada', desc: 'La pàgina que busques no existeix o s\'ha mogut. T\'ajudem a tornar al lloc correcte.', cta: 'Tornar a l\'inici' },
+  en: { title: 'Page not found', desc: 'The page you are looking for does not exist or has moved. We help you get back to the right place.', cta: 'Back to home' },
+};
+const m = messages[locale];
+---
+<Base title={`404 · ${m.title}`} description={m.desc}>
+  <section class="error-page">
+    <div class="container">
+      <p class="error-page__code">404</p>
+      <h1 class="error-page__title">{m.title}</h1>
+      <p class="error-page__desc">{m.desc}</p>
+      <a href={localizePath('/', locale)} class="btn btn--primary btn--lg">{m.cta}</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .error-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+  .error-page__code {
+    font-family: var(--font-mono);
+    font-size: clamp(4rem, 12vw, 7rem);
+    font-weight: 700;
+    color: var(--c-coral-500);
+    line-height: 1;
+    margin-bottom: var(--s-4);
+    letter-spacing: -0.04em;
+  }
+  .error-page__title { margin-bottom: var(--s-3); }
+  .error-page__desc { color: var(--c-muted); max-width: 50ch; margin: 0 auto var(--s-8); }
+</style>

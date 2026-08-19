@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+}
+const { title, subtitle, primaryCta, secondaryCta } = Astro.props;
+---
+<section class="cta-block">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-card__content">
+        <h2 class="cta-card__title">{title}</h2>
+        {subtitle && <p class="cta-card__subtitle">{subtitle}</p>}
+      </div>
+      <div class="cta-card__actions">
+        <a href={primaryCta.href} class="btn btn--primary btn--lg">{primaryCta.label}</a>
+        {secondaryCta && <a href={secondaryCta.href} class="btn btn--ghost btn--lg">{secondaryCta.label}</a>}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .cta-block { padding-block: var(--s-12); }
+  .cta-card {
+    background: var(--c-navy-900);
+    color: #fff;
+    border-radius: var(--r-xl);
+    padding: clamp(var(--s-8), 6vw, var(--s-12));
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(circle, var(--c-coral-500) 0%, transparent 60%);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  @media (min-width: 768px) {
+    .cta-card { grid-template-columns: 1.5fr 1fr; }
+  }
+  .cta-card__title { color: #fff; margin-bottom: var(--s-3); }
+  .cta-card__subtitle { color: rgba(255,255,255,0.75); font-size: 1.0625rem; max-width: 50ch; }
+  .cta-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+  .cta-card__actions .btn--ghost { color: #fff; border-color: rgba(255,255,255,0.25); }
+  .cta-card__actions .btn--ghost:hover { border-color: #fff; color: #fff; }
+</style>
