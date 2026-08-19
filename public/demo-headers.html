@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sincronia — 4 prototipos de header</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       Design tokens (idénticos al proyecto)
+       ============================================================ */
+    :root {
+      --c-navy-900: #0E2347;
+      --c-navy-800: #1B3A6B;
+      --c-navy-700: #284F8E;
+      --c-navy-50:  #EEF2F8;
+      --c-coral-700: #D85A2A;
+      --c-coral-600: #E66A3A;
+      --c-coral-500: #FF7A4D;
+      --c-coral-100: #FFE0D2;
+      --c-coral-50:  #FFF1E8;
+      --c-ink:    #0B1220;
+      --c-text:   #1F2937;
+      --c-muted:  #6B7280;
+      --c-line:   #E5E7EB;
+      --c-bg:     #FFFFFF;
+      --c-bg-alt: #F8FAFC;
+      --font-sans: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Consolas', monospace;
+      --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-full: 9999px;
+      --s-1: 0.25rem; --s-2: 0.5rem; --s-3: 0.75rem; --s-4: 1rem;
+      --s-5: 1.25rem; --s-6: 1.5rem; --s-8: 2rem; --s-10: 2.5rem;
+      --s-12: 3rem; --s-16: 4rem; --s-20: 5rem; --s-24: 6rem;
+      --container-max: 1200px;
+      --shadow-md: 0 4px 16px -2px rgba(11,18,32,0.06), 0 2px 4px -2px rgba(11,18,32,0.04);
+      --shadow-lg: 0 12px 32px -8px rgba(11,18,32,0.10), 0 4px 8px -4px rgba(11,18,32,0.06);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    * { margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      color: var(--c-text);
+      background: #F4F6FA;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; }
+    img, svg { display: block; max-width: 100%; }
+
+    /* ============================================================
+       Demo page wrapper
+       ============================================================ */
+    .demo-page-header {
+      background: linear-gradient(135deg, var(--c-navy-900) 0%, var(--c-navy-800) 100%);
+      color: #fff;
+      padding: var(--s-12) var(--s-6);
+      text-align: center;
+    }
+    .demo-page-header__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-coral-500);
+      margin-bottom: var(--s-3);
+    }
+    .demo-page-header h1 {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      color: #fff;
+      margin-bottom: var(--s-3);
+    }
+    .demo-page-header p { color: rgba(255,255,255,0.75); max-width: 60ch; margin: 0 auto; }
+
+    .demo-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--s-12) var(--s-6);
+    }
+    .demo-label {
+      display: flex;
+      align-items: center;
+      gap: var(--s-4);
+      margin-bottom: var(--s-6);
+    }
+    .demo-label__letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem; height: 3rem;
+      border-radius: var(--r-md);
+      background: var(--c-coral-500);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .demo-label h2 { font-size: 1.5rem; color: var(--c-ink); margin-bottom: 0.15rem; }
+    .demo-label p { color: var(--c-muted); font-size: 0.9375rem; }
+
+    .demo-frame {
+      background: #fff;
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .demo-context {
+      padding: var(--s-12) var(--s-8);
+      background: var(--c-bg-alt);
+      min-height: 240px;
+    }
+    .demo-context__eyebrow {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--c-coral-700);
+      background: var(--c-coral-50);
+      padding: 0.3rem 0.8rem;
+      border-radius: var(--r-full);
+      margin-bottom: var(--s-4);
+    }
+    .demo-context h3 {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      color: var(--c-ink);
+      margin-bottom: var(--s-3);
+      max-width: 18ch;
+    }
+    .demo-context p { color: var(--c-muted); max-width: 50ch; }
+
+    /* ============================================================
+       Logo (inline SVG)
+       ============================================================ */
+    .logo { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.125rem; color: var(--c-ink); }
+    .logo__mark { width: 28px; height: 28px; flex-shrink: 0; }
+
+    /* ============================================================
+       Botones (mini-set)
+       ============================================================ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--r-md);
+      font-weight: 600; font-size: 0.9375rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn--primary { background: var(--c-coral-500); color: #fff; }
+    .btn--primary:hover { background: var(--c-coral-600); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn--ghost { background: transparent; color: var(--c-text); border: 1px solid var(--c-line); }
+
+    /* ============================================================
+       ============================================================
+       OPCIÓN A · Top bar NAP + main bar
+       ============================================================
+       ============================================================ */
+    .dh-a {
+      position: sticky; top: 0; z-index: 10;
+    }
+    .dh-a__topbar {
+      background: var(--c-navy-900);
+      color: rgba(255,255,255,0.85);
+      font-size: 0.8125rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .dh-a__topbar-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0.45rem var(--s-6);
+      display: flex;
+      align-items: center;
+      gap: var(--s-4);
+      flex-wrap: wrap;
+    }
+    .dh-a__topbar-info {
+      display: flex; align-items: center; gap: var(--s-4);
+      flex-wrap: wrap;
+    }
+    .dh-a__topbar-info > span {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .dh-a__topbar-info svg { width: 0.875rem; height: 0.875rem; opacity: 0.7; }
+    .dh-a__topbar-info > span + span::before {
+      content: '·'; margin-right: var(--s-4); color: rgba(255,255,255,0.3);
+    }
+    .dh-a__topbar-spacer { flex: 1; }
+    .dh-a__status {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(76, 217, 123, 0.12);
+      color: #5FE39A;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--r-full);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+    .dh-a__status::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: #5FE39A;
+      box-shadow: 0 0 0 0 rgba(95, 227, 154, 0.6);
+      animation: dh-pulse 2s infinite;
+    }
+    @keyframes dh-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(95, 227, 154, 0.6); }
+      50% { box-shadow: 0 0 0 6px rgba(95, 227, 154, 0); }
+    }
+
+    .dh-a__main {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid var(--c-line);
+    }
+    .dh-a__main-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--s-3) var(--s-6);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--s-6);
+      min-height: 64px;
+    }
+    .dh-a__nav { display: none; flex: 1; justify-content: center; }
+    .dh-a__nav-list { list-style: none; display: flex; align-items: center; gap: 0.25rem; }
+    .dh-a__nav-link {
+      position: relative;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--r-md);
+      color: var(--c-text);
+      font-weight: 500; font-size: 0.9375rem;
+      transition: color 0.15s, background 0.15s;
+    }
+    .dh-a__nav-link:hover { color: var(--c-ink); background: var(--c-bg-alt); }
+    .dh-a__nav-link svg { width: 0.875rem; height: 0.875rem; opacity: 0.6; }
+    .dh-a__actions { display: flex; align-items: center; gap: var(--s-3); }
+    .dh-a__lang {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-md);
+      font-size: 0.875rem; color: var(--c-text);
+    }
+    @media (min-width: 1024px) {
+      .dh-a__nav { display: flex; }
+    }
+
+    /* ============================================================
+       ============================================================
+       OPCIÓN B · Cmd+K command palette
+       ============================================================
+       ============================================================ */
+    .dh-b {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid var(--c-line);
+    }
+    .dh-b__inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--s-3) var(--s-6);
+      display: flex; align-items: center; gap: var(--s-6);
+      min-height: 64px;
+    }
+    .dh-b__nav { display: none; flex: 1; }
+    .dh-b__nav-list { list-style: none; display: flex; align-items: center; gap: 0.25rem; justify-content: center; }
+    .dh-b__nav-link {
+      position: relative;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--r-md);
+      color: var(--c-text);
+      font-weight: 500; font-size: 0.9375rem;
+    }
+    .dh-b__nav-link svg { width: 0.875rem; height: 0.875rem; opacity: 0.6; }
+    .dh-b__actions { display: flex; align-items: center; gap: var(--s-2); flex: 1; justify-content: flex-end; }
+    .dh-b__search {
+      display: none;
+      align-items: center; gap: 0.6rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-md);
+      background: var(--c-bg-alt);
+      color: var(--c-muted);
+      font-size: 0.875rem;
+      min-width: 220px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .dh-b__search:hover { border-color: var(--c-navy-800); background: #fff; }
+    .dh-b__search svg { width: 1rem; height: 1rem; }
+    .dh-b__search-label { flex: 1; text-align: left; }
+    .dh-b__kbd {
+      display: inline-flex; align-items: center; gap: 0.15rem;
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--c-muted);
+    }
+    .dh-b__kbd kbd {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 1.4rem; height: 1.4rem;
+      padding: 0 0.3rem;
+      background: #fff; border: 1px solid var(--c-line);
+      border-radius: 4px;
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--c-text);
+    }
+    .dh-b__lang {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-md);
+      font-size: 0.875rem; color: var(--c-text);
+    }
+    @media (min-width: 1024px) {
+      .dh-b__nav { display: flex; }
+      .dh-b__search { display: inline-flex; }
+    }
+
+    /* Command palette overlay */
+    .dh-cp-overlay {
+      position: fixed; inset: 0;
+      background: rgba(11, 18, 32, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none; align-items: flex-start; justify-content: center;
+      padding-top: 12vh;
+    }
+    .dh-cp-overlay.is-open { display: flex; }
+    .dh-cp {
+      width: min(640px, 92vw);
+      background: #fff;
+      border-radius: var(--r-lg);
+      box-shadow: 0 24px 64px -12px rgba(11,18,32,0.4);
+      overflow: hidden;
+      animation: dh-cp-in 0.2s ease;
+    }
+    @keyframes dh-cp-in {
+      from { transform: translateY(-12px) scale(0.98); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .dh-cp__input-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--c-line);
+    }
+    .dh-cp__input-row svg { width: 1.25rem; height: 1.25rem; color: var(--c-muted); }
+    .dh-cp__input {
+      flex: 1; border: 0; outline: none;
+      font-family: var(--font-sans); font-size: 1.0625rem;
+      color: var(--c-ink); background: transparent;
+    }
+    .dh-cp__input::placeholder { color: var(--c-muted); }
+    .dh-cp__esc {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--c-muted);
+      background: var(--c-bg-alt);
+      border: 1px solid var(--c-line);
+      border-radius: 4px;
+      padding: 0.15rem 0.4rem;
+    }
+    .dh-cp__results {
+      max-height: 50vh; overflow-y: auto;
+      padding: 0.5rem;
+    }
+    .dh-cp__group-label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      padding: 0.5rem 0.75rem 0.25rem;
+    }
+    .dh-cp__item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.65rem 0.75rem;
+      border-radius: var(--r-md);
+      cursor: pointer;
+      color: var(--c-text);
+      font-size: 0.9375rem;
+    }
+    .dh-cp__item:hover, .dh-cp__item.is-active { background: var(--c-navy-50); }
+    .dh-cp__item-icon {
+      width: 1.75rem; height: 1.75rem;
+      border-radius: var(--r-sm);
+      background: var(--c-coral-50); color: var(--c-coral-700);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .dh-cp__item-icon svg { width: 1rem; height: 1rem; }
+    .dh-cp__item-body { flex: 1; min-width: 0; }
+    .dh-cp__item-title { font-weight: 500; color: var(--c-ink); }
+    .dh-cp__item-desc { font-size: 0.8125rem; color: var(--c-muted); }
+    .dh-cp__item-kbd { font-family: var(--font-mono); font-size: 0.75rem; color: var(--c-muted); }
+    .dh-cp__item-arrow { color: var(--c-muted); opacity: 0; }
+    .dh-cp__item.is-active .dh-cp__item-arrow { opacity: 1; color: var(--c-coral-500); }
+    .dh-cp__footer {
+      display: flex; align-items: center; gap: var(--s-3);
+      padding: 0.65rem 1rem;
+      border-top: 1px solid var(--c-line);
+      font-size: 0.75rem; color: var(--c-muted);
+      background: var(--c-bg-alt);
+    }
+    .dh-cp__footer-hint { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .dh-cp__footer kbd {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 1.25rem; height: 1.25rem;
+      padding: 0 0.3rem;
+      background: #fff; border: 1px solid var(--c-line);
+      border-radius: 4px;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      color: var(--c-text);
+    }
+
+    /* ============================================================
+       ============================================================
+       OPCIÓN C · Floating dock + marquee
+       ============================================================
+       ============================================================ */
+    .dh-c {
+      position: relative;
+      padding: var(--s-3) var(--s-3) 0;
+      background: var(--c-bg-alt);
+    }
+    .dh-c__dock {
+      position: sticky; top: var(--s-3);
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-full);
+      box-shadow: 0 8px 24px -4px rgba(11,18,32,0.10);
+      padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+      display: flex; align-items: center; gap: var(--s-4);
+      z-index: 10;
+    }
+    .dh-c__nav { display: none; flex: 1; }
+    .dh-c__nav-list { list-style: none; display: flex; align-items: center; gap: 0.25rem; justify-content: center; }
+    .dh-c__nav-link {
+      position: relative;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--r-full);
+      color: var(--c-text);
+      font-weight: 500; font-size: 0.9375rem;
+    }
+    .dh-c__nav-link svg { width: 0.875rem; height: 0.875rem; opacity: 0.6; }
+    .dh-c__actions { display: flex; align-items: center; gap: var(--s-2); margin-left: auto; }
+    .dh-c__lang {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 0.7rem;
+      border-radius: var(--r-full);
+      font-size: 0.875rem; color: var(--c-text);
+    }
+    .dh-c__cta { border-radius: var(--r-full); }
+    @media (min-width: 1024px) {
+      .dh-c__nav { display: flex; }
+    }
+
+    /* Marquee */
+    .dh-c__marquee {
+      max-width: 1200px;
+      margin: var(--s-4) auto 0;
+      background: var(--c-navy-900);
+      color: #fff;
+      border-radius: var(--r-full);
+      overflow: hidden;
+      padding: 0.55rem 0;
+      position: relative;
+    }
+    .dh-c__marquee::before, .dh-c__marquee::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0; width: 60px;
+      z-index: 2; pointer-events: none;
+    }
+    .dh-c__marquee::before { left: 0; background: linear-gradient(90deg, var(--c-navy-900), transparent); }
+    .dh-c__marquee::after { right: 0; background: linear-gradient(270deg, var(--c-navy-900), transparent); }
+    .dh-c__marquee-track {
+      display: flex;
+      gap: var(--s-8);
+      animation: dh-marquee 40s linear infinite;
+      width: max-content;
+      padding-left: var(--s-8);
+    }
+    .dh-c__marquee-item {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      white-space: nowrap;
+    }
+    .dh-c__marquee-item svg { width: 0.875rem; height: 0.875rem; color: var(--c-coral-500); }
+    .dh-c__marquee-item--accent { color: var(--c-coral-500); }
+    @keyframes dh-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ============================================================
+       ============================================================
+       OPCIÓN D · Mix A+B
+       ============================================================
+       ============================================================ */
+    .dh-d {
+      position: sticky; top: 0; z-index: 10;
+    }
+    .dh-d__topbar {
+      background: var(--c-navy-900);
+      color: rgba(255,255,255,0.85);
+      font-size: 0.8125rem;
+    }
+    .dh-d__topbar-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0.45rem var(--s-6);
+      display: flex; align-items: center; gap: var(--s-4);
+    }
+    .dh-d__topbar-info { display: flex; align-items: center; gap: var(--s-4); flex-wrap: wrap; }
+    .dh-d__topbar-info > span { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .dh-d__topbar-info svg { width: 0.875rem; height: 0.875rem; opacity: 0.7; }
+    .dh-d__topbar-info > span + span::before { content: '·'; margin-right: var(--s-4); color: rgba(255,255,255,0.3); }
+    .dh-d__topbar-spacer { flex: 1; }
+    .dh-d__status {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(76, 217, 123, 0.12);
+      color: #5FE39A;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--r-full);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+    .dh-d__status::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: #5FE39A;
+      animation: dh-pulse 2s infinite;
+    }
+
+    .dh-d__main {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid var(--c-line);
+    }
+    .dh-d__main-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--s-3) var(--s-6);
+      display: flex; align-items: center; gap: var(--s-6);
+      min-height: 64px;
+    }
+    .dh-d__nav { display: none; flex: 1; }
+    .dh-d__nav-list { list-style: none; display: flex; align-items: center; gap: 0.25rem; justify-content: center; }
+    .dh-d__nav-link {
+      position: relative;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--r-md);
+      color: var(--c-text);
+      font-weight: 500; font-size: 0.9375rem;
+    }
+    .dh-d__nav-link svg { width: 0.875rem; height: 0.875rem; opacity: 0.6; }
+    .dh-d__actions { display: flex; align-items: center; gap: var(--s-2); margin-left: auto; }
+    .dh-d__search {
+      display: none;
+      align-items: center; gap: 0.6rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-md);
+      background: var(--c-bg-alt);
+      color: var(--c-muted);
+      font-size: 0.875rem;
+      min-width: 220px;
+    }
+    .dh-d__search:hover { border-color: var(--c-navy-800); background: #fff; }
+    .dh-d__search svg { width: 1rem; height: 1rem; }
+    .dh-d__search-label { flex: 1; text-align: left; }
+    .dh-d__kbd {
+      display: inline-flex; align-items: center; gap: 0.15rem;
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--c-muted);
+    }
+    .dh-d__kbd kbd {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 1.4rem; height: 1.4rem;
+      padding: 0 0.3rem;
+      background: #fff; border: 1px solid var(--c-line);
+      border-radius: 4px;
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--c-text);
+    }
+    .dh-d__lang {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-md);
+      font-size: 0.875rem; color: var(--c-text);
+    }
+    @media (min-width: 1024px) {
+      .dh-d__nav { display: flex; }
+      .dh-d__search { display: inline-flex; }
+    }
+
+    /* Note inside demos */
+    .demo-note {
+      padding: 0.75rem 1rem;
+      background: var(--c-coral-50);
+      color: var(--c-coral-700);
+      font-size: 0.8125rem;
+      border-top: 1px dashed var(--c-coral-100);
+      font-family: var(--font-mono);
+      letter-spacing: 0.04em;
+    }
+    .demo-note strong { color: var(--c-coral-700); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header class="demo-page-header">
+    <div class="demo-page-header__eyebrow">Comparativa visual</div>
+    <h1>Sincronia · 4 prototipos de header</h1>
+    <p>Abre esta página en el navegador, scroll entre las 4 demos y dime cuál te mola. La B y la D son interactivas: pulsa <kbd style="background:rgba(255,255,255,0.15);padding:0.1rem 0.4rem;border-radius:4px;font-family:var(--font-mono);font-size:0.85em;">⌘K</kbd> o <kbd style="background:rgba(255,255,255,0.15);padding:0.1rem 0.4rem;border-radius:4px;font-family:var(--font-mono);font-size:0.85em;">Ctrl+K</kbd> para abrir el buscador.</p>
+  </header>
+
+  <!-- ============================================================
+       OPCIÓN A · Top bar NAP + main bar
+       ============================================================ -->
+  <section class="demo-section">
+    <div class="demo-label">
+      <span class="demo-label__letter">A</span>
+      <div>
+        <h2>Top bar NAP + main bar</h2>
+        <p>Banda fina con info NAP siempre visible (Tarragona · teléfono · horario) + pill de estado "Aceptando proyectos". Refuerza SEO local y confianza.</p>
+      </div>
+    </div>
+    <div class="demo-frame">
+      <header class="dh-a">
+        <div class="dh-a__topbar">
+          <div class="dh-a__topbar-inner">
+            <div class="dh-a__topbar-info">
+              <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Segur de Calafell · Tarragona
+              </span>
+              <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.95.37 1.88.72 2.78a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.11-.45c.9.35 1.83.59 2.78.72A2 2 0 0 1 22 16.92z"/></svg>
+                +34 624 34 49 17
+              </span>
+              <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Lun–Dom · 7:00–24:00
+              </span>
+            </div>
+            <div class="dh-a__topbar-spacer"></div>
+            <span class="dh-a__status">Aceptando proyectos</span>
+          </div>
+        </div>
+        <div class="dh-a__main">
+          <div class="dh-a__main-inner">
+            <a class="logo" href="#A">
+              <svg class="logo__mark" viewBox="0 0 32 32" fill="none">
+                <path d="M22 8c-2-3-6-4-10-3-4 1-7 4-7 8 0 5 4 8 9 8 3 0 5-1 6-2" stroke="#FF7A4D" stroke-width="3" stroke-linecap="round" fill="none"/>
+                <circle cx="22" cy="22" r="2" fill="#FF7A4D"/>
+              </svg>
+              Sincronia
+            </a>
+            <nav class="dh-a__nav">
+              <ul class="dh-a__nav-list">
+                <li><a class="dh-a__nav-link" href="#A">Inicio</a></li>
+                <li><a class="dh-a__nav-link" href="#A">Servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a></li>
+                <li><a class="dh-a__nav-link" href="#A">Productos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a></li>
+                <li><a class="dh-a__nav-link" href="#A">Sobre nosotros</a></li>
+                <li><a class="dh-a__nav-link" href="#A">Contacto</a></li>
+              </ul>
+            </nav>
+            <div class="dh-a__actions">
+              <span class="dh-a__lang">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1rem;height:1rem;"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                ES
+              </span>
+              <a class="btn btn--primary" href="#A">Pide presupuesto</a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="demo-context">
+        <span class="demo-context__eyebrow">Servicios</span>
+        <h3>Lo que hacemos por tu negocio</h3>
+        <p>Cinco servicios técnicos con la misma profundidad. Elige el que necesitas, o combina varios.</p>
+      </div>
+      <div class="demo-note"><strong>Clave:</strong> el NAP siempre visible refuerza SEO local y transmite "agencia real con oficina y horario". El pill de estado con pulso verde es sutil pero comunica "estamos disponibles".</div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       OPCIÓN B · Cmd+K command palette
+       ============================================================ -->
+  <section class="demo-section">
+    <div class="demo-label">
+      <span class="demo-label__letter">B</span>
+      <div>
+        <h2>Cmd+K command palette</h2>
+        <p>Header normal + botón "Buscar ⌘K" antes del CTA. Pulsa el shortcut (o click) y se abre un command palette tipo Linear/Vercel con búsqueda fuzzy. Tech-vibe, demuestra que vives la web moderna.</p>
+      </div>
+    </div>
+    <div class="demo-frame">
+      <header class="dh-b">
+        <div class="dh-b__inner">
+          <a class="logo" href="#B">
+            <svg class="logo__mark" viewBox="0 0 32 32" fill="none">
+              <path d="M22 8c-2-3-6-4-10-3-4 1-7 4-7 8 0 5 4 8 9 8 3 0 5-1 6-2" stroke="#FF7A4D" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <circle cx="22" cy="22" r="2" fill="#FF7A4D"/>
+            </svg>
+            Sincronia
+          </a>
+          <nav class="dh-b__nav">
+            <ul class="dh-b__nav-list">
+              <li><a class="dh-b__nav-link" href="#B">Inicio</a></li>
+              <li><a class="dh-b__nav-link" href="#B">Servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a></li>
+              <li><a class="dh-b__nav-link" href="#B">Productos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a></li>
+              <li><a class="dh-b__nav-link" href="#B">Sobre nosotros</a></li>
+              <li><a class="dh-b__nav-link" href="#B">Contacto</a></li>
+            </ul>
+          </nav>
+          <div class="dh-b__actions">
+            <button type="button" class="dh-b__search" data-dh-cp-open="b">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <span class="dh-b__search-label">Buscar servicios, productos…</span>
+              <span class="dh-b__kbd"><kbd>⌘</kbd><kbd>K</kbd></span>
+            </button>
+            <span class="dh-b__lang">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1rem;height:1rem;"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              ES
+            </span>
+            <a class="btn btn--primary" href="#B">Pide presupuesto</a>
+          </div>
+        </div>
+      </header>
+      <div class="demo-context">
+        <span class="demo-context__eyebrow">Servicios</span>
+        <h3>Lo que hacemos por tu negocio</h3>
+        <p>Pulsa el botón "Buscar… ⌘K" del header o el atajo de teclado para abrir el command palette. Busca "desarrollo" para ver resultados en tiempo real.</p>
+      </div>
+      <div class="demo-note"><strong>Probar:</strong> click en el botón "Buscar servicios, productos…" del header, o pulsa <kbd style="font-family:var(--font-mono);background:var(--c-coral-50);padding:0.05rem 0.3rem;border-radius:3px;">⌘K</kbd> / <kbd style="font-family:var(--font-mono);background:var(--c-coral-50);padding:0.05rem 0.3rem;border-radius:3px;">Ctrl+K</kbd>. Navega con ↑↓ y Enter.</div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       OPCIÓN C · Floating dock + marquee
+       ============================================================ -->
+  <section class="demo-section">
+    <div class="demo-label">
+      <span class="demo-label__letter">C</span>
+      <div>
+        <h2>Floating dock + marquee de servicios</h2>
+        <p>Header flotante con border-radius (estilo macOS), separado del top. Bajo el header, una banda fina con marquee horizontal continuo de servicios. Más motion, más premium, menos info.</p>
+      </div>
+    </div>
+    <div class="demo-frame">
+      <div class="dh-c">
+        <div class="dh-c__dock">
+          <a class="logo" href="#C">
+            <svg class="logo__mark" viewBox="0 0 32 32" fill="none">
+              <path d="M22 8c-2-3-6-4-10-3-4 1-7 4-7 8 0 5 4 8 9 8 3 0 5-1 6-2" stroke="#FF7A4D" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <circle cx="22" cy="22" r="2" fill="#FF7A4D"/>
+            </svg>
+            Sincronia
+          </a>
+          <nav class="dh-c__nav">
+            <ul class="dh-c__nav-list">
+              <li><a class="dh-c__nav-link" href="#C">Inicio</a></li>
+              <li><a class="dh-c__nav-link" href="#C">Servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a></li>
+              <li><a class="dh-c__nav-link" href="#C">Productos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a></li>
+              <li><a class="dh-c__nav-link" href="#C">Sobre nosotros</a></li>
+              <li><a class="dh-c__nav-link" href="#C">Contacto</a></li>
+            </ul>
+          </nav>
+          <div class="dh-c__actions">
+            <span class="dh-c__lang">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1rem;height:1rem;"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              ES
+            </span>
+            <a class="btn btn--primary dh-c__cta" href="#C">Pide presupuesto</a>
+          </div>
+        </div>
+        <div class="dh-c__marquee" aria-hidden="true">
+          <div class="dh-c__marquee-track">
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Mantenimiento WP</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Desarrollo WordPress</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>Aplicaciones web</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>SEO</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg>Hosting</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Simplifica CRM</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Strata CMS</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <!-- duplicate for seamless loop -->
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Mantenimiento WP</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Desarrollo WordPress</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>Aplicaciones web</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>SEO</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg>Hosting</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Simplifica CRM</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+            <span class="dh-c__marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Strata CMS</span>
+            <span class="dh-c__marquee-item dh-c__marquee-item--accent">·</span>
+          </div>
+        </div>
+      </div>
+      <div class="demo-context">
+        <span class="demo-context__eyebrow">Servicios</span>
+        <h3>Lo que hacemos por tu negocio</h3>
+        <p>El header flotante con border-radius da sensación "premium app". El marquee de servicios añade motion continuo y comunica de un vistazo todo lo que haces.</p>
+      </div>
+      <div class="demo-note"><strong>Clave:</strong> el dock con <code style="font-family:var(--font-mono);background:var(--c-coral-50);padding:0.05rem 0.3rem;border-radius:3px;">border-radius:9999px</code> y sombra fuerte es el patrón que usa Linear, Vercel, Arc. El marquee duplica el contenido para hacer loop infinito sin corte visible.</div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       OPCIÓN D · Mix A+B
+       ============================================================ -->
+  <section class="demo-section">
+    <div class="demo-label">
+      <span class="demo-label__letter">D</span>
+      <div>
+        <h2>Mix A + B (NAP + Cmd+K)</h2>
+        <p>Lo mejor de los dos mundos: top bar con NAP + status pill, y el command palette integrado en el main bar. Más denso en info y funcionalidad. Para una agencia que quiere transmitir todo a la vez.</p>
+      </div>
+    </div>
+    <div class="demo-frame">
+      <header class="dh-d">
+        <div class="dh-d__topbar">
+          <div class="dh-d__topbar-inner">
+            <div class="dh-d__topbar-info">
+              <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Segur de Calafell · Tarragona
+              </span>
+              <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.95.37 1.88.72 2.78a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.11-.45c.9.35 1.83.59 2.78.72A2 2 0 0 1 22 16.92z"/></svg>
+                +34 624 34 49 17
+              </span>
+              <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Lun–Dom · 7:00–24:00
+              </span>
+            </div>
+            <div class="dh-d__topbar-spacer"></div>
+            <span class="dh-d__status">Aceptando proyectos</span>
+          </div>
+        </div>
+        <div class="dh-d__main">
+          <div class="dh-d__main-inner">
+            <a class="logo" href="#D">
+              <svg class="logo__mark" viewBox="0 0 32 32" fill="none">
+                <path d="M22 8c-2-3-6-4-10-3-4 1-7 4-7 8 0 5 4 8 9 8 3 0 5-1 6-2" stroke="#FF7A4D" stroke-width="3" stroke-linecap="round" fill="none"/>
+                <circle cx="22" cy="22" r="2" fill="#FF7A4D"/>
+              </svg>
+              Sincronia
+            </a>
+            <nav class="dh-d__nav">
+              <ul class="dh-d__nav-list">
+                <li><a class="dh-d__nav-link" href="#D">Inicio</a></li>
+                <li><a class="dh-d__nav-link" href="#D">Servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a></li>
+                <li><a class="dh-d__nav-link" href="#D">Productos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a></li>
+                <li><a class="dh-d__nav-link" href="#D">Sobre nosotros</a></li>
+                <li><a class="dh-d__nav-link" href="#D">Contacto</a></li>
+              </ul>
+            </nav>
+            <div class="dh-d__actions">
+              <button type="button" class="dh-d__search" data-dh-cp-open="d">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <span class="dh-d__search-label">Buscar…</span>
+                <span class="dh-d__kbd"><kbd>⌘</kbd><kbd>K</kbd></span>
+              </button>
+              <span class="dh-d__lang">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1rem;height:1rem;"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                ES
+              </span>
+              <a class="btn btn--primary" href="#D">Pide presupuesto</a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="demo-context">
+        <span class="demo-context__eyebrow">Servicios</span>
+        <h3>Lo que hacemos por tu negocio</h3>
+        <p>Toda la info de la agencia arriba + búsqueda global con atajo de teclado. Es la versión "todo incluido" del header — funciona bien si quieres transmitir densidad sin perder orden.</p>
+      </div>
+      <div class="demo-note"><strong>Probar:</strong> click en "Buscar… ⌘K" o pulsa <kbd style="font-family:var(--font-mono);background:var(--c-coral-50);padding:0.05rem 0.3rem;border-radius:3px;">⌘K</kbd>. Más denso visualmente, pero cada elemento tiene su sitio.</div>
+    </div>
+  </section>
+
+  <!-- Command palette overlay (compartido para B y D) -->
+  <div class="dh-cp-overlay" id="dhCpOverlay" role="dialog" aria-modal="true" aria-label="Buscar">
+    <div class="dh-cp">
+      <div class="dh-cp__input-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" class="dh-cp__input" id="dhCpInput" placeholder="Buscar servicios, productos, municipios…" autocomplete="off" />
+        <span class="dh-cp__esc">esc</span>
+      </div>
+      <div class="dh-cp__results" id="dhCpResults">
+        <div class="dh-cp__group-label">Servicios</div>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Mantenimiento WordPress</div>
+            <div class="dh-cp__item-desc">Tu web actualizada, segura, rápida y monitorizada 24/7 · desde 39€/mes</div>
+          </div>
+          <span class="dh-cp__item-kbd">39€/mes</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Desarrollo WordPress</div>
+            <div class="dh-cp__item-desc">Webs a medida: desde landings hasta e-commerce completo · desde 890€</div>
+          </div>
+          <span class="dh-cp__item-kbd">890€</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Aplicaciones web</div>
+            <div class="dh-cp__item-desc">SPAs, dashboards y plataformas SaaS con Angular, React o Vue · desde 1.490€</div>
+          </div>
+          <span class="dh-cp__item-kbd">1.490€</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Posicionamiento SEO</div>
+            <div class="dh-cp__item-desc">Auditoría técnica, SEO on-page y estrategia de contenidos · desde 290€/mes</div>
+          </div>
+          <span class="dh-cp__item-kbd">290€/mes</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Hosting</div>
+            <div class="dh-cp__item-desc">Infraestructura gestionada en Cloudflare con backups diarios · desde 19€/mes</div>
+          </div>
+          <span class="dh-cp__item-kbd">19€/mes</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+        <div class="dh-cp__group-label">Productos</div>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon" style="background:var(--c-navy-50);color:var(--c-navy-800);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Simplifica · CRM en beta</div>
+            <div class="dh-cp__item-desc">Gestión de clientes, agenda y presupuestos en un solo sitio · desde 9€/mes</div>
+          </div>
+          <span class="dh-cp__item-kbd">9€/mes</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon" style="background:var(--c-navy-50);color:var(--c-navy-800);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Strata · CMS en beta</div>
+            <div class="dh-cp__item-desc">CMS headless para contenido estructurado en español y catalán · desde 19€/mes</div>
+          </div>
+          <span class="dh-cp__item-kbd">19€/mes</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+        <div class="dh-cp__group-label">Municipios</div>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon" style="background:var(--c-bg-alt);color:var(--c-coral-700);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Servicios web en Tarragona</div>
+            <div class="dh-cp__item-desc">Hub local · SEO on-page y desarrollo a medida</div>
+          </div>
+          <span class="dh-cp__item-kbd">→</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon" style="background:var(--c-bg-alt);color:var(--c-coral-700);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Servicios web en Reus</div>
+            <div class="dh-cp__item-desc">Hub local · SEO on-page y desarrollo a medida</div>
+          </div>
+          <span class="dh-cp__item-kbd">→</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+        <a class="dh-cp__item" href="#">
+          <span class="dh-cp__item-icon" style="background:var(--c-bg-alt);color:var(--c-coral-700);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div class="dh-cp__item-body">
+            <div class="dh-cp__item-title">Servicios web en El Vendrell</div>
+            <div class="dh-cp__item-desc">Hub local · SEO on-page y desarrollo a medida</div>
+          </div>
+          <span class="dh-cp__item-kbd">→</span>
+          <span class="dh-cp__item-arrow">↵</span>
+        </a>
+      </div>
+      <div class="dh-cp__footer">
+        <span class="dh-cp__footer-hint"><kbd>↑</kbd><kbd>↓</kbd> navegar</span>
+        <span class="dh-cp__footer-hint"><kbd>↵</kbd> abrir</span>
+        <span class="dh-cp__footer-hint"><kbd>esc</kbd> cerrar</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const overlay = document.getElementById('dhCpOverlay');
+      const input = document.getElementById('dhCpInput');
+      const results = document.getElementById('dhCpResults');
+      const allItems = Array.from(results.querySelectorAll('.dh-cp__item'));
+      const allGroups = Array.from(results.querySelectorAll('.dh-cp__group-label'));
+      let activeIdx = 0;
+
+      const open = () => {
+        overlay.classList.add('is-open');
+        setTimeout(() => input.focus(), 30);
+        document.body.style.overflow = 'hidden';
+        filter('');
+        activeIdx = 0;
+        updateActive();
+      };
+      const close = () => {
+        overlay.classList.remove('is-open');
+        input.value = '';
+        document.body.style.overflow = '';
+        allItems.forEach(i => i.style.display = '');
+        allGroups.forEach(g => g.style.display = '');
+      };
+
+      const filter = (q) => {
+        q = q.trim().toLowerCase();
+        let visibleCount = 0;
+        allItems.forEach(item => {
+          const text = item.textContent.toLowerCase();
+          const match = !q || text.includes(q);
+          item.style.display = match ? 'flex' : 'none';
+          if (match) visibleCount++;
+        });
+        // Ocultar labels de grupo si todos sus items están ocultos
+        allGroups.forEach(g => {
+          let next = g.nextElementSibling;
+          let hasVisible = false;
+          while (next && !next.classList.contains('dh-cp__group-label')) {
+            if (next.classList.contains('dh-cp__item') && next.style.display !== 'none') {
+              hasVisible = true; break;
+            }
+            next = next.nextElementSibling;
+          }
+          g.style.display = hasVisible ? '' : 'none';
+        });
+        activeIdx = 0;
+        updateActive();
+      };
+
+      const updateActive = () => {
+        const visible = allItems.filter(i => i.style.display !== 'none');
+        if (visible.length === 0) return;
+        activeIdx = Math.max(0, Math.min(activeIdx, visible.length - 1));
+        visible.forEach((el, i) => el.classList.toggle('is-active', i === activeIdx));
+        visible[activeIdx]?.scrollIntoView({ block: 'nearest' });
+      };
+
+      document.querySelectorAll('[data-dh-cp-open]').forEach(btn => {
+        btn.addEventListener('click', open);
+      });
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          if (overlay.classList.contains('is-open')) close();
+          else open();
+        } else if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+          close();
+        } else if (overlay.classList.contains('is-open')) {
+          if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx++; updateActive(); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx--; updateActive(); }
+          else if (e.key === 'Enter') {
+            e.preventDefault();
+            const visible = allItems.filter(i => i.style.display !== 'none');
+            visible[activeIdx]?.click();
+          }
+        }
+      });
+      input.addEventListener('input', (e) => filter(e.target.value));
+    })();
+  </script>
+</body>
+</html>
