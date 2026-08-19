@@ -2,7 +2,6 @@
 import Logo from '~/components/Logo.astro';
 import LangSwitcher from '~/components/LangSwitcher.astro';
 import MegaMenu from '~/components/MegaMenu.astro';
-import Button from '~/components/Button.astro';
 import { t, type UIKey } from '~/i18n/ui';
 import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
 import type { Locale } from '~/i18n/locales';
@@ -107,9 +106,9 @@ const isActive = (item: NavItem): boolean => {
 
       <div class="site-header__actions">
         <LangSwitcher />
-        <Button href={localizePath('/contacto', locale)} variant="primary" className="main-cta">
+        <a href={localizePath('/contacto', locale)} class="btn btn--primary main-cta">
           {t(locale, 'cta.quote')}
-        </Button>
+        </a>
       </div>
 
       <button class="site-header__toggle" type="button" aria-label="Abrir menú" data-nav-toggle>

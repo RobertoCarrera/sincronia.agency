@@ -1,6 +1,5 @@
 ---
 import Base from '~/layouts/Base.astro';
-import Button from '~/components/Button.astro';
 import { getLocaleFromUrl } from '~/lib/i18n';
 import { localizePath } from '~/lib/i18n';
 
@@ -18,7 +17,7 @@ const m = messages[locale];
       <p class="error-page__code">404</p>
       <h1 class="error-page__title">{m.title}</h1>
       <p class="error-page__desc">{m.desc}</p>
-      <Button href={localizePath('/', locale)} variant="primary" size="lg">{m.cta}</Button>
+      <a href={localizePath('/', locale)} class="btn btn--primary btn--lg">{m.cta}</a>
     </div>
   </section>
 </Base>
