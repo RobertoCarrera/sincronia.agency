@@ -29,3 +29,6 @@ build-stderr.txt
 build-stdout.txt
 stdout.txt
 stderr.txt
+
+# dev server log captures
+.dev-*.log

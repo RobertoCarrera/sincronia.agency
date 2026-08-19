@@ -3,6 +3,7 @@ import { services } from '~/data/services';
 import { t } from '~/i18n/ui';
 import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
 import { getServiceIcon } from '~/lib/icons';
+import BorderGlow from '~/components/BorderGlow.astro';
 
 interface Props {
   slug: string;
@@ -17,7 +18,16 @@ const priceLabel = meta
   ? `${t(locale, 'common.from')} ${meta.priceFrom}€${meta.priceUnit === 'mes' ? t(locale, 'common.month') : ''}`
   : '';
 ---
-<a href={localizePath(`/servicios/${slug}`, locale)} class="service-card">
+<BorderGlow
+  href={localizePath(`/servicios/${slug}`, locale)}
+  className="service-card"
+  backgroundColor="#ffffff"
+  borderRadius={16}
+  glowColor="14 80 60"
+  glowRadius={24}
+  fillOpacity={0.35}
+  colors={['#1B3A6B', '#FF7A4D', '#FFE0D2']}
+>
   <span class="icon-box icon-box--coral" aria-hidden="true">
     <svg class="icon icon--lg" viewBox="0 0 24 24" set:html={getServiceIcon(icon)} />
   </span>
@@ -30,26 +40,25 @@ const priceLabel = meta
       <path d="M5 12h14m-7-7 7 7-7 7"></path>
     </svg>
   </span>
-</a>
+</BorderGlow>
 <style>
-  .service-card {
+  /* El wrapper <a> lleva .service-card + .border-glow-card.
+     El padding y el hover van en el .border-glow-inner (que está
+     dentro del wrapper) para no chocar con los pseudo-elementos
+     del glow que usan inset:0 sobre el padding-box. */
+  .service-card :global(.border-glow-inner) {
     display: flex;
     flex-direction: column;
     gap: var(--s-3);
     padding: var(--s-6);
-    background: #fff;
-    border: 1px solid var(--c-line);
-    border-radius: var(--r-lg);
     color: var(--c-text);
-    transition: all 0.2s ease;
     height: 100%;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .service-card:hover {
-    border-color: var(--c-navy-800);
+  .service-card:hover :global(.border-glow-inner) {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    color: var(--c-text);
   }
+
   .service-card__title { color: var(--c-ink); font-size: 1.25rem; margin: 0; }
   .service-card__desc { color: var(--c-muted); font-size: 0.9375rem; line-height: 1.6; flex: 1; }
   .service-card__price {

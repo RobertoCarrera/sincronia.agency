@@ -1,6 +1,7 @@
 ---
 import { t } from '~/i18n/ui';
 import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
+import BorderGlow from '~/components/BorderGlow.astro';
 
 interface Props {
   slug: string;
@@ -15,8 +16,24 @@ interface Props {
 }
 const { slug, name, tagline, description, status, priceFrom, priceUnit, icon, accent = 'coral' } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
+
+// Background del card según accent — el mesh gradient se ajusta a contraste
+const cardBg = accent === 'coral' ? '#ffffff' : '#0E2347';
+const glowHsl = accent === 'coral' ? '14 80 60' : '215 70 55';
+const meshColors = accent === 'coral'
+  ? ['#1B3A6B', '#FF7A4D', '#FFE0D2']   // navy + coral + coral-light (sobre fondo claro)
+  : ['#FF7A4D', '#5FE39A', '#284F8E'];  // coral + verde pulse + navy-700 (sobre fondo oscuro)
 ---
-<a href={localizePath(`/productos/${slug}`, locale)} class:list={['product-card', `product-card--${accent}`]}>
+<BorderGlow
+  href={localizePath(`/productos/${slug}`, locale)}
+  className={`product-card product-card--${accent}`}
+  backgroundColor={cardBg}
+  borderRadius={16}
+  glowColor={glowHsl}
+  glowRadius={28}
+  fillOpacity={accent === 'coral' ? 0.35 : 0.5}
+  colors={meshColors}
+>
   <div class="product-card__header">
     <span class="icon-box" aria-hidden="true">
       <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true">
@@ -42,25 +59,32 @@ const locale = getLocaleFromUrl(Astro.url);
       </svg>
     </span>
   </div>
-</a>
+</BorderGlow>
+
 <style>
-  .product-card {
+  .product-card :global(.border-glow-inner) {
     display: flex;
     flex-direction: column;
     gap: var(--s-3);
     padding: var(--s-6);
-    background: #fff;
-    border: 1px solid var(--c-line);
-    border-radius: var(--r-lg);
     color: var(--c-text);
-    transition: all 0.2s ease;
     height: 100%;
-    position: relative;
-    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .product-card--coral { background: linear-gradient(180deg, var(--c-coral-50) 0%, #fff 30%); }
-  .product-card--navy { background: linear-gradient(180deg, var(--c-navy-50) 0%, #fff 30%); }
-  .product-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); color: var(--c-text); border-color: var(--c-navy-800); }
+  .product-card:hover :global(.border-glow-inner) {
+    transform: translateY(-2px);
+  }
+
+  .product-card--navy :global(.border-glow-inner) { color: rgba(255,255,255,0.85); }
+  .product-card--navy .product-card__name { color: #fff; }
+  .product-card--navy .product-card__tagline { color: var(--c-coral-500); }
+  .product-card--navy .product-card__desc { color: rgba(255,255,255,0.7); }
+  .product-card--navy .product-card__footer { border-top-color: rgba(255,255,255,0.1); }
+  .product-card--navy .product-card__price-from { color: rgba(255,255,255,0.55); }
+  .product-card--navy .product-card__price-amount { color: #fff; }
+  .product-card--navy .product-card__price-unit { color: rgba(255,255,255,0.55); }
+  .product-card--navy .product-card__cta { color: var(--c-coral-500); }
+
   .product-card__header { display: flex; align-items: center; justify-content: space-between; }
   .product-card__badge {
     font-family: var(--font-mono);
