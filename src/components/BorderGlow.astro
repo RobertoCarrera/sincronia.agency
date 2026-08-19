@@ -37,6 +37,8 @@ interface Props {
   colors?: string[];
   /** Opacidad del mesh gradient de relleno (0-1). Default 0.5. */
   fillOpacity?: number;
+  /** Si true, renderiza el outer glow (.edge-light) además del border mesh. Default true. */
+  outerGlow?: boolean;
   /** href → renderiza <a> en lugar de <div>. */
   href?: string;
   /** className extra que se añade al border-glow-card. */
@@ -45,15 +47,16 @@ interface Props {
 
 const {
   edgeSensitivity = 30,
-  glowColor = '14 80 60', // coral Sincronia
-  backgroundColor = '#0E2347', // navy-900 Sincronia
+  glowColor = '14 80 60',
+  backgroundColor = '#0E2347',
   borderRadius = 16,
   glowRadius = 30,
   glowIntensity = 1.0,
   coneSpread = 25,
   animated = false,
-  colors = ['#0E2347', '#FF7A4D', '#284F8E'], // navy-900, coral-500, navy-700
+  colors = ['#0E2347', '#FF7A4D', '#284F8E'],
   fillOpacity = 0.5,
+  outerGlow = true,
   href,
   className = '',
 } = Astro.props;
@@ -77,13 +80,13 @@ const extraAttrs = href ? { href } : {};
 ---
 
 <Tag
-  class:list={['border-glow-card', className]}
+  class:list={['border-glow-card', className, outerGlow ? null : 'border-glow-card--no-outer']}
   style={styleVars}
   data-border-glow
   data-animated={animated ? '' : undefined}
   {...extraAttrs}
 >
-  <span class="edge-light" aria-hidden="true"></span>
+  {outerGlow && <span class="edge-light" aria-hidden="true"></span>}
   <div class="border-glow-inner">
     <slot />
   </div>
@@ -183,6 +186,9 @@ const extraAttrs = href ? { href } : {};
   }
 
   /* outer glow layer */
+  /* Outer glow — solo se aplica si el wrapper no tiene la clase --no-outer.
+     En ese caso el template ni renderiza el <span>, así que la regla no
+     tiene efecto, pero la dejamos por seguridad. */
   .border-glow-card > .edge-light {
     inset: calc(var(--glow-padding) * -1);
     pointer-events: none;
@@ -194,7 +200,6 @@ const extraAttrs = href ? { href } : {};
       );
 
     opacity: calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
-    mix-blend-mode: plus-lighter;
   }
 
   .border-glow-card > .edge-light::before {

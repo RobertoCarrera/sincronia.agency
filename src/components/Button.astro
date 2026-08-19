@@ -92,9 +92,10 @@ const palette = palettes[variant];
     backgroundColor={palette.bg}
     glowColor={palette.glow}
     borderRadius={size === 'lg' ? 14 : 10}
-    glowRadius={22}
-    edgeSensitivity={45}
-    fillOpacity={0.4}
+    glowRadius={0}
+    edgeSensitivity={55}
+    fillOpacity={0.2}
+    outerGlow={false}
     colors={[...palette.colors]}
   >
     <span class="btn__label"><slot /></span>
@@ -105,9 +106,10 @@ const palette = palettes[variant];
     backgroundColor={palette.bg}
     glowColor={palette.glow}
     borderRadius={size === 'lg' ? 14 : 10}
-    glowRadius={22}
-    edgeSensitivity={45}
-    fillOpacity={0.4}
+    glowRadius={0}
+    edgeSensitivity={55}
+    fillOpacity={0.2}
+    outerGlow={false}
     colors={[...palette.colors]}
   >
     <button class={innerClasses} type={type ?? 'button'} aria-label={ariaLabel} disabled={disabled}>
