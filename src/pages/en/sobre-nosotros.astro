@@ -1,0 +1,82 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import CTA from '~/components/CTA.astro';
+import { localizePath } from '~/lib/i18n';
+import { t } from '~/i18n/ui';
+
+const content = {
+  hero: { eyebrow: 'About us', title: 'A technical agency from Tarragona', subtitle: 'Since 2017 building websites and applications for businesses across the province. A small team, but with technical judgement and zero bullshit.' },
+  intro: { title: 'Who we are', body: 'Sincronia Agency was born in 2017 in Segur de Calafell, after years of freelancing for clients who needed more than a WordPress with their logo. Today we are a small but diverse team, focused on WordPress and Angular, local SEO and our own products: Simplifica (multi-sector CRM in beta) and Strata (AI-powered CMS in beta).' },
+  stats: [
+    { num: '+50', label: 'Websites and apps launched' },
+    { num: '8', label: 'Years of experience' },
+    { num: '15', label: 'Tarragona municipalities covered' },
+  ],
+  values: {
+    title: 'What we believe in',
+    items: [
+      { title: 'Total transparency', body: 'Fixed budgets, monthly reports without jargon, code another developer can understand. No surprises.' },
+      { title: 'Maintainable code', body: 'WordPress with own theme or robust starter, Angular with clean architecture, automated tests. Your team can continue without us.' },
+      { title: 'Real support', body: 'People with technical judgement, not chatbots. Response SLA, 24/7 monitoring, no unanswered tickets.' },
+    ],
+  },
+  cta: { title: 'Shall we talk?', subtitle: 'Tell us about your project. We reply in under 24 hours.' },
+};
+---
+<Base title="About us · Sincronia Agency" description="Sincronia Agency: technical agency for design, development and SEO in Tarragona since 2017. WordPress, Angular, local SEO and our own products.">
+  <Hero eyebrow={content.hero.eyebrow} title={content.hero.title} subtitle={content.hero.subtitle} />
+
+  <section class="section">
+    <div class="container intro-block">
+      <h2>{content.intro.title}</h2>
+      <p class="lead">{content.intro.body}</p>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <ul class="stats">
+        {content.stats.map((s) => (
+          <li class="stat">
+            <span class="stat__num">{s.num}</span>
+            <span class="stat__label">{s.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="values-heading">
+    <div class="container">
+      <header class="section-header">
+        <h2 id="values-heading">{content.values.title}</h2>
+      </header>
+      <ul class="values-list">
+        {content.values.items.map((v) => (
+          <li class="value-item card">
+            <h3>{v.title}</h3>
+            <p>{v.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTA title={content.cta.title} subtitle={content.cta.subtitle} primaryCta={{ label: t('en', 'cta.contact'), href: localizePath('/contacto', 'en') }} />
+</Base>
+
+<style>
+  .intro-block { max-width: 800px; }
+  .intro-block h2 { margin-bottom: var(--s-4); }
+  .stats { list-style: none; display: grid; grid-template-columns: 1fr; gap: var(--s-6); text-align: center; max-width: 800px; margin: 0 auto; }
+  @media (min-width: 768px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+  .stat { padding: var(--s-6); }
+  .stat__num { display: block; font-family: var(--font-mono); font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 700; color: var(--c-coral-500); line-height: 1; letter-spacing: -0.04em; }
+  .stat__label { display: block; margin-top: var(--s-2); color: var(--c-muted); font-size: 0.9375rem; }
+  .section-header { max-width: 700px; margin-bottom: var(--s-10); text-align: center; margin-inline: auto; }
+  .values-list { list-style: none; display: grid; grid-template-columns: 1fr; gap: var(--s-4); max-width: 1000px; margin: 0 auto; }
+  @media (min-width: 768px) { .values-list { grid-template-columns: repeat(3, 1fr); } }
+  .value-item h3 { font-size: 1.125rem; margin-bottom: var(--s-2); }
+  .value-item p { color: var(--c-muted); font-size: 0.9375rem; }
+</style>

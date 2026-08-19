@@ -1,0 +1,70 @@
+---
+import Base from '~/layouts/Base.astro';
+import { nap } from '~/data/nap';
+
+const lastUpdated = '2026-08-19';
+---
+<Base title="Política de privacitat · Sincronia Agency" description="Política de privacitat de sincronia.agency: com tractem les teves dades personals segons el RGPD.">
+  <article class="legal section">
+    <div class="container">
+      <header class="legal__header">
+        <span class="eyebrow">Legal</span>
+        <h1>Política de privacitat</h1>
+        <p class="legal__updated">Última actualització: {lastUpdated}</p>
+      </header>
+      <div class="legal__content">
+        <h2>1. Responsable del tractament</h2>
+        <p>El responsable del tractament de les dades personals recollides a través d'aquest lloc web és:</p>
+        <ul>
+          <li><strong>Identitat:</strong> {nap.legalName}</li>
+          <li><strong>Adreça:</strong> {nap.street}, {nap.postalCode} {nap.city} ({nap.region}), {nap.country}</li>
+          <li><strong>Correu:</strong> {nap.email}</li>
+        </ul>
+
+        <h2>2. Quines dades personals tractem?</h2>
+        <p>Tractem les següents categories de dades personals:</p>
+        <ul>
+          <li><strong>Dades identificatives:</strong> nom, correu, telèfon, empresa (quan ens els proporciones voluntàriament).</li>
+          <li><strong>Dades de navegació:</strong> adreça IP, tipus de navegador, pàgines visitades, temps al lloc, amb finalitats analítiques.</li>
+        </ul>
+
+        <h2>3. Amb quina finalitat tractem les teves dades?</h2>
+        <ul>
+          <li>Respondre a les consultes enviades a través del formulari de contacte.</li>
+          <li>Prestar els serveis contractats i mantenir la relació comercial.</li>
+          <li>Enviar comunicacions comercials, només si has donat el teu consentiment explícit.</li>
+          <li>Analitzar el trànsit del lloc web per millorar el servei.</li>
+        </ul>
+
+        <h2>4. Legitimació</h2>
+        <p>La base legal per al tractament de les teves dades és el teu consentiment explícit en marcar la casella de privacitat del formulari, o l'execució del contracte quan ja ets client.</p>
+
+        <h2>5. Destinataris</h2>
+        <p>No cedim les teves dades personals a tercers, llevat obligació legal. Alguns proveïdors de serveis (hosting, correu, analítica) poden tractar dades per compte nostre, sempre sota contracte d'encàrrec de tractament.</p>
+
+        <h2>6. Conservació</h2>
+        <p>Conservem les teves dades mentre es mantingui la relació contractual o no en sol·licitis la supressió. Un cop finalitzat el tractament, les dades es conservaran bloquejades durant el termini legal aplicable.</p>
+
+        <h2>7. Els teus drets</h2>
+        <p>Pots exercir en qualsevol moment els drets d'accés, rectificació, supressió, oposició, limitació del tractament i portabilitat. Per fer-ho, escriu-nos a <a href={`mailto:${nap.email}`}>{nap.email}</a>.</p>
+        <p>Si consideres que els teus drets no s'han atès adequadament, pots presentar una reclamació davant l'Agència Espanyola de Protecció de Dades (www.aepd.es).</p>
+
+        <h2>8. Seguretat</h2>
+        <p>Apliquem mesures tècniques i organitzatives adequades per protegir les teves dades personals. Tota la informació es transmet xifrada mitjançant HTTPS.</p>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal__header { text-align: center; max-width: 700px; margin: 0 auto var(--s-10); }
+  .legal__header .eyebrow { display: inline-block; }
+  .legal__updated { color: var(--c-muted); font-size: 0.875rem; margin-top: var(--s-2); }
+  .legal__content { max-width: 800px; margin: 0 auto; }
+  .legal__content h2 { font-size: 1.25rem; margin-top: var(--s-8); margin-bottom: var(--s-3); color: var(--c-ink); }
+  .legal__content h2:first-child { margin-top: 0; }
+  .legal__content p, .legal__content ul { color: var(--c-text); line-height: 1.7; margin-bottom: var(--s-3); }
+  .legal__content ul { padding-left: var(--s-5); }
+  .legal__content li { margin-bottom: 0.4rem; }
+  .legal__content a { color: var(--c-coral-700); text-decoration: underline; }
+</style>

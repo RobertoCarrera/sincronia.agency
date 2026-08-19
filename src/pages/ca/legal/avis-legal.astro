@@ -1,0 +1,56 @@
+---
+import Base from '~/layouts/Base.astro';
+import { nap } from '~/data/nap';
+
+const lastUpdated = '2026-08-19';
+---
+<Base title="Avís legal · Sincronia Agency" description="Avís legal i condicions d'ús de sincronia.agency, d'acord amb la LSSI i el RGPD.">
+  <article class="legal section">
+    <div class="container">
+      <header class="legal__header">
+        <span class="eyebrow">Legal</span>
+        <h1>Avís legal</h1>
+        <p class="legal__updated">Última actualització: {lastUpdated}</p>
+      </header>
+      <div class="legal__content">
+        <h2>1. Dades identificatives del titular</h2>
+        <p>En compliment de l'article 10 de la Llei 34/2002, d'11 de juliol, de Serveis de la Societat de la Informació i de Comerç Electrònic (LSSI), s'informa l'usuari que el lloc web sincronia.agency és titularitat de:</p>
+        <ul>
+          <li><strong>Denominació:</strong> {nap.legalName}</li>
+          <li><strong>Adreça:</strong> {nap.street}, {nap.postalCode} {nap.city} ({nap.region}), {nap.country}</li>
+          <li><strong>Telèfon:</strong> {nap.phoneDisplay}</li>
+          <li><strong>Correu:</strong> {nap.email}</li>
+        </ul>
+
+        <h2>2. Objecte i àmbit d'aplicació</h2>
+        <p>El present avís legal regula l'ús del lloc web sincronia.agency, del qual és titular {nap.legalName}. La navegació pel lloc web atribueix la condició d'usuari del mateix i comporta l'acceptació plena i sense reserves de totes les disposicions incloses en aquest avís legal.</p>
+
+        <h2>3. Propietat intel·lectual i industrial</h2>
+        <p>Tots els continguts del lloc web, incloent, a títol enunciatiu però no limitatiu, textos, fotografies, gràfics, imatges, icones, tecnologia, programari, així com el seu disseny gràfic i codis font, són propietat de {nap.legalName} o dels tercers que han cedit els seus drets, i estan protegits per la legislació nacional i internacional en matèria de propietat intel·lectual i industrial.</p>
+
+        <h2>4. Règim de responsabilitat</h2>
+        <p>El titular no garanteix la disponibilitat ininterrompuda ni el funcionament correcte del lloc web, i en particular no serà responsable dels danys o perjudicis derivats de:</p>
+        <ul>
+          <li>La impossibilitat d'accés al lloc web o la manca de veracitat, exactitud, exhaustivitat i/o actualitat dels continguts.</li>
+          <li>La presència de virus o qualsevol altre element que pugui produir alteracions en els sistemes informàtics de l'usuari.</li>
+          <li>L'ús que l'usuari faci del lloc web o dels continguts inclosos en el mateix.</li>
+        </ul>
+
+        <h2>5. Llei aplicable i jurisdicció</h2>
+        <p>Les presents condicions es regeixen per la legislació espanyola. Per a la resolució de les controversies que poguessin derivar-se de la interpretació o aplicació de les mateixes, les parts se sotmeten als Jutjats i Tribunals de la ciutat de Tarragona.</p>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal__header { text-align: center; max-width: 700px; margin: 0 auto var(--s-10); }
+  .legal__header .eyebrow { display: inline-block; }
+  .legal__updated { color: var(--c-muted); font-size: 0.875rem; margin-top: var(--s-2); }
+  .legal__content { max-width: 800px; margin: 0 auto; }
+  .legal__content h2 { font-size: 1.25rem; margin-top: var(--s-8); margin-bottom: var(--s-3); color: var(--c-ink); }
+  .legal__content h2:first-child { margin-top: 0; }
+  .legal__content p, .legal__content ul { color: var(--c-text); line-height: 1.7; margin-bottom: var(--s-3); }
+  .legal__content ul { padding-left: var(--s-5); }
+  .legal__content li { margin-bottom: 0.4rem; }
+</style>

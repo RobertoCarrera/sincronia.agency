@@ -1,0 +1,63 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import CTA from '~/components/CTA.astro';
+import FAQ from '~/components/FAQ.astro';
+import { strata } from '~/content/products/strata';
+import { t } from '~/i18n/ui';
+import { localizePath } from '~/lib/i18n';
+
+const c = strata.en;
+---
+<Base title={c.meta.title} description={c.meta.description}>
+  <Hero eyebrow={c.hero.eyebrow} title={c.hero.title} subtitle={c.hero.subtitle} />
+  <section class="section">
+    <div class="container intro-block">
+      <h2>{c.intro.title}</h2>
+      {c.intro.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+  <section class="section section--alt" aria-labelledby="features-heading">
+    <div class="container">
+      <header class="section-header">
+        <h2 id="features-heading">{c.features.title}</h2>
+      </header>
+      <ul class="features-list">
+        {c.features.items.map((item) => (
+          <li class="feature-item">
+            <span class="feature-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="icon icon--lg"><path d="M5 12l4 4L19 7"></path></svg>
+            </span>
+            <div>
+              <h3>{item.title}</h3>
+              <p>{item.desc}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container pricing-block">
+      <h2>{c.pricing.title}</h2>
+      <p class="lead">{c.pricing.body}</p>
+    </div>
+  </section>
+  <FAQ title={c.faq.title} items={c.faq.items} />
+  <CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: t('en', 'cta.demo'), href: localizePath('/contacto', 'en') }} />
+</Base>
+
+<style>
+  .intro-block { max-width: 800px; }
+  .intro-block h2 { margin-bottom: var(--s-5); }
+  .intro-block p + p { margin-top: var(--s-4); }
+  .section-header { max-width: 700px; margin-bottom: var(--s-10); }
+  .features-list { list-style: none; display: grid; grid-template-columns: 1fr; gap: var(--s-5); max-width: 900px; margin: 0 auto; }
+  @media (min-width: 768px) { .features-list { grid-template-columns: repeat(2, 1fr); } }
+  .feature-item { display: flex; gap: var(--s-4); align-items: flex-start; padding: var(--s-5); background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-md); }
+  .feature-item__icon { display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: var(--r-md); background: var(--c-navy-50); color: var(--c-navy-800); flex-shrink: 0; }
+  .feature-item h3 { font-size: 1.0625rem; margin-bottom: 0.4rem; }
+  .feature-item p { font-size: 0.9375rem; color: var(--c-muted); }
+  .pricing-block { max-width: 800px; }
+  .pricing-block h2 { margin-bottom: var(--s-4); }
+</style>

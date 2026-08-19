@@ -1,0 +1,56 @@
+---
+import Base from '~/layouts/Base.astro';
+import { nap } from '~/data/nap';
+
+const lastUpdated = '2026-08-19';
+---
+<Base title="Legal notice · Sincronia Agency" description="Legal notice and terms of use of sincronia.agency, in accordance with the LSSI and GDPR.">
+  <article class="legal section">
+    <div class="container">
+      <header class="legal__header">
+        <span class="eyebrow">Legal</span>
+        <h1>Legal notice</h1>
+        <p class="legal__updated">Last updated: {lastUpdated}</p>
+      </header>
+      <div class="legal__content">
+        <h2>1. Identifying data of the owner</h2>
+        <p>In compliance with article 10 of Law 34/2002, of 11 July, on Information Society Services and Electronic Commerce (LSSI), the user is informed that the website sincronia.agency is owned by:</p>
+        <ul>
+          <li><strong>Name:</strong> {nap.legalName}</li>
+          <li><strong>Address:</strong> {nap.street}, {nap.postalCode} {nap.city} ({nap.region}), {nap.country}</li>
+          <li><strong>Phone:</strong> {nap.phoneDisplay}</li>
+          <li><strong>Email:</strong> {nap.email}</li>
+        </ul>
+
+        <h2>2. Object and scope of application</h2>
+        <p>This legal notice regulates the use of the website sincronia.agency, owned by {nap.legalName}. Browsing the website attributes the condition of user and implies full and unreserved acceptance of all provisions included in this legal notice.</p>
+
+        <h2>3. Intellectual and industrial property</h2>
+        <p>All content on the website, including, but not limited to, texts, photographs, graphics, images, icons, technology, software, as well as its graphic design and source code, are the property of {nap.legalName} or of third parties who have assigned their rights, and are protected by national and international legislation on intellectual and industrial property.</p>
+
+        <h2>4. Liability regime</h2>
+        <p>The owner does not guarantee uninterrupted availability or correct operation of the website, and in particular will not be liable for damages arising from:</p>
+        <ul>
+          <li>The impossibility of accessing the website or the lack of truthfulness, accuracy, completeness and/or timeliness of the content.</li>
+          <li>The presence of viruses or any other element that may cause alterations in the user's computer systems.</li>
+          <li>The use the user makes of the website or the content included in it.</li>
+        </ul>
+
+        <h2>5. Applicable law and jurisdiction</h2>
+        <p>These conditions are governed by Spanish law. For the resolution of any disputes that may arise from their interpretation or application, the parties submit to the Courts and Tribunals of the city of Tarragona.</p>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal__header { text-align: center; max-width: 700px; margin: 0 auto var(--s-10); }
+  .legal__header .eyebrow { display: inline-block; }
+  .legal__updated { color: var(--c-muted); font-size: 0.875rem; margin-top: var(--s-2); }
+  .legal__content { max-width: 800px; margin: 0 auto; }
+  .legal__content h2 { font-size: 1.25rem; margin-top: var(--s-8); margin-bottom: var(--s-3); color: var(--c-ink); }
+  .legal__content h2:first-child { margin-top: 0; }
+  .legal__content p, .legal__content ul { color: var(--c-text); line-height: 1.7; margin-bottom: var(--s-3); }
+  .legal__content ul { padding-left: var(--s-5); }
+  .legal__content li { margin-bottom: 0.4rem; }
+</style>

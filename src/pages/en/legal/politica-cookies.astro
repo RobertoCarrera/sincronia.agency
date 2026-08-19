@@ -1,0 +1,67 @@
+---
+import Base from '~/layouts/Base.astro';
+import { nap } from '~/data/nap';
+
+const lastUpdated = '2026-08-19';
+---
+<Base title="Cookie policy · Sincronia Agency" description="Cookie policy of sincronia.agency: which cookies we use, for what and how to manage them.">
+  <article class="legal section">
+    <div class="container">
+      <header class="legal__header">
+        <span class="eyebrow">Legal</span>
+        <h1>Cookie policy</h1>
+        <p class="legal__updated">Last updated: {lastUpdated}</p>
+      </header>
+      <div class="legal__content">
+        <h2>1. What are cookies?</h2>
+        <p>Cookies are small text files that a website stores on your device when you visit it. They allow the site to remember your actions and preferences for a certain period.</p>
+
+        <h2>2. Which cookies do we use?</h2>
+        <h3>Strictly necessary cookies</h3>
+        <p>Technical cookies that allow the user to navigate the website and use its functions. Without them, the site cannot function properly.</p>
+        <h3>Analytics cookies</h3>
+        <p>Cookies that allow us to measure the number of visitors and analyse how they navigate the site, in order to improve the service. Only activated if you give your consent.</p>
+        <h3>Third-party cookies</h3>
+        <p>The site may embed third-party content (videos, maps, etc.) that may set their own cookies. We have no control over these cookies; consult each provider's policies.</p>
+
+        <h2>3. Specific cookies we use</h2>
+        <table class="cookie-table">
+          <thead><tr><th>Cookie</th><th>Type</th><th>Duration</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>astro-*</td><td>Technical</td><td>Session</td><td>Navigation state and preferences</td></tr>
+            <tr><td>__cf_bm</td><td>Technical</td><td>30 min</td><td>Cloudflare bot protection</td></tr>
+          </tbody>
+        </table>
+
+        <h2>4. How to manage cookies?</h2>
+        <p>You can allow, block or delete cookies installed on your device through your browser's options. If you do not allow the installation of cookies, you may not be able to access some functionalities of the website.</p>
+        <ul>
+          <li><a href="https://support.google.com/chrome/answer/95647" rel="noopener" target="_blank">Chrome</a></li>
+          <li><a href="https://support.mozilla.org/en-US/kb/clear-cookies-and-site-data-firefox" rel="noopener" target="_blank">Firefox</a></li>
+          <li><a href="https://support.apple.com/en-us/guide/safari/manage-cookies-and-website-data-sfri11471/mac" rel="noopener" target="_blank">Safari</a></li>
+          <li><a href="https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge" rel="noopener" target="_blank">Edge</a></li>
+        </ul>
+
+        <h2>5. More information</h2>
+        <p>If you have questions about our cookie policy, email us at <a href={`mailto:${nap.email}`}>{nap.email}</a>.</p>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal__header { text-align: center; max-width: 700px; margin: 0 auto var(--s-10); }
+  .legal__header .eyebrow { display: inline-block; }
+  .legal__updated { color: var(--c-muted); font-size: 0.875rem; margin-top: var(--s-2); }
+  .legal__content { max-width: 800px; margin: 0 auto; }
+  .legal__content h2 { font-size: 1.25rem; margin-top: var(--s-8); margin-bottom: var(--s-3); color: var(--c-ink); }
+  .legal__content h2:first-child { margin-top: 0; }
+  .legal__content h3 { font-size: 1.0625rem; margin-top: var(--s-5); margin-bottom: var(--s-2); color: var(--c-ink); }
+  .legal__content p, .legal__content ul { color: var(--c-text); line-height: 1.7; margin-bottom: var(--s-3); }
+  .legal__content ul { padding-left: var(--s-5); }
+  .legal__content li { margin-bottom: 0.4rem; }
+  .legal__content a { color: var(--c-coral-700); text-decoration: underline; }
+  .cookie-table { width: 100%; border-collapse: collapse; margin: var(--s-4) 0 var(--s-6); font-size: 0.9375rem; }
+  .cookie-table th, .cookie-table td { text-align: left; padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--c-line); }
+  .cookie-table th { background: var(--c-bg-alt); font-weight: 600; color: var(--c-ink); }
+</style>

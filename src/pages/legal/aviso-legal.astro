@@ -1,0 +1,56 @@
+---
+import Base from '~/layouts/Base.astro';
+import { nap } from '~/data/nap';
+
+const lastUpdated = '2026-08-19';
+---
+<Base title="Aviso legal · Sincronia Agency" description="Aviso legal y condiciones de uso de sincronia.agency, conforme a la LSSI y el RGPD.">
+  <article class="legal section">
+    <div class="container">
+      <header class="legal__header">
+        <span class="eyebrow">Legal</span>
+        <h1>Aviso legal</h1>
+        <p class="legal__updated">Última actualización: {lastUpdated}</p>
+      </header>
+      <div class="legal__content">
+        <h2>1. Datos identificativos del titular</h2>
+        <p>En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI), se informa al usuario que el sitio web sincronia.agency es titularidad de:</p>
+        <ul>
+          <li><strong>Denominación:</strong> {nap.legalName}</li>
+          <li><strong>Domicilio:</strong> {nap.street}, {nap.postalCode} {nap.city} ({nap.region}), {nap.country}</li>
+          <li><strong>Teléfono:</strong> {nap.phoneDisplay}</li>
+          <li><strong>Email:</strong> {nap.email}</li>
+        </ul>
+
+        <h2>2. Objeto y ámbito de aplicación</h2>
+        <p>El presente aviso legal regula el uso del sitio web sincronia.agency, del que es titular {nap.legalName}. La navegación por el sitio web atribuye la condición de usuario del mismo y comporta la aceptación plena y sin reservas de todas las disposiciones incluidas en este aviso legal.</p>
+
+        <h2>3. Propiedad intelectual e industrial</h2>
+        <p>Todos los contenidos del sitio web, incluyendo, a título enunciativo pero no limitativo, textos, fotografías, gráficos, imágenes, iconos, tecnología, software, así como su diseño gráfico y códigos fuente, son propiedad de {nap.legalName} o de los terceros que han cedido sus derechos, y están protegidos por la legislación nacional e internacional en materia de propiedad intelectual e industrial.</p>
+
+        <h2>4. Régimen de responsabilidad</h2>
+        <p>El titular no garantiza la disponibilidad ininterrumpida ni el funcionamiento correcto del sitio web, y en particular no será responsable de los daños o perjuicios derivados de:</p>
+        <ul>
+          <li>La imposibilidad de acceso al sitio web o la falta de veracidad, exactitud, exhaustividad y/o actualidad de los contenidos.</li>
+          <li>La presencia de virus o cualquier otro elemento que pueda producir alteraciones en los sistemas informáticos del usuario.</li>
+          <li>El uso que el usuario haga del sitio web o de los contenidos incluidos en el mismo.</li>
+        </ul>
+
+        <h2>5. Ley aplicable y jurisdicción</h2>
+        <p>Las presentes condiciones se rigen por la legislación española. Para la resolución de las controversias que pudieran derivarse de la interpretación o aplicación de las mismas, las partes se someten a los Juzgados y Tribunales de la ciudad de Tarragona.</p>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal__header { text-align: center; max-width: 700px; margin: 0 auto var(--s-10); }
+  .legal__header .eyebrow { display: inline-block; }
+  .legal__updated { color: var(--c-muted); font-size: 0.875rem; margin-top: var(--s-2); }
+  .legal__content { max-width: 800px; margin: 0 auto; }
+  .legal__content h2 { font-size: 1.25rem; margin-top: var(--s-8); margin-bottom: var(--s-3); color: var(--c-ink); }
+  .legal__content h2:first-child { margin-top: 0; }
+  .legal__content p, .legal__content ul { color: var(--c-text); line-height: 1.7; margin-bottom: var(--s-3); }
+  .legal__content ul { padding-left: var(--s-5); }
+  .legal__content li { margin-bottom: 0.4rem; }
+</style>

@@ -1,0 +1,117 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import { nap } from '~/data/nap';
+
+const content = {
+  hero: { eyebrow: 'Contacto', title: 'Cuéntanos tu proyecto', subtitle: 'Te respondemos en menos de 24h. Sin compromiso, sin formularios raros. Si prefieres llamarnos, el teléfono también funciona.' },
+  form: { name: 'Nombre', email: 'Email', phone: 'Teléfono (opcional)', company: 'Empresa (opcional)', service: 'Servicio de interés', servicePlaceholder: 'Selecciona un servicio', message: 'Cuéntanos brevemente tu proyecto', privacy: 'Acepto la política de privacidad y el tratamiento de mis datos para recibir respuesta a esta consulta.', submit: 'Enviar mensaje', submitting: 'Enviando...', success: '¡Gracias! Te respondemos en menos de 24h.', error: 'Ha habido un error. Escríbenos directamente a hola@sincronia.agency' },
+  alt: { title: 'O si lo prefieres', methods: [
+    { label: 'Email', value: nap.email, href: `mailto:${nap.email}` },
+    { label: 'Teléfono', value: nap.phoneDisplay, href: `tel:${nap.phone.replace(/\s/g, '')}` },
+    { label: 'Dirección', value: `${nap.street}, ${nap.postalCode} ${nap.city}`, href: null },
+    { label: 'Horario', value: nap.schedule, href: null },
+  ] },
+};
+---
+<Base title="Contacto · Sincronia Agency" description="Contacta con Sincronia Agency en Tarragona. Te respondemos en menos de 24h con un presupuesto sin compromiso para tu proyecto web.">
+  <Hero eyebrow={content.hero.eyebrow} title={content.hero.title} subtitle={content.hero.subtitle} />
+
+  <section class="section">
+    <div class="container contact-grid">
+      <div class="contact-form-wrap">
+        <form
+          class="contact-form"
+          action="https://formsubmit.co/hola@sincronia.agency"
+          method="POST"
+          aria-label="Formulario de contacto"
+        >
+          <input type="hidden" name="_subject" value="Nuevo contacto desde sincronia.agency" />
+          <input type="hidden" name="_next" value="https://sincronia.agency/gracias" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <div class="form-field">
+            <label for="name">{content.form.name} *</label>
+            <input type="text" id="name" name="Nombre" required autocomplete="name" />
+          </div>
+          <div class="form-field">
+            <label for="email">{content.form.email} *</label>
+            <input type="email" id="email" name="Email" required autocomplete="email" />
+          </div>
+          <div class="form-field-row">
+            <div class="form-field">
+              <label for="phone">{content.form.phone}</label>
+              <input type="tel" id="phone" name="Teléfono" autocomplete="tel" />
+            </div>
+            <div class="form-field">
+              <label for="company">{content.form.company}</label>
+              <input type="text" id="company" name="Empresa" autocomplete="organization" />
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="service">{content.form.service}</label>
+            <select id="service" name="Servicio">
+              <option value="">{content.form.servicePlaceholder}</option>
+              <option value="Mantenimiento WordPress">Mantenimiento WordPress</option>
+              <option value="Desarrollo WordPress">Desarrollo WordPress</option>
+              <option value="Aplicación web">Aplicación web (Angular, React, Vue)</option>
+              <option value="SEO">Posicionamiento SEO</option>
+              <option value="Hosting">Hosting</option>
+              <option value="Simplifica">Simplifica (CRM)</option>
+              <option value="Strata">Strata (CMS)</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="message">{content.form.message} *</label>
+            <textarea id="message" name="Mensaje" rows="5" required></textarea>
+          </div>
+          <div class="form-field form-field--check">
+            <label class="checkbox-label">
+              <input type="checkbox" name="Privacidad" required />
+              <span>{content.form.privacy}</span>
+            </label>
+          </div>
+          <button type="submit" class="btn btn--primary btn--lg">{content.form.submit}</button>
+        </form>
+      </div>
+
+      <aside class="contact-alt" aria-label="Otros métodos de contacto">
+        <h2 class="contact-alt__title">{content.alt.title}</h2>
+        <ul class="contact-alt__list">
+          {content.alt.methods.map((m) => (
+            <li class="contact-alt__item">
+              <span class="contact-alt__label">{m.label}</span>
+              {m.href ? <a href={m.href} class="contact-alt__value">{m.value}</a> : <span class="contact-alt__value">{m.value}</span>}
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-grid { display: grid; gap: var(--s-10); grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto; }
+  @media (min-width: 1024px) { .contact-grid { grid-template-columns: 1.6fr 1fr; } }
+  .contact-form { background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-lg); padding: var(--s-8); display: grid; gap: var(--s-4); }
+  .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-field label { font-size: 0.875rem; font-weight: 500; color: var(--c-text); }
+  .form-field input, .form-field select, .form-field textarea {
+    padding: 0.7rem 0.875rem; border: 1px solid var(--c-line); border-radius: var(--r-md); font-size: 0.9375rem; color: var(--c-text); background: #fff; transition: border-color 0.15s;
+    font-family: inherit;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--c-navy-800); box-shadow: 0 0 0 3px rgba(27,58,107,0.1); }
+  .form-field-row { display: grid; gap: var(--s-4); grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .form-field-row { grid-template-columns: 1fr 1fr; } }
+  .form-field--check .checkbox-label { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.875rem; color: var(--c-muted); cursor: pointer; }
+  .form-field--check input { margin-top: 0.2rem; flex-shrink: 0; }
+  .contact-form .btn { justify-self: start; }
+  .contact-alt { padding: var(--s-6); background: var(--c-navy-50); border-radius: var(--r-lg); }
+  .contact-alt__title { font-size: 1.25rem; margin-bottom: var(--s-5); }
+  .contact-alt__list { list-style: none; display: flex; flex-direction: column; gap: var(--s-4); }
+  .contact-alt__item { display: flex; flex-direction: column; gap: 0.2rem; }
+  .contact-alt__label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--c-muted); font-weight: 600; }
+  .contact-alt__value { font-size: 0.9375rem; color: var(--c-ink); font-weight: 500; }
+  a.contact-alt__value:hover { color: var(--c-coral-500); }
+</style>

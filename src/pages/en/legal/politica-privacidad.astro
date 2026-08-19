@@ -1,0 +1,70 @@
+---
+import Base from '~/layouts/Base.astro';
+import { nap } from '~/data/nap';
+
+const lastUpdated = '2026-08-19';
+---
+<Base title="Privacy policy · Sincronia Agency" description="Privacy policy of sincronia.agency: how we process your personal data in accordance with GDPR.">
+  <article class="legal section">
+    <div class="container">
+      <header class="legal__header">
+        <span class="eyebrow">Legal</span>
+        <h1>Privacy policy</h1>
+        <p class="legal__updated">Last updated: {lastUpdated}</p>
+      </header>
+      <div class="legal__content">
+        <h2>1. Data controller</h2>
+        <p>The data controller for the personal data collected through this website is:</p>
+        <ul>
+          <li><strong>Identity:</strong> {nap.legalName}</li>
+          <li><strong>Address:</strong> {nap.street}, {nap.postalCode} {nap.city} ({nap.region}), {nap.country}</li>
+          <li><strong>Email:</strong> {nap.email}</li>
+        </ul>
+
+        <h2>2. What personal data do we process?</h2>
+        <p>We process the following categories of personal data:</p>
+        <ul>
+          <li><strong>Identifying data:</strong> name, email, phone, company (when you voluntarily provide them).</li>
+          <li><strong>Browsing data:</strong> IP address, browser type, pages visited, time on site, for analytical purposes.</li>
+        </ul>
+
+        <h2>3. For what purpose do we process your data?</h2>
+        <ul>
+          <li>To respond to enquiries sent through the contact form.</li>
+          <li>To provide contracted services and maintain the business relationship.</li>
+          <li>To send commercial communications, only if you have given your explicit consent.</li>
+          <li>To analyse site traffic in order to improve the service.</li>
+        </ul>
+
+        <h2>4. Lawful basis</h2>
+        <p>The lawful basis for processing your data is your explicit consent when you tick the privacy checkbox in the form, or the execution of the contract when you are already a customer.</p>
+
+        <h2>5. Recipients</h2>
+        <p>We do not share your personal data with third parties, except for legal obligations. Some service providers (hosting, email, analytics) may process data on our behalf, always under a data processing agreement.</p>
+
+        <h2>6. Retention</h2>
+        <p>We retain your data as long as the contractual relationship is maintained or you do not request its deletion. Once processing has ended, the data will be retained in a blocked form during the legally applicable period.</p>
+
+        <h2>7. Your rights</h2>
+        <p>You may exercise at any time the rights of access, rectification, erasure, objection, restriction of processing and data portability. To do so, email us at <a href={`mailto:${nap.email}`}>{nap.email}</a>.</p>
+        <p>If you believe your rights have not been properly addressed, you can file a complaint with the Spanish Data Protection Agency (www.aepd.es).</p>
+
+        <h2>8. Security</h2>
+        <p>We apply appropriate technical and organisational measures to protect your personal data. All information is transmitted encrypted via HTTPS.</p>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal__header { text-align: center; max-width: 700px; margin: 0 auto var(--s-10); }
+  .legal__header .eyebrow { display: inline-block; }
+  .legal__updated { color: var(--c-muted); font-size: 0.875rem; margin-top: var(--s-2); }
+  .legal__content { max-width: 800px; margin: 0 auto; }
+  .legal__content h2 { font-size: 1.25rem; margin-top: var(--s-8); margin-bottom: var(--s-3); color: var(--c-ink); }
+  .legal__content h2:first-child { margin-top: 0; }
+  .legal__content p, .legal__content ul { color: var(--c-text); line-height: 1.7; margin-bottom: var(--s-3); }
+  .legal__content ul { padding-left: var(--s-5); }
+  .legal__content li { margin-bottom: 0.4rem; }
+  .legal__content a { color: var(--c-coral-700); text-decoration: underline; }
+</style>

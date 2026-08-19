@@ -1,0 +1,67 @@
+---
+import Base from '~/layouts/Base.astro';
+import { nap } from '~/data/nap';
+
+const lastUpdated = '2026-08-19';
+---
+<Base title="Política de cookies · Sincronia Agency" description="Política de cookies de sincronia.agency: qué cookies usamos, para qué y cómo gestionarlas.">
+  <article class="legal section">
+    <div class="container">
+      <header class="legal__header">
+        <span class="eyebrow">Legal</span>
+        <h1>Política de cookies</h1>
+        <p class="legal__updated">Última actualización: {lastUpdated}</p>
+      </header>
+      <div class="legal__content">
+        <h2>1. ¿Qué son las cookies?</h2>
+        <p>Las cookies son pequeños archivos de texto que un sitio web almacena en tu dispositivo cuando lo visitas. Permiten al sitio recordar tus acciones y preferencias durante un periodo determinado.</p>
+
+        <h2>2. ¿Qué cookies usamos?</h2>
+        <h3>Cookies estrictamente necesarias</h3>
+        <p>Cookies técnicas que permiten al usuario navegar por el sitio web y utilizar sus funciones. Sin ellas, el sitio no puede funcionar correctamente.</p>
+        <h3>Cookies de análisis</h3>
+        <p>Cookies que nos permiten medir el número de visitantes y analizar cómo navegan por el sitio, con el fin de mejorar el servicio. Solo se activan si das tu consentimiento.</p>
+        <h3>Cookies de terceros</h3>
+        <p>El sitio puede incrustar contenido de terceros (vídeos, mapas, etc.) que pueden establecer sus propias cookies. No tenemos control sobre estas cookies; consulta las políticas de cada proveedor.</p>
+
+        <h2>3. Cookies específicas que usamos</h2>
+        <table class="cookie-table">
+          <thead><tr><th>Cookie</th><th>Tipo</th><th>Duración</th><th>Finalidad</th></tr></thead>
+          <tbody>
+            <tr><td>astro-*</td><td>Técnica</td><td>Sesión</td><td>Estado de navegación y preferencias</td></tr>
+            <tr><td>__cf_bm</td><td>Técnica</td><td>30 min</td><td>Protección bot de Cloudflare</td></tr>
+          </tbody>
+        </table>
+
+        <h2>4. ¿Cómo gestionar las cookies?</h2>
+        <p>Puedes permitir, bloquear o eliminar las cookies instaladas en tu dispositivo mediante la configuración de las opciones del navegador. Si no permites la instalación de cookies, es posible que no puedas acceder a algunas funcionalidades del sitio web.</p>
+        <ul>
+          <li><a href="https://support.google.com/chrome/answer/95647" rel="noopener" target="_blank">Chrome</a></li>
+          <li><a href="https://support.mozilla.org/es/kb/Borrar%20cookies" rel="noopener" target="_blank">Firefox</a></li>
+          <li><a href="https://support.apple.com/es-es/guide/safari/manage-cookies-and-website-data-sfri11471/mac" rel="noopener" target="_blank">Safari</a></li>
+          <li><a href="https://support.microsoft.com/es-es/microsoft-edge/delete-cookies-in-microsoft-edge" rel="noopener" target="_blank">Edge</a></li>
+        </ul>
+
+        <h2>5. Más información</h2>
+        <p>Si tienes dudas sobre nuestra política de cookies, escríbenos a <a href={`mailto:${nap.email}`}>{nap.email}</a>.</p>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal__header { text-align: center; max-width: 700px; margin: 0 auto var(--s-10); }
+  .legal__header .eyebrow { display: inline-block; }
+  .legal__updated { color: var(--c-muted); font-size: 0.875rem; margin-top: var(--s-2); }
+  .legal__content { max-width: 800px; margin: 0 auto; }
+  .legal__content h2 { font-size: 1.25rem; margin-top: var(--s-8); margin-bottom: var(--s-3); color: var(--c-ink); }
+  .legal__content h2:first-child { margin-top: 0; }
+  .legal__content h3 { font-size: 1.0625rem; margin-top: var(--s-5); margin-bottom: var(--s-2); color: var(--c-ink); }
+  .legal__content p, .legal__content ul { color: var(--c-text); line-height: 1.7; margin-bottom: var(--s-3); }
+  .legal__content ul { padding-left: var(--s-5); }
+  .legal__content li { margin-bottom: 0.4rem; }
+  .legal__content a { color: var(--c-coral-700); text-decoration: underline; }
+  .cookie-table { width: 100%; border-collapse: collapse; margin: var(--s-4) 0 var(--s-6); font-size: 0.9375rem; }
+  .cookie-table th, .cookie-table td { text-align: left; padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--c-line); }
+  .cookie-table th { background: var(--c-bg-alt); font-weight: 600; color: var(--c-ink); }
+</style>
