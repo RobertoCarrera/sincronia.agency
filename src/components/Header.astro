@@ -1,76 +1,151 @@
 ---
 import Logo from '~/components/Logo.astro';
 import LangSwitcher from '~/components/LangSwitcher.astro';
-import { t } from '~/i18n/ui';
+import MegaMenu from '~/components/MegaMenu.astro';
+import { t, type UIKey } from '~/i18n/ui';
 import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
+import type { Locale } from '~/i18n/locales';
 
-const locale = getLocaleFromUrl(Astro.url);
-const navItems = [
-  { href: localizePath('/servicios', locale), key: 'nav.services' as const },
-  { href: localizePath('/productos', locale), key: 'nav.products' as const },
-  { href: localizePath('/sobre-nosotros', locale), key: 'nav.about' as const },
-  { href: localizePath('/contacto', locale), key: 'nav.contact' as const },
-];
+const locale = getLocaleFromUrl(Astro.url) as Locale;
 const currentPath = Astro.url.pathname;
+
+type NavItem =
+  | { kind: 'link'; href: string; labelKey: UIKey; match: 'exact' | 'prefix' }
+  | { kind: 'mega'; href: string; labelKey: UIKey; mega: 'services' | 'products'; match: 'prefix' };
+
+const navItems: NavItem[] = [
+  { kind: 'link', href: localizePath('/', locale), labelKey: 'nav.home', match: 'exact' },
+  { kind: 'mega', href: localizePath('/servicios', locale), labelKey: 'nav.services', mega: 'services', match: 'prefix' },
+  { kind: 'mega', href: localizePath('/productos', locale), labelKey: 'nav.products', mega: 'products', match: 'prefix' },
+  { kind: 'link', href: localizePath('/sobre-nosotros', locale), labelKey: 'nav.about', match: 'prefix' },
+  { kind: 'link', href: localizePath('/contacto', locale), labelKey: 'nav.contact', match: 'prefix' },
+];
+
+const isActive = (item: NavItem): boolean => {
+  if (item.match === 'exact') return currentPath === item.href;
+  return currentPath.startsWith(item.href);
+};
 ---
 <header class="site-header" data-header>
   <div class="container site-header__inner">
     <Logo />
-    <nav class="site-nav" aria-label="Navegación principal">
-      <button class="site-nav__toggle" type="button" aria-label="Abrir menú" data-nav-toggle>
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="site-nav__list" data-nav-list>
+
+    <nav class="main-nav" aria-label="Navegación principal">
+      <ul class="main-nav__list">
         {navItems.map((item) => (
-          <li>
+          <li
+            class:list={[
+              'main-nav__item',
+              item.kind === 'mega' && 'has-mega',
+              isActive(item) && 'is-active',
+            ]}
+            data-mega-trigger={item.kind === 'mega' ? item.mega : undefined}
+          >
             <a
               href={item.href}
-              aria-current={currentPath.startsWith(item.href) ? 'page' : undefined}
+              class="main-nav__link"
+              aria-current={isActive(item) ? 'page' : undefined}
+              aria-haspopup={item.kind === 'mega' ? 'true' : undefined}
+              aria-expanded={item.kind === 'mega' ? 'false' : undefined}
             >
-              {t(locale, item.key)}
+              <span>{t(locale, item.labelKey)}</span>
+              {item.kind === 'mega' && (
+                <svg class="main-nav__chevron" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              )}
             </a>
+            {item.kind === 'mega' && <MegaMenu type={item.mega} locale={locale} />}
           </li>
         ))}
       </ul>
     </nav>
+
     <div class="site-header__actions">
       <LangSwitcher />
-      <a href={localizePath('/contacto', locale)} class="btn btn--primary">
+      <a href={localizePath('/contacto', locale)} class="btn btn--primary main-cta">
         {t(locale, 'cta.quote')}
       </a>
     </div>
+
+    <button class="site-header__toggle" type="button" aria-label="Abrir menú" data-nav-toggle>
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
 <style>
   .site-header {
     position: sticky;
     top: 0;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: saturate(180%) blur(12px);
-    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
     border-bottom: 1px solid var(--c-line);
     z-index: 40;
+    transition: box-shadow 0.2s, background 0.2s, border-color 0.2s;
   }
+  :global(.site-header.is-scrolled) {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 4px 16px -4px rgba(11, 18, 32, 0.06);
+  }
+
   .site-header__inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--s-4);
+    gap: var(--s-3);
     padding-block: var(--s-3);
+    min-height: 64px;
   }
-  .site-nav { display: none; }
-  .site-nav__list { list-style: none; display: flex; gap: var(--s-2); }
-  .site-nav__list a {
-    display: inline-block;
-    padding: 0.5rem 0.875rem;
+
+  .main-nav { display: none; flex: 1; justify-content: center; }
+  .main-nav__list { list-style: none; display: flex; align-items: center; gap: 0.25rem; }
+
+  .main-nav__item { position: relative; }
+  .main-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.95rem;
     border-radius: var(--r-md);
     color: var(--c-text);
     font-weight: 500;
     font-size: 0.9375rem;
+    transition: color 0.15s, background 0.15s;
   }
-  .site-nav__list a:hover { background: var(--c-bg-alt); color: var(--c-navy-800); }
-  .site-nav__list a[aria-current="page"] { color: var(--c-navy-800); }
-  .site-nav__toggle {
+  .main-nav__link:hover { color: var(--c-ink); background: var(--c-bg-alt); }
+  .main-nav__link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    width: calc(100% - 1.9rem);
+    height: 2px;
+    background: var(--c-coral-500);
+    border-radius: 2px 2px 0 0;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .main-nav__item.is-active .main-nav__link { color: var(--c-ink); }
+  .main-nav__item.is-active .main-nav__link::after { transform: translateX(-50%) scaleX(1); }
+  .has-mega[data-mega-open="true"] > .main-nav__link { color: var(--c-ink); background: var(--c-bg-alt); }
+  .has-mega[data-mega-open="true"] > .main-nav__link::after { transform: translateX(-50%) scaleX(1); }
+
+  .main-nav__chevron {
+    width: 0.875rem;
+    height: 0.875rem;
+    color: currentColor;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .has-mega[data-mega-open="true"] .main-nav__chevron { transform: rotate(180deg); }
+
+  .site-header__actions { display: flex; align-items: center; gap: var(--s-3); }
+  .site-header__actions .main-cta { display: none; }
+
+  .site-header__toggle {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -80,38 +155,154 @@ const currentPath = Astro.url.pathname;
     border: 0;
     padding: 0;
   }
-  .site-nav__toggle span {
+  .site-header__toggle span {
     display: block;
     width: 100%;
     height: 2px;
     background: var(--c-ink);
     border-radius: 2px;
+    transition: transform 0.25s, opacity 0.25s;
   }
-  .site-header__actions { display: flex; align-items: center; gap: var(--s-3); }
-  .site-header__actions .btn { display: none; }
-  @media (min-width: 768px) {
-    .site-nav { display: flex; flex: 1; justify-content: center; }
-    .site-nav__toggle { display: none; }
-    .site-header__actions .btn { display: inline-flex; }
+  :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+  :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(2) { opacity: 0; }
+  :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+  @media (min-width: 1024px) {
+    .main-nav { display: flex; }
+    .site-header__toggle { display: none; }
+    .site-header__actions .main-cta { display: inline-flex; }
   }
-  /* Menú móvil desplegado */
-  :global(.is-nav-open) .site-nav__list {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #fff;
-    border-bottom: 1px solid var(--c-line);
-    padding: var(--s-4);
-    box-shadow: var(--shadow-md);
+
+  /* Mobile nav */
+  @media (max-width: 1023.98px) {
+    :global(.site-header.is-nav-open) .main-nav {
+      display: block;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-bottom: 1px solid var(--c-line);
+      box-shadow: var(--shadow-md);
+      max-height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+    :global(.site-header.is-nav-open) .main-nav__list {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: var(--s-3);
+    }
+    :global(.site-header.is-nav-open) .main-nav__item { width: 100%; }
+    :global(.site-header.is-nav-open) .main-nav__link {
+      width: 100%;
+      padding: var(--s-4);
+      justify-content: space-between;
+    }
+    :global(.site-header.is-nav-open) .main-nav__link::after { display: none; }
+    :global(.site-header.is-nav-open) .mega-menu {
+      position: static;
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+      box-shadow: none;
+      border: 0;
+      background: var(--c-bg-alt);
+    }
+    :global(.site-header.is-nav-open) .mega-menu[hidden] { display: none; }
+    :global(.site-header.is-nav-open) .mega-menu__inner { background: var(--c-bg-alt); }
+    :global(.site-header.is-nav-open) .mega-menu__container { padding-block: var(--s-5); }
+    :global(.site-header.is-nav-open) .mega-menu__cta { padding: var(--s-5); }
   }
 </style>
+
 <script>
+  // Scroll-aware header (background strengthen on scroll)
   const header = document.querySelector<HTMLElement>('[data-header]');
+  if (header) {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          header.classList.toggle('is-scrolled', window.scrollY > 8);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // Mobile nav toggle
   const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
   toggle?.addEventListener('click', () => {
     header?.classList.toggle('is-nav-open');
+  });
+
+  // Mega menu hover with delay (desktop)
+  const triggers = document.querySelectorAll<HTMLElement>('[data-mega-trigger]');
+  let openTimer: number | undefined;
+  let closeTimer: number | undefined;
+
+  const closeAll = () => {
+    document.querySelectorAll<HTMLElement>('[data-mega-trigger]').forEach((t) => {
+      t.removeAttribute('data-mega-open');
+      const link = t.querySelector<HTMLElement>('.main-nav__link');
+      if (link) link.setAttribute('aria-expanded', 'false');
+      const menu = t.querySelector<HTMLElement>('[data-mega-menu]');
+      if (menu) menu.hidden = true;
+    });
+  };
+
+  const open = (trigger: HTMLElement) => {
+    closeAll();
+    const link = trigger.querySelector<HTMLElement>('.main-nav__link');
+    const menu = trigger.querySelector<HTMLElement>('[data-mega-menu]');
+    if (!menu || !link) return;
+    trigger.setAttribute('data-mega-open', 'true');
+    link.setAttribute('aria-expanded', 'true');
+    menu.hidden = false;
+  };
+
+  const close = (trigger: HTMLElement) => {
+    const link = trigger.querySelector<HTMLElement>('.main-nav__link');
+    const menu = trigger.querySelector<HTMLElement>('[data-mega-menu]');
+    if (!menu || !link) return;
+    trigger.removeAttribute('data-mega-open');
+    link.setAttribute('aria-expanded', 'false');
+    menu.hidden = true;
+  };
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('mouseenter', () => {
+      window.clearTimeout(closeTimer);
+      window.clearTimeout(openTimer);
+      openTimer = window.setTimeout(() => open(trigger), 100);
+    });
+    trigger.addEventListener('mouseleave', () => {
+      window.clearTimeout(openTimer);
+      closeTimer = window.setTimeout(() => close(trigger), 200);
+    });
+    const menu = trigger.querySelector<HTMLElement>('[data-mega-menu]');
+    menu?.addEventListener('mouseenter', () => {
+      window.clearTimeout(closeTimer);
+    });
+    menu?.addEventListener('mouseleave', () => {
+      closeTimer = window.setTimeout(() => close(trigger), 200);
+    });
+    // Keyboard: open on focus, close on Escape
+    const link = trigger.querySelector<HTMLAnchorElement>('.main-nav__link');
+    link?.addEventListener('focus', () => open(trigger));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAll();
+  });
+
+  // Click outside closes all
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node;
+    if (!header?.contains(target)) closeAll();
   });
 </script>

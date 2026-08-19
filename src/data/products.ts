@@ -1,4 +1,5 @@
-/** Definición de los 2 productos propios. */
+import type { Locale } from '~/i18n/locales';
+
 export interface ProductMeta {
   slug: string;
   name: string;
@@ -7,6 +8,7 @@ export interface ProductMeta {
   status: 'beta' | 'estable';
   priceFrom: number;
   priceUnit: string;
+  shortDescription: Record<Locale, string>;
 }
 
 export const products: ProductMeta[] = [
@@ -18,6 +20,11 @@ export const products: ProductMeta[] = [
     status: 'beta',
     priceFrom: 20,
     priceUnit: '/mes hosting',
+    shortDescription: {
+      es: 'CRM que se adapta a tu sector, no al revés.',
+      ca: 'CRM que s\'adapta al teu sector, no a l\'inrevés.',
+      en: 'A CRM that adapts to your sector, not the other way round.',
+    },
   },
   {
     slug: 'strata',
@@ -27,5 +34,10 @@ export const products: ProductMeta[] = [
     status: 'beta',
     priceFrom: 20,
     priceUnit: '/mes hosting',
+    shortDescription: {
+      es: 'CMS con editor visual y asistente IA. Reduce el coste a la mitad.',
+      ca: 'CMS amb editor visual i assistent IA. Redueix el cost a la meitat.',
+      en: 'CMS with visual editor and AI assistant. Cuts cost in half.',
+    },
   },
 ];
