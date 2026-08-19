@@ -27,7 +27,9 @@ const productsToShow = c.productPreviews.map((pp) => {
 >
   <Hero
     eyebrow={c.hero.eyebrow}
-    title={c.hero.title}
+    title="Diseñamos, desarrollamos y"
+    titleMorphing={['posicionamos', 'mantenemos', 'optimizamos', 'aceleramos']}
+    titleSuffix="tu web en Tarragona."
     subtitle={c.hero.subtitle}
     primaryCta={{ label: t('es', 'cta.quote'), href: localizePath('/contacto', 'es') }}
     secondaryCta={{ label: t('es', 'nav.services'), href: localizePath('/servicios', 'es') }}
