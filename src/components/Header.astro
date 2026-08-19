@@ -27,49 +27,94 @@ const isActive = (item: NavItem): boolean => {
 };
 ---
 <header class="site-header" data-header>
-  <div class="container site-header__inner">
-    <Logo />
-
-    <nav class="main-nav" aria-label="Navegación principal">
-      <ul class="main-nav__list">
-        {navItems.map((item) => (
-          <li
-            class:list={[
-              'main-nav__item',
-              item.kind === 'mega' && 'has-mega',
-              isActive(item) && 'is-active',
-            ]}
-            data-mega-trigger={item.kind === 'mega' ? item.mega : undefined}
+  <!-- Top bar NAP: ubicación · teléfono · horario + status pill -->
+  <div class="site-header__topbar" aria-label="Información de contacto">
+    <div class="container site-header__topbar-inner">
+      <ul class="site-header__topbar-info">
+        <li>
+          <a
+            class="site-header__topbar-item"
+            href="https://www.google.com/maps/search/?api=1&query=Segur+de+Calafell+Tarragona"
+            target="_blank"
+            rel="noopener"
+            aria-label="Abrir ubicación en Google Maps"
           >
-            <a
-              href={item.href}
-              class="main-nav__link"
-              aria-current={isActive(item) ? 'page' : undefined}
-              aria-haspopup={item.kind === 'mega' ? 'true' : undefined}
-              aria-expanded={item.kind === 'mega' ? 'false' : undefined}
-            >
-              <span>{t(locale, item.labelKey)}</span>
-              {item.kind === 'mega' && (
-                <svg class="main-nav__chevron" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-              )}
-            </a>
-          </li>
-        ))}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>Segur de Calafell · Tarragona</span>
+          </a>
+        </li>
+        <li>
+          <a class="site-header__topbar-item" href="tel:+34624344917" aria-label="Llamar a Sincronia">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.95.37 1.88.72 2.78a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.11-.45c.9.35 1.83.59 2.78.72A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <span>+34 624 34 49 17</span>
+          </a>
+        </li>
+        <li class="site-header__topbar-item site-header__topbar-item--static">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>Lun–Dom · 7:00–24:00</span>
+        </li>
       </ul>
-    </nav>
-
-    <div class="site-header__actions">
-      <LangSwitcher />
-      <a href={localizePath('/contacto', locale)} class="btn btn--primary main-cta">
-        {t(locale, 'cta.quote')}
-      </a>
+      <span class="site-header__status" aria-label="Disponibilidad actual">
+        <span class="site-header__status-dot" aria-hidden="true"></span>
+        Aceptando proyectos
+      </span>
     </div>
+  </div>
 
-    <button class="site-header__toggle" type="button" aria-label="Abrir menú" data-nav-toggle>
-      <span></span><span></span><span></span>
-    </button>
+  <!-- Main bar: logo + nav + idioma + CTA -->
+  <div class="site-header__main">
+    <div class="container site-header__main-inner">
+      <Logo />
+
+      <nav class="main-nav" aria-label="Navegación principal">
+        <ul class="main-nav__list">
+          {navItems.map((item) => (
+            <li
+              class:list={[
+                'main-nav__item',
+                item.kind === 'mega' && 'has-mega',
+                isActive(item) && 'is-active',
+              ]}
+              data-mega-trigger={item.kind === 'mega' ? item.mega : undefined}
+            >
+              <a
+                href={item.href}
+                class="main-nav__link"
+                aria-current={isActive(item) ? 'page' : undefined}
+                aria-haspopup={item.kind === 'mega' ? 'true' : undefined}
+                aria-expanded={item.kind === 'mega' ? 'false' : undefined}
+              >
+                <span>{t(locale, item.labelKey)}</span>
+                {item.kind === 'mega' && (
+                  <svg class="main-nav__chevron" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="site-header__actions">
+        <LangSwitcher />
+        <a href={localizePath('/contacto', locale)} class="btn btn--primary main-cta">
+          {t(locale, 'cta.quote')}
+        </a>
+      </div>
+
+      <button class="site-header__toggle" type="button" aria-label="Abrir menú" data-nav-toggle>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 
   <!-- Mega menus a nivel de header para que se posicionen full-width con left:0/right:0 -->
@@ -78,22 +123,107 @@ const isActive = (item: NavItem): boolean => {
 </header>
 
 <style>
+  /* ============================================================
+     Header: sticky con dos filas (top bar NAP + main bar)
+     ============================================================ */
   .site-header {
     position: sticky;
     top: 0;
+    z-index: 40;
+    transition: box-shadow 0.2s;
+  }
+  :global(.site-header.is-scrolled) {
+    box-shadow: 0 4px 16px -4px rgba(11, 18, 32, 0.08);
+  }
+
+  /* --- Top bar (NAP + status pill) ---------------------------- */
+  .site-header__topbar {
+    background: var(--c-navy-900);
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.8125rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .site-header__topbar-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    min-height: 36px;
+    padding-block: 0.4rem;
+  }
+  .site-header__topbar-info {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 0;
+  }
+  .site-header__topbar-info > li {
+    display: inline-flex;
+  }
+  .site-header__topbar-info > li + li::before {
+    content: '·';
+    margin: 0 0.85rem;
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .site-header__topbar-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: rgba(255, 255, 255, 0.78);
+    transition: color 0.15s;
+    padding: 0.15rem 0;
+  }
+  a.site-header__topbar-item:hover { color: #fff; }
+  .site-header__topbar-item svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  /* Status pill "Aceptando proyectos" */
+  .site-header__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: rgba(76, 217, 123, 0.12);
+    color: #5FE39A;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--r-full);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .site-header__status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #5FE39A;
+    box-shadow: 0 0 0 0 rgba(95, 227, 154, 0.6);
+    animation: site-status-pulse 2s infinite;
+  }
+  @keyframes site-status-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(95, 227, 154, 0.6); }
+    50% { box-shadow: 0 0 0 6px rgba(95, 227, 154, 0); }
+  }
+
+  /* --- Main bar (logo + nav + acciones) ---------------------- */
+  .site-header__main {
     background: rgba(255, 255, 255, 0.78);
     backdrop-filter: saturate(180%) blur(14px);
     -webkit-backdrop-filter: saturate(180%) blur(14px);
     border-bottom: 1px solid var(--c-line);
-    z-index: 40;
-    transition: box-shadow 0.2s, background 0.2s, border-color 0.2s;
+    transition: background 0.2s, border-color 0.2s;
   }
-  :global(.site-header.is-scrolled) {
+  :global(.site-header.is-scrolled) .site-header__main {
     background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 4px 16px -4px rgba(11, 18, 32, 0.06);
   }
-
-  .site-header__inner {
+  .site-header__main-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -102,6 +232,7 @@ const isActive = (item: NavItem): boolean => {
     min-height: 64px;
   }
 
+  /* --- Nav (links + mega triggers) --------------------------- */
   .main-nav { display: none; flex: 1; justify-content: center; }
   .main-nav__list { list-style: none; display: flex; align-items: center; gap: 0.25rem; }
 
@@ -145,9 +276,11 @@ const isActive = (item: NavItem): boolean => {
   }
   :global(.has-mega[data-mega-open="true"]) .main-nav__chevron { transform: rotate(180deg); }
 
+  /* --- Actions (lang + CTA) --------------------------------- */
   .site-header__actions { display: flex; align-items: center; gap: var(--s-3); }
   .site-header__actions .main-cta { display: none; }
 
+  /* --- Mobile toggle ---------------------------------------- */
   .site-header__toggle {
     display: flex;
     flex-direction: column;
@@ -170,13 +303,20 @@ const isActive = (item: NavItem): boolean => {
   :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(2) { opacity: 0; }
   :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
 
+  /* --- Breakpoints ------------------------------------------ */
   @media (min-width: 1024px) {
     .main-nav { display: flex; }
     .site-header__toggle { display: none; }
     .site-header__actions .main-cta { display: inline-flex; }
   }
 
-  /* Mobile nav */
+  /* Móvil: ocultar la top bar NAP completa. La nav inferior
+     ya da acceso a contacto y el hamburger lo abre todo. */
+  @media (max-width: 767.98px) {
+    .site-header__topbar { display: none; }
+  }
+
+  /* Móvil: nav drawer */
   @media (max-width: 1023.98px) {
     :global(.site-header.is-nav-open) .main-nav {
       display: block;
