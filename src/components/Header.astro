@@ -55,7 +55,6 @@ const isActive = (item: NavItem): boolean => {
                 </svg>
               )}
             </a>
-            {item.kind === 'mega' && <MegaMenu type={item.mega} locale={locale} />}
           </li>
         ))}
       </ul>
@@ -72,6 +71,10 @@ const isActive = (item: NavItem): boolean => {
       <span></span><span></span><span></span>
     </button>
   </div>
+
+  <!-- Mega menus a nivel de header para que se posicionen full-width con left:0/right:0 -->
+  <MegaMenu type="services" locale={locale} />
+  <MegaMenu type="products" locale={locale} />
 </header>
 
 <style>
@@ -131,8 +134,8 @@ const isActive = (item: NavItem): boolean => {
   }
   .main-nav__item.is-active .main-nav__link { color: var(--c-ink); }
   .main-nav__item.is-active .main-nav__link::after { transform: translateX(-50%) scaleX(1); }
-  .has-mega[data-mega-open="true"] > .main-nav__link { color: var(--c-ink); background: var(--c-bg-alt); }
-  .has-mega[data-mega-open="true"] > .main-nav__link::after { transform: translateX(-50%) scaleX(1); }
+  :global(.has-mega[data-mega-open="true"]) > .main-nav__link { color: var(--c-ink); background: var(--c-bg-alt); }
+  :global(.has-mega[data-mega-open="true"]) > .main-nav__link::after { transform: translateX(-50%) scaleX(1); }
 
   .main-nav__chevron {
     width: 0.875rem;
@@ -140,7 +143,7 @@ const isActive = (item: NavItem): boolean => {
     color: currentColor;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .has-mega[data-mega-open="true"] .main-nav__chevron { transform: rotate(180deg); }
+  :global(.has-mega[data-mega-open="true"]) .main-nav__chevron { transform: rotate(180deg); }
 
   .site-header__actions { display: flex; align-items: center; gap: var(--s-3); }
   .site-header__actions .main-cta { display: none; }
@@ -200,19 +203,8 @@ const isActive = (item: NavItem): boolean => {
       justify-content: space-between;
     }
     :global(.site-header.is-nav-open) .main-nav__link::after { display: none; }
-    :global(.site-header.is-nav-open) .mega-menu {
-      position: static;
-      opacity: 1;
-      transform: none;
-      pointer-events: auto;
-      box-shadow: none;
-      border: 0;
-      background: var(--c-bg-alt);
-    }
-    :global(.site-header.is-nav-open) .mega-menu[hidden] { display: none; }
-    :global(.site-header.is-nav-open) .mega-menu__inner { background: var(--c-bg-alt); }
-    :global(.site-header.is-nav-open) .mega-menu__container { padding-block: var(--s-5); }
-    :global(.site-header.is-nav-open) .mega-menu__cta { padding: var(--s-5); }
+    /* En móvil el mega menu NO se muestra — tapping Servicios va a /servicios */
+    :global(.site-header .mega-menu) { display: none !important; }
   }
 </style>
 
@@ -240,69 +232,77 @@ const isActive = (item: NavItem): boolean => {
     header?.classList.toggle('is-nav-open');
   });
 
-  // Mega menu hover with delay (desktop)
-  const triggers = document.querySelectorAll<HTMLElement>('[data-mega-trigger]');
-  let openTimer: number | undefined;
-  let closeTimer: number | undefined;
+  // Mega menu hover with delay (desktop only)
+  const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+  if (isDesktop) {
+    const triggers = document.querySelectorAll<HTMLElement>('[data-mega-trigger]');
+    let openTimer: number | undefined;
+    let closeTimer: number | undefined;
 
-  const closeAll = () => {
-    document.querySelectorAll<HTMLElement>('[data-mega-trigger]').forEach((t) => {
-      t.removeAttribute('data-mega-open');
-      const link = t.querySelector<HTMLElement>('.main-nav__link');
-      if (link) link.setAttribute('aria-expanded', 'false');
-      const menu = t.querySelector<HTMLElement>('[data-mega-menu]');
-      if (menu) menu.hidden = true;
+    const closeAll = () => {
+      document.querySelectorAll<HTMLElement>('[data-mega-trigger]').forEach((t) => {
+        t.removeAttribute('data-mega-open');
+        const link = t.querySelector<HTMLElement>('.main-nav__link');
+        if (link) link.setAttribute('aria-expanded', 'false');
+      });
+      document.querySelectorAll<HTMLElement>('[data-mega-menu]').forEach((m) => {
+        m.hidden = true;
+      });
+    };
+
+    const open = (type: string) => {
+      closeAll();
+      const trigger = document.querySelector<HTMLElement>(`[data-mega-trigger="${type}"]`);
+      const link = trigger?.querySelector<HTMLElement>('.main-nav__link');
+      const menu = document.querySelector<HTMLElement>(`[data-mega-menu="${type}"]`);
+      if (!menu || !link || !trigger) return;
+      trigger.setAttribute('data-mega-open', 'true');
+      link.setAttribute('aria-expanded', 'true');
+      menu.hidden = false;
+    };
+
+    const close = (type: string) => {
+      const trigger = document.querySelector<HTMLElement>(`[data-mega-trigger="${type}"]`);
+      const link = trigger?.querySelector<HTMLElement>('.main-nav__link');
+      const menu = document.querySelector<HTMLElement>(`[data-mega-menu="${type}"]`);
+      if (!menu || !link || !trigger) return;
+      trigger.removeAttribute('data-mega-open');
+      link.setAttribute('aria-expanded', 'false');
+      menu.hidden = true;
+    };
+
+    triggers.forEach((trigger) => {
+      const type = trigger.getAttribute('data-mega-trigger');
+      if (!type) return;
+      const menu = document.querySelector<HTMLElement>(`[data-mega-menu="${type}"]`);
+      if (!menu) return;
+
+      trigger.addEventListener('mouseenter', () => {
+        window.clearTimeout(closeTimer);
+        window.clearTimeout(openTimer);
+        openTimer = window.setTimeout(() => open(type), 100);
+      });
+      trigger.addEventListener('mouseleave', () => {
+        window.clearTimeout(openTimer);
+        closeTimer = window.setTimeout(() => close(type), 200);
+      });
+      menu.addEventListener('mouseenter', () => {
+        window.clearTimeout(closeTimer);
+      });
+      menu.addEventListener('mouseleave', () => {
+        closeTimer = window.setTimeout(() => close(type), 200);
+      });
+      const link = trigger.querySelector<HTMLAnchorElement>('.main-nav__link');
+      link?.addEventListener('focus', () => open(type));
     });
-  };
 
-  const open = (trigger: HTMLElement) => {
-    closeAll();
-    const link = trigger.querySelector<HTMLElement>('.main-nav__link');
-    const menu = trigger.querySelector<HTMLElement>('[data-mega-menu]');
-    if (!menu || !link) return;
-    trigger.setAttribute('data-mega-open', 'true');
-    link.setAttribute('aria-expanded', 'true');
-    menu.hidden = false;
-  };
-
-  const close = (trigger: HTMLElement) => {
-    const link = trigger.querySelector<HTMLElement>('.main-nav__link');
-    const menu = trigger.querySelector<HTMLElement>('[data-mega-menu]');
-    if (!menu || !link) return;
-    trigger.removeAttribute('data-mega-open');
-    link.setAttribute('aria-expanded', 'false');
-    menu.hidden = true;
-  };
-
-  triggers.forEach((trigger) => {
-    trigger.addEventListener('mouseenter', () => {
-      window.clearTimeout(closeTimer);
-      window.clearTimeout(openTimer);
-      openTimer = window.setTimeout(() => open(trigger), 100);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAll();
     });
-    trigger.addEventListener('mouseleave', () => {
-      window.clearTimeout(openTimer);
-      closeTimer = window.setTimeout(() => close(trigger), 200);
-    });
-    const menu = trigger.querySelector<HTMLElement>('[data-mega-menu]');
-    menu?.addEventListener('mouseenter', () => {
-      window.clearTimeout(closeTimer);
-    });
-    menu?.addEventListener('mouseleave', () => {
-      closeTimer = window.setTimeout(() => close(trigger), 200);
-    });
-    // Keyboard: open on focus, close on Escape
-    const link = trigger.querySelector<HTMLAnchorElement>('.main-nav__link');
-    link?.addEventListener('focus', () => open(trigger));
-  });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeAll();
-  });
-
-  // Click outside closes all
-  document.addEventListener('click', (e) => {
-    const target = e.target as Node;
-    if (!header?.contains(target)) closeAll();
-  });
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node;
+      if (!header?.contains(target)) closeAll();
+    });
+  }
 </script>
