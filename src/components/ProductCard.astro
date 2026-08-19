@@ -62,7 +62,10 @@ const meshColors = accent === 'coral'
 </BorderGlow>
 
 <style>
-  .product-card :global(.border-glow-inner) {
+  /* El <a> exterior lleva .product-card + .border-glow-card y tiene su propio
+     scope; el .border-glow-inner viene de BorderGlow.astro (otro scope).
+     Usamos :global() para que las reglas de layout atraviesen ambos scopes. */
+  :global(.product-card .border-glow-inner) {
     display: flex;
     flex-direction: column;
     gap: var(--s-3);
@@ -71,11 +74,11 @@ const meshColors = accent === 'coral'
     height: 100%;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .product-card:hover :global(.border-glow-inner) {
+  :global(.product-card:hover .border-glow-inner) {
     transform: translateY(-2px);
   }
 
-  .product-card--navy :global(.border-glow-inner) { color: rgba(255,255,255,0.85); }
+  :global(.product-card--navy .border-glow-inner) { color: rgba(255,255,255,0.85); }
   .product-card--navy .product-card__name { color: #fff; }
   .product-card--navy .product-card__tagline { color: var(--c-coral-500); }
   .product-card--navy .product-card__desc { color: rgba(255,255,255,0.7); }
@@ -113,5 +116,5 @@ const meshColors = accent === 'coral'
   .product-card__price-unit { font-size: 0.75rem; color: var(--c-muted); }
   .product-card__cta { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--c-navy-800); font-weight: 600; font-size: 0.9375rem; }
   .product-card__cta .icon { width: 1rem; height: 1rem; transition: transform 0.2s; }
-  .product-card:hover .product-card__cta .icon { transform: translateX(4px); }
+  :global(.product-card:hover) .product-card__cta .icon { transform: translateX(4px); }
 </style>
