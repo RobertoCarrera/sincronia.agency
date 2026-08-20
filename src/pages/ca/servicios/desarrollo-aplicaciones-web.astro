@@ -3,11 +3,14 @@ import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
 import CTA from '~/components/CTA.astro';
 import FAQ from '~/components/FAQ.astro';
+import PricingTable from '~/components/PricingTable.astro';
 import { desarrolloAplicacionesWeb } from '~/content/services/desarrollo-aplicaciones-web';
+import { services } from '~/data/services';
 import { t } from '~/i18n/ui';
 import { localizePath } from '~/lib/i18n';
 
 const c = desarrolloAplicacionesWeb.ca;
+const service = services.find((s) => s.slug === 'desarrollo-aplicaciones-web')!;
 ---
 <Base title={c.meta.title} description={c.meta.description}>
   <Hero eyebrow={c.hero.eyebrow} title={c.hero.title} subtitle={c.hero.subtitle} />
@@ -53,11 +56,12 @@ const c = desarrolloAplicacionesWeb.ca;
       </ol>
     </div>
   </section>
-  <section class="section section--alt">
-    <div class="container pricing-block">
-      <h2>{c.pricing.title}</h2>
-      <p class="lead">{c.pricing.body}</p>
-    </div>
+  <section class="pricing-anchor" aria-labelledby="pricing-heading">
+    <header class="section-header" style="text-align: center; max-width: 700px; margin: 0 auto var(--s-6);">
+      <h2 id="pricing-heading">{c.pricing.title}</h2>
+      <p class="lead" style="margin-top: var(--s-3);">{c.pricing.body}</p>
+    </header>
+    <PricingTable source={service} />
   </section>
   <FAQ title={c.faq.title} items={c.faq.items} />
   <CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: t('ca', 'cta.quote'), href: localizePath('/contacto?service=desarrollo-aplicaciones-web', 'ca') }} />
@@ -83,4 +87,5 @@ const c = desarrolloAplicacionesWeb.ca;
   .process-step p { color: var(--c-muted); font-size: 0.9375rem; }
   .pricing-block { max-width: 800px; }
   .pricing-block h2 { margin-bottom: var(--s-4); }
+  .pricing-anchor { background: var(--c-bg-alt); border-block: 1px solid var(--c-line); }
 </style>

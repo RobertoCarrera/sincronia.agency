@@ -5,7 +5,7 @@ export const desarrolloAplicacionesWeb: Record<Locale, ServiceContent> = {
   es: {
     meta: {
       title: 'Desarrollo de aplicaciones web en Tarragona · Sincronia Agency',
-      description: 'SPAs, dashboards y plataformas SaaS con Angular, React o Vue. Backend en Node, Python o Go. Desde 2.400€. Equipo senior, código mantenible, deploy continuo.',
+      description: 'SPAs, dashboards y plataformas SaaS con Angular, React o Vue. Backend en Node, Python o Go. Desde 3.500€. Equipo senior, código mantenible, deploy continuo.',
     },
     hero: {
       eyebrow: 'Servicio',
@@ -44,13 +44,13 @@ export const desarrolloAplicacionesWeb: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Precio y forma de pago',
-      body: 'Desde 2.400€ por proyecto. Cada proyecto se presupuesta según alcance tras el análisis técnico. Forma de pago por hitos. Para proyectos largos, también trabajamos en retainer mensual con horas garantizadas.',
+      body: 'Desde 3.500€ por proyecto. Tres tiers según alcance: herramienta interna, MVP o plataforma SaaS completa. Cada proyecto se presupuesta según alcance tras el análisis técnico. Forma de pago por hitos. Para proyectos largos, también trabajamos en retainer mensual con horas garantizadas.',
     },
     faq: {
       title: 'Preguntas frecuentes',
       items: [
         { q: '¿Angular, React o Vue? ¿Cuál me conviene?', a: 'Depende del proyecto. Angular es nuestra casa para apps grandes con equipo: opinionado, mantenible, escalable. React es más flexible y tiene más ecosistema. Vue es el equilibrio. Te lo recomendamos en el análisis técnico.' },
-        { q: '¿Cuánto cuesta una aplicación web?', a: 'Herramientas internas: 2.400€-6.000€. MVPs: 8.000€-15.000€. Plataformas SaaS completas: 15.000€-50.000€+. Te damos presupuesto cerrado tras el análisis.' },
+        { q: '¿Cuánto cuesta una aplicación web?', a: 'Herramientas internas: desde 3.500€. MVPs: desde 8.000€. Plataformas SaaS completas: desde 15.000€+. Te damos presupuesto cerrado tras el análisis.' },
         { q: '¿Podéis mantener la app después del lanzamiento?', a: 'Sí, tenemos planes de mantenimiento para aplicaciones web: monitorización, updates, nuevas features por sprint o retainer.' },
         { q: '¿Y si ya tengo una app legacy que necesita modernizarse?', a: 'Hacemos migraciones progresivas: envolvemos la app antigua, modernizamos por módulos, sin reescrituras de golpe que duran 2 años y no entregan nada.' },
         { q: '¿Cuánto tarda un proyecto de app web?', a: 'Un MVP funcional: 2-3 meses. Una plataforma SaaS completa: 4-8 meses. Te lo confirmamos en el análisis.' },
@@ -65,7 +65,7 @@ export const desarrolloAplicacionesWeb: Record<Locale, ServiceContent> = {
   ca: {
     meta: {
       title: 'Desenvolupament d\'aplicacions web a Tarragona · Sincronia Agency',
-      description: 'SPAs, dashboards i plataformes SaaS amb Angular, React o Vue. Backend en Node, Python o Go. Des de 2.400€. Equip sènior, codi mantenible, deploy continu.',
+      description: 'SPAs, dashboards i plataformes SaaS amb Angular, React o Vue. Backend en Node, Python o Go. Des de 3.500€. Equip sènior, codi mantenible, deploy continu.',
     },
     hero: {
       eyebrow: 'Servei',
@@ -104,13 +104,13 @@ export const desarrolloAplicacionesWeb: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Preu i forma de pagament',
-      body: 'Des de 2.400€ per projecte. Cada projecte es pressuposta segons l\'abast després de l\'anàlisi tècnica. Forma de pagament per fites. Per a projectes llargs, també treballem en retainer mensual amb hores garantides.',
+      body: 'Des de 3.500€ per projecte. Tres tiers segons l\'abast: eina interna, MVP o plataforma SaaS completa. Cada projecte es pressuposta segons l\'abast després de l\'anàlisi tècnica. Forma de pagament per fites. Per a projectes llargs, també treballem en retainer mensual amb hores garantides.',
     },
     faq: {
       title: 'Preguntes freqüents',
       items: [
         { q: 'Angular, React o Vue? Quin em convé?', a: 'Depèn del projecte. Angular és la nostra casa per a apps grans amb equip: opinat, mantenible, escalable. React és més flexible i té més ecosistema. Vue és l\'equilibri. T\'ho recomanem a l\'anàlisi tècnica.' },
-        { q: 'Quant costa una aplicació web?', a: 'Eines internes: 2.400€-6.000€. MVPs: 8.000€-15.000€. Plataformes SaaS completes: 15.000€-50.000€+. T\'donem pressupost tancat després de l\'anàlisi.' },
+        { q: 'Quant costa una aplicació web?', a: 'Eines internes: des de 3.500€. MVPs: des de 8.000€. Plataformes SaaS completes: des de 15.000€+. T\'donem pressupost tancat després de l\'anàlisi.' },
         { q: 'Podeu mantenir l\'app després del llançament?', a: 'Sí, tenim plans de manteniment per a aplicacions web: monitoratge, updates, noves features per sprint o retainer.' },
         { q: 'I si ja tinc una app legacy que necessita modernitzar-se?', a: 'Fem migracions progressives: emboliquem l\'app antiga, modernitzem per mòduls, sense reescriptures de cop que duren 2 anys i no entreguen res.' },
         { q: 'Quant triga un projecte d\'app web?', a: 'Un MVP funcional: 2-3 mesos. Una plataforma SaaS completa: 4-8 mesos. T\'ho confirmem a l\'anàlisi.' },
@@ -125,7 +125,7 @@ export const desarrolloAplicacionesWeb: Record<Locale, ServiceContent> = {
   en: {
     meta: {
       title: 'Web application development in Tarragona · Sincronia Agency',
-      description: 'SPAs, dashboards and SaaS platforms with Angular, React or Vue. Backend in Node, Python or Go. From €2,400. Senior team, maintainable code, continuous deploy.',
+      description: 'SPAs, dashboards and SaaS platforms with Angular, React or Vue. Backend in Node, Python or Go. From €3,500. Senior team, maintainable code, continuous deploy.',
     },
     hero: {
       eyebrow: 'Service',
@@ -164,13 +164,13 @@ export const desarrolloAplicacionesWeb: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Price and payment terms',
-      body: 'From €2,400 per project. Each project is quoted based on scope after technical analysis. Payment by milestones. For long projects, we also work on monthly retainer with guaranteed hours.',
+      body: 'From €3,500 per project. Three tiers by scope: internal tool, MVP or full SaaS platform. Each project is quoted based on scope after technical analysis. Payment by milestones. For long projects, we also work on monthly retainer with guaranteed hours.',
     },
     faq: {
       title: 'Frequently asked questions',
       items: [
         { q: 'Angular, React or Vue? Which should I use?', a: 'Depends on the project. Angular is our home for large team-scale apps: opinionated, maintainable, scalable. React is more flexible with a bigger ecosystem. Vue is the balance. We recommend in technical analysis.' },
-        { q: 'How much does a web app cost?', a: 'Internal tools: €2,400-€6,000. MVPs: €8,000-€15,000. Complete SaaS platforms: €15,000-€50,000+. We give a fixed quote after analysis.' },
+        { q: 'How much does a web app cost?', a: 'Internal tools: from €3,500. MVPs: from €8,000. Complete SaaS platforms: from €15,000+. We give a fixed quote after analysis.' },
         { q: 'Can you maintain the app after launch?', a: 'Yes, we have maintenance plans for web apps: monitoring, updates, new features by sprint or retainer.' },
         { q: 'What if I already have a legacy app that needs modernising?', a: 'We do progressive migrations: wrap the old app, modernise by modules, no big-bang rewrites that take 2 years and deliver nothing.' },
         { q: 'How long does a web app project take?', a: 'A functional MVP: 2-3 months. A complete SaaS platform: 4-8 months. We confirm in analysis.' },
