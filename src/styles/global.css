@@ -110,39 +110,9 @@ p  { font-size: 1rem; line-height: 1.65; color: var(--c-text); }
 .section--dark h1, .section--dark h2, .section--dark h3 { color: #fff; }
 .section--alt { background: var(--c-bg-alt); }
 
-/* --- Botones (Carbon-style) --------------------------------------- */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--r-md);
-  font-weight: 600;
-  font-size: 0.9375rem;
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  text-decoration: none;
-  cursor: pointer;
-}
-.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
-.btn--primary {
-  background: var(--c-coral-500);
-  color: #fff;
-}
-.btn--primary:hover { background: var(--c-coral-600); color: #fff; }
-.btn--secondary {
-  background: var(--c-navy-800);
-  color: #fff;
-}
-.btn--secondary:hover { background: var(--c-navy-700); color: #fff; }
-.btn--ghost {
-  background: transparent;
-  color: var(--c-navy-800);
-  border-color: var(--c-line);
-}
-.btn--ghost:hover { border-color: var(--c-navy-800); color: var(--c-navy-800); }
-.btn--lg { padding: 1rem 2rem; font-size: 1rem; }
+/* Los estilos de .btn* están ahora en src/components/Button.astro
+   con su propia lógica (estilo Uiverse + animaciones del icono).
+   No se duplican aquí para evitar conflictos de cascada. */
 
 /* --- Cards --------------------------------------------------------- */
 .card {
