@@ -1,0 +1,510 @@
+---
+/**
+ * ProductContactForm — formulario WhatsApp para inquiries de producto.
+ *
+ * Patron inspirado en Mueveme y Gaticidad: el form se valida en cliente,
+ * construye un mensaje WhatsApp pre-rellenado con los datos del usuario,
+ * y abre https://wa.me/{phone}?text=... en nueva pestana.
+ *
+ * Personalizado por producto (Simplifica vs Strata):
+ *  - Simplifica (CRM): pregunta sector, sin pregunta por web actual.
+ *  - Strata (CMS): pregunta web actual (migracion desde WP), sin sector.
+ *
+ * Si la URL tiene ?tier={id}, se pre-rellena el campo "plan" (Free/Starter/...).
+ * Si la URL tiene ?intent=waitlist|info|..., se pre-selecciona el radio "Tipo".
+ *
+ * Props:
+ *  - productSlug: 'simplifica' | 'strata'
+ *  - productName: nombre visible del producto (ya localizado)
+ *  - locale: 'es' | 'ca' | 'en'
+ */
+import type { Locale } from '~/i18n/locales';
+import { nap } from '~/data/nap';
+
+type ProductSlug = 'simplifica' | 'strata';
+
+interface Props {
+  productSlug: ProductSlug;
+  productName: string;
+  locale: Locale;
+}
+const { productSlug, productName, locale } = Astro.props;
+
+const phoneRaw = nap.phone.replace(/[^\d]/g, '');
+
+// Textos i18n del form
+const i18n = {
+  es: {
+    title: '¿Te interesa ' + productName + '?',
+    subtitle: 'Rellena el formulario y te respondemos por WhatsApp en menos de 24h. Sin compromiso.',
+    intentLabel: '¿Qué necesitas?',
+    intent: {
+      waitlist: 'Apuntarme a la lista de espera',
+      info: 'Más información',
+      demo: 'Pedir una demo',
+      custom: productSlug === 'strata' ? 'Funcionalidad a medida' : 'Adaptación a mi sector',
+      migrate: 'Migración desde otro CMS',
+    },
+    planLabel: 'Plan que te interesa (opcional)',
+    planPlaceholder: 'Sin plan específico',
+    nameLabel: 'Nombre',
+    namePh: 'Tu nombre',
+    phoneLabel: 'Teléfono',
+    phonePh: '+34 600 000 000',
+    emailLabel: 'Email (opcional)',
+    emailPh: 'tu@email.com',
+    extraLabel: productSlug === 'strata' ? 'Web actual (opcional)' : 'Tu sector (opcional)',
+    extraPh: productSlug === 'strata' ? 'https://tuweb.com' : 'Clínica dental, asesoría, taller…',
+    extraOptions: productSlug === 'strata' ? null : [
+      { value: 'clinica', label: 'Clínica / salud' },
+      { value: 'asesoria', label: 'Asesoría / gestoría' },
+      { value: 'taller', label: 'Taller / servicios técnicos' },
+      { value: 'educacion', label: 'Educación / formación' },
+      { value: 'inmobiliaria', label: 'Inmobiliaria' },
+      { value: 'otro', label: 'Otro' },
+    ],
+    messageLabel: 'Mensaje (opcional)',
+    messagePh: 'Cuéntanos brevemente tu caso',
+    submit: 'Enviar por WhatsApp',
+    required: 'Obligatorio',
+    whatsappHint: 'Al enviar abriremos WhatsApp con tu mensaje pre-rellenado. No almacenamos nada.',
+    successTitle: '¡Mensaje preparado!',
+    successBody: 'Si WhatsApp no se ha abierto automáticamente, ',
+    successLink: 'haz clic aquí',
+  },
+  ca: {
+    title: 'T\'interessa ' + productName + '?',
+    subtitle: 'Omple el formulari i et responem per WhatsApp en menys de 24h. Sense compromís.',
+    intentLabel: 'Què necessites?',
+    intent: {
+      waitlist: 'Apuntar-me a la llista d\'espera',
+      info: 'Més informació',
+      demo: 'Demana una demo',
+      custom: productSlug === 'strata' ? 'Funcionalitat a mida' : 'Adaptació al meu sector',
+      migrate: 'Migració des d\'un altre CMS',
+    },
+    planLabel: 'Pla que t\'interessa (opcional)',
+    planPlaceholder: 'Sense pla específic',
+    nameLabel: 'Nom',
+    namePh: 'El teu nom',
+    phoneLabel: 'Telèfon',
+    phonePh: '+34 600 000 000',
+    emailLabel: 'Correu (opcional)',
+    emailPh: 'eltu@correu.com',
+    extraLabel: productSlug === 'strata' ? 'Web actual (opcional)' : 'El teu sector (opcional)',
+    extraPh: productSlug === 'strata' ? 'https://elteuweb.com' : 'Clínica dental, assessoria, taller…',
+    extraOptions: productSlug === 'strata' ? null : [
+      { value: 'clinica', label: 'Clínica / salut' },
+      { value: 'asesoria', label: 'Assessoria / gestoria' },
+      { value: 'taller', label: 'Taller / serveis tècnics' },
+      { value: 'educacion', label: 'Educació / formació' },
+      { value: 'inmobiliaria', label: 'Immobiliària' },
+      { value: 'otro', label: 'Altre' },
+    ],
+    messageLabel: 'Missatge (opcional)',
+    messagePh: 'Explica\'ns breument el teu cas',
+    submit: 'Enviar per WhatsApp',
+    required: 'Obligatori',
+    whatsappHint: 'En enviar obrirem WhatsApp amb el teu missatge pre-emplenat. No emmagatzemem res.',
+    successTitle: 'Missatge preparat!',
+    successBody: 'Si WhatsApp no s\'ha obert automàticament, ',
+    successLink: 'fes clic aquí',
+  },
+  en: {
+    title: 'Interested in ' + productName + '?',
+    subtitle: 'Fill the form and we\'ll reply via WhatsApp in under 24h. No commitment.',
+    intentLabel: 'What do you need?',
+    intent: {
+      waitlist: 'Join the waitlist',
+      info: 'More information',
+      demo: 'Request a demo',
+      custom: productSlug === 'strata' ? 'Custom feature' : 'Sector adaptation',
+      migrate: 'Migration from another CMS',
+    },
+    planLabel: 'Plan you\'re interested in (optional)',
+    planPlaceholder: 'No specific plan',
+    nameLabel: 'Name',
+    namePh: 'Your name',
+    phoneLabel: 'Phone',
+    phonePh: '+34 600 000 000',
+    emailLabel: 'Email (optional)',
+    emailPh: 'you@email.com',
+    extraLabel: productSlug === 'strata' ? 'Current website (optional)' : 'Your sector (optional)',
+    extraPh: productSlug === 'strata' ? 'https://yourwebsite.com' : 'Dental clinic, consultancy, workshop…',
+    extraOptions: productSlug === 'strata' ? null : [
+      { value: 'clinica', label: 'Clinic / health' },
+      { value: 'asesoria', label: 'Consultancy / accounting' },
+      { value: 'taller', label: 'Workshop / technical services' },
+      { value: 'educacion', label: 'Education / training' },
+      { value: 'inmobiliaria', label: 'Real estate' },
+      { value: 'otro', label: 'Other' },
+    ],
+    messageLabel: 'Message (optional)',
+    messagePh: 'Briefly tell us about your case',
+    submit: 'Send via WhatsApp',
+    required: 'Required',
+    whatsappHint: 'When you submit we\'ll open WhatsApp with your message pre-filled. We don\'t store anything.',
+    successTitle: 'Message ready!',
+    successBody: 'If WhatsApp hasn\'t opened automatically, ',
+    successLink: 'click here',
+  },
+}[locale];
+
+const t = i18n;
+
+// Options para los radios de intent
+const intentOptions = [
+  { value: 'waitlist', label: t.intent.waitlist },
+  { value: 'info', label: t.intent.info },
+  { value: 'demo', label: t.intent.demo },
+  { value: 'custom', label: t.intent.custom },
+  ...(productSlug === 'strata' ? [{ value: 'migrate', label: t.intent.migrate }] : []),
+];
+
+// Plans per product
+const planOptions = productSlug === 'strata'
+  ? [
+      { value: 'free', label: 'Free — 0€/mes' },
+      { value: 'growth', label: 'Growth — 20€/mes' },
+      { value: 'pro', label: 'Pro — 35€/mes' },
+      { value: 'superior', label: 'Superior — 50€/mes' },
+      { value: 'blog', label: 'Blog — 100€/mes' },
+    ]
+  : [
+      { value: 'free', label: 'Free — 0€/mes' },
+      { value: 'starter', label: 'Starter — 50€/mes' },
+      { value: 'pro', label: 'Pro — 100€/mes' },
+      { value: 'business', label: 'Business — 250€/mes' },
+    ];
+
+// "Hola" localizado para el WhatsApp message
+const helloPrefix = productName;
+---
+<form
+  class="whatsapp-form"
+  data-product={productSlug}
+  data-phone={phoneRaw}
+  data-product-name={productName}
+  novalidate
+>
+  <header class="whatsapp-form__header">
+    <h2 class="whatsapp-form__title">{t.title}</h2>
+    <p class="whatsapp-form__subtitle">{t.subtitle}</p>
+  </header>
+
+  <div class="whatsapp-form__field">
+    <span class="whatsapp-form__label">{t.intentLabel} <span aria-hidden="true">*</span></span>
+    <div class="whatsapp-form__radios">
+      {intentOptions.map((opt, idx) => (
+        <label class="whatsapp-form__radio">
+          <input
+            type="radio"
+            name="intent"
+            value={opt.value}
+            required
+            checked={idx === 0}
+          />
+          <span>{opt.label}</span>
+        </label>
+      ))}
+    </div>
+  </div>
+
+  <div class="whatsapp-form__field">
+    <label for={`plan-${productSlug}`} class="whatsapp-form__label">{t.planLabel}</label>
+    <select id={`plan-${productSlug}`} name="plan" class="whatsapp-form__select">
+      <option value="">{t.planPlaceholder}</option>
+      {planOptions.map((p) => (
+        <option value={p.value}>{p.label}</option>
+      ))}
+    </select>
+  </div>
+
+  <div class="whatsapp-form__row">
+    <div class="whatsapp-form__field">
+      <label for={`nombre-${productSlug}`} class="whatsapp-form__label">{t.nameLabel} <span aria-hidden="true">*</span></label>
+      <input id={`nombre-${productSlug}`} name="nombre" type="text" autocomplete="name" required placeholder={t.namePh} />
+    </div>
+    <div class="whatsapp-form__field">
+      <label for={`telefono-${productSlug}`} class="whatsapp-form__label">{t.phoneLabel} <span aria-hidden="true">*</span></label>
+      <input id={`telefono-${productSlug}`} name="telefono" type="tel" autocomplete="tel" required placeholder={t.phonePh} />
+    </div>
+  </div>
+
+  <div class="whatsapp-form__field">
+    <label for={`email-${productSlug}`} class="whatsapp-form__label">{t.emailLabel}</label>
+    <input id={`email-${productSlug}`} name="email" type="email" autocomplete="email" placeholder={t.emailPh} />
+  </div>
+
+  <div class="whatsapp-form__field">
+    {t.extraOptions ? (
+      <>
+        <label for={`extra-${productSlug}`} class="whatsapp-form__label">{t.extraLabel}</label>
+        <select id={`extra-${productSlug}`} name="extra" class="whatsapp-form__select">
+          <option value="">{t.planPlaceholder}</option>
+          {t.extraOptions.map((o) => (
+            <option value={o.value}>{o.label}</option>
+          ))}
+        </select>
+      </>
+    ) : (
+      <>
+        <label for={`extra-${productSlug}`} class="whatsapp-form__label">{t.extraLabel}</label>
+        <input id={`extra-${productSlug}`} name="extra" type="url" placeholder={t.extraPh} />
+      </>
+    )}
+  </div>
+
+  <div class="whatsapp-form__field">
+    <label for={`mensaje-${productSlug}`} class="whatsapp-form__label">{t.messageLabel}</label>
+    <textarea id={`mensaje-${productSlug}`} name="mensaje" rows="4" placeholder={t.messagePh}></textarea>
+  </div>
+
+  <button type="submit" class="whatsapp-form__submit">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="20" height="20">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+    <span>{t.submit}</span>
+  </button>
+
+  <p class="whatsapp-form__hint">{t.whatsappHint}</p>
+
+  <div class="whatsapp-form__success" hidden>
+    <strong>{t.successTitle}</strong>
+    <span>{t.successBody}<a href="#" data-whatsapp-link>{t.successLink}</a>.</span>
+  </div>
+</form>
+
+<script is:inline define:vars={{ productSlug, phoneRaw }}>
+  (function () {
+    var form = document.querySelector('.whatsapp-form');
+    if (!form) return;
+    var productName = form.getAttribute('data-product-name') || 'Sincronia';
+
+    // Pre-rellenar plan desde ?tier=...
+    try {
+      var url = new URL(window.location.href);
+      var tier = url.searchParams.get('tier');
+      if (tier) {
+        var planSelect = form.querySelector('select[name="plan"]');
+        if (planSelect) {
+          for (var i = 0; i < planSelect.options.length; i++) {
+            if (planSelect.options[i].value === tier) {
+              planSelect.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }
+      // Pre-seleccionar intent desde ?intent=...
+      var intent = url.searchParams.get('intent');
+      if (intent) {
+        var radio = form.querySelector('input[name="intent"][value="' + intent + '"]');
+        if (radio) radio.checked = true;
+      }
+    } catch (e) { /* URL parsing falló, ignore */ }
+
+    // Etiqueta del intent en espanol para el WhatsApp message
+    var INTENT_LABELS = {
+      es: { waitlist: 'Lista de espera', info: 'Más información', demo: 'Demo', custom: productSlug === 'strata' ? 'Funcionalidad a medida' : 'Adaptación a mi sector', migrate: 'Migración desde otro CMS' },
+      ca: { waitlist: 'Llista d\'espera', info: 'Més informació', demo: 'Demo', custom: productSlug === 'strata' ? 'Funcionalitat a mida' : 'Adaptació al meu sector', migrate: 'Migració des d\'un altre CMS' },
+      en: { waitlist: 'Waitlist', info: 'More information', demo: 'Demo', custom: productSlug === 'strata' ? 'Custom feature' : 'Sector adaptation', migrate: 'Migration from another CMS' },
+    };
+    // Detectar locale desde la URL
+    var path = window.location.pathname;
+    var locale = path.indexOf('/ca/') === 0 ? 'ca' : path.indexOf('/en/') === 0 ? 'en' : 'es';
+    var PLAN_LABELS = {
+      es: { free: 'Free (0€/mes)', starter: 'Starter (50€/mes)', pro: 'Pro (100€/mes)', business: 'Business (250€/mes)', growth: 'Growth (20€/mes)', superior: 'Superior (50€/mes)', blog: 'Blog (100€/mes)' },
+      ca: { free: 'Free (0€/mes)', starter: 'Starter (50€/mes)', pro: 'Pro (100€/mes)', business: 'Business (250€/mes)', growth: 'Growth (20€/mes)', superior: 'Superior (50€/mes)', blog: 'Blog (100€/mes)' },
+      en: { free: 'Free (€0/mo)', starter: 'Starter (€50/mo)', pro: 'Pro (€100/mo)', business: 'Business (€250/mo)', growth: 'Growth (€20/mo)', superior: 'Superior (€50/mo)', blog: 'Blog (€100/mo)' },
+    };
+    var SECTOR_LABELS = {
+      es: { clinica: 'Clínica / salud', asesoria: 'Asesoría / gestoría', taller: 'Taller / servicios técnicos', educacion: 'Educación / formación', inmobiliaria: 'Inmobiliaria', otro: 'Otro' },
+      ca: { clinica: 'Clínica / salut', asesoria: 'Assessoria / gestoria', taller: 'Taller / serveis tècnics', educacion: 'Educació / formació', inmobiliaria: 'Immobiliària', otro: 'Altre' },
+      en: { clinica: 'Clinic / health', asesoria: 'Consultancy / accounting', taller: 'Workshop / technical services', educacion: 'Education / training', inmobiliaria: 'Real estate', otro: 'Other' },
+    };
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Validacion: marcar required vacios con borde rojo
+      var required = form.querySelectorAll('[required]');
+      var ok = true;
+      required.forEach(function (el) {
+        if (!el.value || !el.value.trim()) {
+          el.style.borderColor = '#b71c1c';
+          ok = false;
+        } else {
+          el.style.borderColor = '';
+        }
+      });
+      if (!ok) {
+        var firstInvalid = form.querySelector('[required][style*="b71c1c"]');
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
+
+      var data = new FormData(form);
+      var intent = data.get('intent') || '';
+      var intentLabel = (INTENT_LABELS[locale] || INTENT_LABELS.es)[intent] || intent;
+      var plan = data.get('plan') || '';
+      var planLabel = plan ? (PLAN_LABELS[locale] || PLAN_LABELS.es)[plan] || plan : '';
+      var nombre = data.get('nombre') || '';
+      var telefono = data.get('telefono') || '';
+      var email = data.get('email') || '';
+      var extra = data.get('extra') || '';
+      // Si extra es un value conocido del sector (Simplifica), traducelo
+      if (extra && SECTOR_LABELS[locale] && SECTOR_LABELS[locale][extra]) {
+        extra = SECTOR_LABELS[locale][extra];
+      }
+      var mensaje = data.get('mensaje') || '';
+
+      var intro = locale === 'ca'
+        ? 'Hola Sincronia, em interessa ' + productName + '.'
+        : locale === 'en'
+          ? 'Hi Sincronia, I\'m interested in ' + productName + '.'
+          : 'Hola Sincronia, me interesa ' + productName + '.';
+
+      var lines = [intro, ''];
+      lines.push('Tipo: ' + intentLabel);
+      if (planLabel) lines.push('Plan: ' + planLabel);
+      lines.push('Nombre: ' + nombre);
+      lines.push('Teléfono: ' + telefono);
+      if (email) lines.push('Email: ' + email);
+      if (extra) lines.push(productSlug === 'strata' ? 'Web actual: ' + extra : 'Sector: ' + extra);
+      if (mensaje) lines.push('', 'Detalles: ' + mensaje);
+
+      var msg = lines.join('\n');
+      var url = 'https://wa.me/' + phoneRaw + '?text=' + encodeURIComponent(msg);
+
+      // Muestra el bloque de exito con link manual
+      form.classList.add('is-sent');
+      var success = form.querySelector('.whatsapp-form__success');
+      var link = form.querySelector('[data-whatsapp-link]');
+      if (link) link.setAttribute('href', url);
+      if (success) success.hidden = false;
+
+      // Abre WhatsApp en pestana nueva
+      window.open(url, '_blank', 'noopener');
+    });
+
+    // Limpia el borde rojo en cuanto el usuario empieza a escribir
+    form.querySelectorAll('input, textarea, select').forEach(function (el) {
+      el.addEventListener('input', function () {
+        if (el.value && el.value.trim()) el.style.borderColor = '';
+      });
+      el.addEventListener('change', function () {
+        if (el.value && el.value.trim()) el.style.borderColor = '';
+      });
+    });
+  })();
+</script>
+
+<style>
+  .whatsapp-form {
+    background: #fff;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+    padding: var(--s-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .whatsapp-form__header { margin-bottom: var(--s-3); }
+  .whatsapp-form__title { font-size: 1.5rem; margin: 0 0 var(--s-2); letter-spacing: -0.01em; }
+  .whatsapp-form__subtitle { color: var(--c-muted); font-size: 0.9375rem; margin: 0; }
+
+  .whatsapp-form__field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .whatsapp-form__row { display: grid; grid-template-columns: 1fr; gap: var(--s-5); }
+  @media (min-width: 640px) { .whatsapp-form__row { grid-template-columns: 1fr 1fr; } }
+
+  .whatsapp-form__label { font-size: 0.875rem; font-weight: 600; color: var(--c-ink); }
+  .whatsapp-form__label [aria-hidden="true"] { color: var(--c-coral-500); margin-left: 0.1rem; }
+
+  .whatsapp-form__radios { display: flex; flex-direction: column; gap: 0.5rem; }
+  .whatsapp-form__radio {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    font-size: 0.9375rem;
+    color: var(--c-text);
+    transition: border-color 0.15s;
+  }
+  .whatsapp-form__radio:hover { border-color: var(--c-navy-800); }
+  .whatsapp-form__radio input { accent-color: var(--c-coral-500); }
+  .whatsapp-form__radio:has(input:checked) {
+    border-color: var(--c-coral-500);
+    background: rgba(255, 122, 77, 0.04);
+  }
+
+  .whatsapp-form__select,
+  .whatsapp-form input[type="text"],
+  .whatsapp-form input[type="tel"],
+  .whatsapp-form input[type="email"],
+  .whatsapp-form input[type="url"],
+  .whatsapp-form textarea {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-sm);
+    background: #fff;
+    color: var(--c-ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    transition: border-color 0.15s;
+  }
+  .whatsapp-form__select:focus,
+  .whatsapp-form input:focus,
+  .whatsapp-form textarea:focus {
+    outline: none;
+    border-color: var(--c-coral-500);
+  }
+  .whatsapp-form textarea { resize: vertical; min-height: 5rem; }
+
+  .whatsapp-form__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: var(--r-sm);
+    padding: 0.95rem 1.4rem;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .whatsapp-form__submit:hover { background: #1ebe5b; }
+  .whatsapp-form__submit:focus-visible {
+    outline: 3px solid var(--c-coral-500);
+    outline-offset: 3px;
+  }
+
+  .whatsapp-form__hint {
+    color: var(--c-muted);
+    font-size: 0.8125rem;
+    margin: 0;
+    text-align: center;
+  }
+
+  .whatsapp-form__success {
+    background: rgba(37, 211, 102, 0.08);
+    border: 1px solid #25D366;
+    border-radius: var(--r-sm);
+    padding: var(--s-4);
+    color: #0a3a1d;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .whatsapp-form__success strong { display: block; margin-bottom: 0.3rem; }
+  .whatsapp-form__success a { color: #1ebe5b; font-weight: 600; }
+</style>

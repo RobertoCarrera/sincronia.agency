@@ -1,0 +1,34 @@
+---
+import Base from '~/layouts/Base.astro';
+import ProductContactForm from '~/components/ProductContactForm.astro';
+import { localizePath } from '~/lib/i18n';
+import { simplifica as content } from '~/content/products/simplifica';
+import { products } from '~/data/products';
+
+const c = content.es;
+const productName = products.find((p) => p.slug === 'simplifica')!.name;
+---
+<Base title={`${productName} — Contacto por WhatsApp · Sincronia Agency`} description={`Escríbenos por WhatsApp sobre ${productName} (CRM). Te respondemos en menos de 24h.`}>
+  <section class="contact-product section">
+    <div class="container">
+      <header class="contact-product__header">
+        <a href={localizePath('/productos/simplifica', 'es')} class="contact-product__back">
+          ← {c.hero.title}
+        </a>
+      </header>
+      <ProductContactForm productSlug="simplifica" productName={productName} locale="es" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-product { padding-block: var(--s-10) var(--s-12); }
+  .contact-product__header { max-width: 720px; margin: 0 auto var(--s-6); }
+  .contact-product__back {
+    color: var(--c-muted);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .contact-product__back:hover { color: var(--c-coral-500); }
+</style>
