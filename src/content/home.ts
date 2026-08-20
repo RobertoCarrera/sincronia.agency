@@ -32,7 +32,7 @@ export const home: Record<Locale, HomeContent> = {
     products: {
       eyebrow: 'Productos propios',
       title: 'Software que hemos construido nosotros',
-      subtitle: 'Dos productos en beta que pueden resolver problemas reales de tu negocio.',
+      subtitle: 'Un CRM en beta con clientes, un CMS en alpha al que puedes apuntarte a la lista de espera.',
       ctaAll: 'Ver todos los productos',
     },
     coverage: {
@@ -51,7 +51,7 @@ export const home: Record<Locale, HomeContent> = {
     ],
     productPreviews: [
       { slug: 'simplifica', name: 'Simplifica', tagline: 'CRM multi-sector en beta', desc: 'El CRM que se adapta a tu sector, no al revés. Implementación personalizada para clínicas, asesorías, talleres y cualquier negocio con clientes y citas.' },
-      { slug: 'strata', name: 'Strata', tagline: 'CMS con IA en beta', desc: 'CMS propio con editor visual y asistente IA. Reduce el coste de tu web a la mitad. Mantenimiento gratuito hasta 2027.' },
+      { slug: 'strata', name: 'Strata', tagline: 'CMS con IA en alpha', desc: 'CMS propio con editor visual y asistente IA. Reduce el coste de tu web a la mitad. Apúntate a la lista de espera para acceso anticipado.' },
     ],
   },
   ca: {
@@ -74,7 +74,7 @@ export const home: Record<Locale, HomeContent> = {
     products: {
       eyebrow: 'Productes propis',
       title: 'Programari que hem construït nosaltres',
-      subtitle: 'Dos productes en beta que poden resoldre problemes reals del teu negoci.',
+      subtitle: 'Un CRM en beta amb clients, un CMS en alpha on pots apuntar-te a la llista d\'espera.',
       ctaAll: 'Veure tots els productes',
     },
     coverage: {
@@ -93,7 +93,7 @@ export const home: Record<Locale, HomeContent> = {
     ],
     productPreviews: [
       { slug: 'simplifica', name: 'Simplifica', tagline: 'CRM multi-sector en beta', desc: "El CRM que s'adapta al teu sector, no a l'inrevés. Implementació personalitzada per a clíniques, assessories, tallers i qualsevol negoci amb clients i cites." },
-      { slug: 'strata', name: 'Strata', tagline: 'CMS amb IA en beta', desc: 'CMS propi amb editor visual i assistent IA. Redueix el cost del teu web a la meitat. Manteniment gratuït fins al 2027.' },
+      { slug: 'strata', name: 'Strata', tagline: 'CMS amb IA en alpha', desc: "CMS propi amb editor visual i assistent IA. Redueix el cost del teu web a la meitat. Apunta't a la llista d'espera per a accés anticipat." },
     ],
   },
   en: {
@@ -116,7 +116,7 @@ export const home: Record<Locale, HomeContent> = {
     products: {
       eyebrow: 'Our products',
       title: 'Software we built ourselves',
-      subtitle: 'Two products in beta that can solve real problems for your business.',
+      subtitle: 'A CRM in beta with clients, a CMS in alpha you can join the waitlist for.',
       ctaAll: 'View all products',
     },
     coverage: {
@@ -135,7 +135,7 @@ export const home: Record<Locale, HomeContent> = {
     ],
     productPreviews: [
       { slug: 'simplifica', name: 'Simplifica', tagline: 'Multi-sector CRM in beta', desc: 'A CRM that adapts to your sector, not the other way round. Custom implementation for clinics, consultancies, workshops and any business with clients and appointments.' },
-      { slug: 'strata', name: 'Strata', tagline: 'AI-powered CMS in beta', desc: 'Our own CMS with visual editor and AI assistant. Cuts your website cost in half. Free maintenance until 2027.' },
+      { slug: 'strata', name: 'Strata', tagline: 'AI-powered CMS in alpha', desc: 'Our own CMS with visual editor and AI assistant. Cuts your website cost in half. Join the waitlist for early access.' },
     ],
   },
 };

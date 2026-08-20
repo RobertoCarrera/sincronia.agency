@@ -7,7 +7,7 @@ import ProductCard from '~/components/ProductCard.astro';
 import Button from '~/components/Button.astro';
 import { home } from '~/content/home';
 import { services } from '~/data/services';
-import { products } from '~/data/products';
+import { products, getStartingPrice } from '~/data/products';
 import { locations } from '~/data/locations';
 import { localizePath } from '~/lib/i18n';
 import { t } from '~/i18n/ui';
@@ -19,7 +19,16 @@ const servicesToShow = c.servicePreviews.map((sp) => {
 });
 const productsToShow = c.productPreviews.map((pp) => {
   const meta = products.find((p) => p.slug === pp.slug)!;
-  return { ...pp, icon: meta.icon, status: meta.status, priceFrom: meta.priceFrom, priceUnit: meta.priceUnit, accent: 'coral' as const };
+  return {
+    ...pp,
+    icon: meta.icon,
+    status: meta.status,
+    featured: meta.featured ?? false,
+    priceFrom: getStartingPrice(meta),
+    priceUnit: '/mes',
+    // Producto destacado (Strata) = variante navy para diferenciarse en la home.
+    accent: (meta.featured ? 'navy' : 'coral') as 'coral' | 'navy',
+  };
 });
 ---
 <Base
@@ -77,6 +86,7 @@ const productsToShow = c.productPreviews.map((pp) => {
             tagline={p.tagline}
             description={p.desc}
             status={p.status}
+            featured={p.featured}
             priceFrom={p.priceFrom}
             priceUnit={p.priceUnit}
             icon={p.icon}

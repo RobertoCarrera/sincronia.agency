@@ -1,0 +1,294 @@
+---
+/**
+ * PricingTable — renderiza los tiers de un producto en grid responsive.
+ *
+ * Diseñado para soportar tanto Simplifica (4 tiers) como Strata (5 tiers).
+ * El tier con `highlight: true` se eleva y se marca con badge "RECOMENDADO".
+ *
+ * Requiere que el padre le pase el product desde `~/data/products`:
+ *
+ *   <PricingTable product={products.find(p => p.slug === 'simplifica')!} />
+ */
+import type { ProductMeta } from '~/data/products';
+import Button from '~/components/Button.astro';
+import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
+
+interface Props {
+  product: ProductMeta;
+}
+const { product } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+
+// Textos comunes por idioma
+const i18n = {
+  es: {
+    recommended: 'RECOMENDADO',
+    perMonth: '/mes',
+    monthUnit: 'mes',
+    cta: {
+      default: 'Pedir demo',
+      waitlist: 'Apuntarme a la lista de espera',
+      start: 'Empezar gratis',
+    },
+    setupTitle: 'Sobre el setup',
+  },
+  ca: {
+    recommended: 'RECOMENDAT',
+    perMonth: '/mes',
+    monthUnit: 'mes',
+    cta: {
+      default: 'Demana\'m demo',
+      waitlist: 'Apuntar-me a la llista d\'espera',
+      start: 'Comença gratis',
+    },
+    setupTitle: 'Sobre el setup',
+  },
+  en: {
+    recommended: 'RECOMMENDED',
+    perMonth: '/month',
+    monthUnit: 'month',
+    cta: {
+      default: 'Request demo',
+      waitlist: 'Join the waitlist',
+      start: 'Start for free',
+    },
+    setupTitle: 'About setup',
+  },
+}[locale];
+
+// Resuelve la etiqueta del CTA del tier con fallback razonable.
+function resolveCtaLabel(tierCtaLabel: string | undefined, isHighlight: boolean, productSlug: string): string {
+  if (tierCtaLabel) return tierCtaLabel;
+  if (productSlug === 'strata') return i18n.cta.waitlist;
+  if (isHighlight) return i18n.cta.default;
+  return i18n.cta.default;
+}
+
+// Variante de tamaño para el grid según nº de tiers (5 = un pelín más compactos).
+const isWide = product.tiers.length >= 5;
+---
+<section class="pricing-table-section" aria-labelledby="pricing-table-heading">
+  <div class="container">
+    <h2 id="pricing-table-heading" class="pricing-table__title">{product.name}</h2>
+    <p class="pricing-table__subtitle">{product.shortDescription[locale]}</p>
+
+    <div class={`pricing-grid ${isWide ? 'pricing-grid--wide' : ''}`}>
+      {product.tiers.map((tier) => {
+        const isHighlight = !!tier.highlight;
+        const ctaLabel = resolveCtaLabel(tier.ctaLabel, isHighlight, product.slug);
+        // El tier Free (0€) muestra "Gratis" o "Free" o 0€ según locale.
+        const priceDisplay = tier.price === 0
+          ? (locale === 'en' ? 'Free' : locale === 'ca' ? 'Gratis' : 'Gratis')
+          : `${tier.price}€`;
+
+        return (
+          <article
+            class:list={[
+              'tier-card',
+              isHighlight && 'tier-card--highlight',
+            ]}
+            data-tier={tier.id}
+            aria-label={`${tier.name} — ${priceDisplay}${tier.price > 0 ? ' ' + i18n.perMonth : ''}`}
+          >
+            {isHighlight && <span class="tier-card__ribbon">{i18n.recommended}</span>}
+            <header class="tier-card__header">
+              <h3 class="tier-card__name">{tier.name}</h3>
+              <div class="tier-card__price">
+                <span class="tier-card__price-amount">{priceDisplay}</span>
+                {tier.price > 0 && <span class="tier-card__price-unit">{i18n.perMonth}</span>}
+              </div>
+            </header>
+
+            <ul class="tier-card__features">
+              {tier.features.map((f) => (
+                <li class="tier-card__feature">
+                  <svg viewBox="0 0 24 24" class="tier-card__feature-icon" aria-hidden="true">
+                    <path d="M5 12l4 4L19 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div class="tier-card__cta">
+              <Button
+                href={localizePath(product.cta.href, locale)}
+                variant={isHighlight ? 'primary' : 'secondary'}
+                size="md"
+                external={false}
+              >
+                {ctaLabel}
+              </Button>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    {product.setupNote && (
+      <p class="pricing-table__setup-note">
+        <strong>{i18n.setupTitle}:</strong> {product.setupNote}
+      </p>
+    )}
+  </div>
+</section>
+
+<style>
+  .pricing-table-section { padding-block: var(--s-12); }
+  .pricing-table__title { text-align: center; margin-bottom: var(--s-3); }
+  .pricing-table__subtitle {
+    text-align: center;
+    color: var(--c-muted);
+    max-width: 640px;
+    margin: 0 auto var(--s-10);
+    font-size: 1.0625rem;
+  }
+
+  /* === Grid de tiers === */
+  .pricing-grid {
+    display: grid;
+    gap: var(--s-5);
+    grid-template-columns: 1fr;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  @media (min-width: 640px) {
+    .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px) {
+    .pricing-grid { grid-template-columns: repeat(4, 1fr); }
+    .pricing-grid--wide { grid-template-columns: repeat(5, 1fr); }
+  }
+
+  /* === Tier card === */
+  .tier-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+    padding: var(--s-6);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s;
+  }
+  .tier-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -8px rgba(27, 58, 107, 0.12);
+  }
+
+  .tier-card--highlight {
+    background: var(--c-navy-900);
+    border-color: var(--c-coral-500);
+    border-width: 2px;
+    color: #fff;
+    transform: scale(1.03);
+    box-shadow: 0 12px 32px -12px rgba(27, 58, 107, 0.25);
+  }
+  .tier-card--highlight:hover {
+    transform: scale(1.03) translateY(-2px);
+  }
+
+  .tier-card__ribbon {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--c-coral-500);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--r-sm);
+    white-space: nowrap;
+  }
+
+  .tier-card__header {
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--c-line);
+    margin-bottom: var(--s-4);
+  }
+  .tier-card--highlight .tier-card__header {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+  .tier-card__name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--c-ink);
+    margin: 0 0 var(--s-3);
+    letter-spacing: -0.01em;
+  }
+  .tier-card--highlight .tier-card__name { color: #fff; }
+
+  .tier-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+  }
+  .tier-card__price-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--c-ink);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .tier-card--highlight .tier-card__price-amount { color: #fff; }
+  .tier-card__price-unit {
+    font-size: 0.875rem;
+    color: var(--c-muted);
+  }
+  .tier-card--highlight .tier-card__price-unit { color: rgba(255, 255, 255, 0.65); }
+
+  /* === Features === */
+  .tier-card__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--s-5);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+  }
+  .tier-card__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    color: var(--c-text);
+  }
+  .tier-card--highlight .tier-card__feature { color: rgba(255, 255, 255, 0.9); }
+  .tier-card__feature-icon {
+    width: 1.05rem;
+    height: 1.05rem;
+    color: var(--c-coral-500);
+    flex-shrink: 0;
+    margin-top: 0.18rem;
+  }
+  .tier-card--highlight .tier-card__feature-icon { color: var(--c-coral-500); }
+
+  /* === CTA === */
+  .tier-card__cta {
+    margin-top: auto;
+  }
+  .tier-card__cta :global(.btn) {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* === Setup note === */
+  .pricing-table__setup-note {
+    max-width: 800px;
+    margin: var(--s-8) auto 0;
+    padding: var(--s-4) var(--s-5);
+    background: var(--c-bg-alt);
+    border: 1px solid var(--c-line);
+    border-left: 3px solid var(--c-coral-500);
+    border-radius: var(--r-sm);
+    color: var(--c-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .pricing-table__setup-note strong { color: var(--c-ink); }
+</style>

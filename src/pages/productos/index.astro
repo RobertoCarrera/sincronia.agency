@@ -3,26 +3,26 @@ import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
 import CTA from '~/components/CTA.astro';
 import ProductCard from '~/components/ProductCard.astro';
-import { products } from '~/data/products';
+import { products, getStartingPrice } from '~/data/products';
 import { t } from '~/i18n/ui';
 import { localizePath } from '~/lib/i18n';
 
 const heroCopy = {
-  es: { eyebrow: 'Productos propios', title: 'Software que hemos construido nosotros', subtitle: 'Dos productos en beta. Si resuelven un problema real para tu negocio, podemos empezar mañana.' },
-  ca: { eyebrow: 'Productes propis', title: 'Programari que hem construït nosaltres', subtitle: 'Dos productes en beta. Si resolen un problema real per al teu negoci, podem començar demà.' },
-  en: { eyebrow: 'Our products', title: 'Software we built ourselves', subtitle: 'Two products in beta. If they solve a real problem for your business, we can start tomorrow.' },
+  es: { eyebrow: 'Productos propios', title: 'Software que hemos construido nosotros', subtitle: 'Un CRM y un CMS. Uno en beta con clientes, otro en alpha al que puedes apuntarte a la lista de espera.' },
+  ca: { eyebrow: 'Productes propis', title: 'Programari que hem construït nosaltres', subtitle: 'Un CRM i un CMS. Un en beta amb clients, l\'altre en alpha on pots apuntar-te a la llista d\'espera.' },
+  en: { eyebrow: 'Our products', title: 'Software we built ourselves', subtitle: 'A CRM and a CMS. One in beta with clients, the other in alpha you can join the waitlist for.' },
 };
 
-const descs: Record<string, Record<string, { tagline: string; desc: string; accent: 'coral' | 'navy' }>> = {
+const descs: Record<string, Record<string, { tagline: string; desc: string }>> = {
   simplifica: {
-    es: { tagline: 'CRM multi-sector', desc: 'El CRM que se adapta a tu sector, no al revés. Implementación personalizada para clínicas, asesorías, talleres y negocios con clientes y citas.', accent: 'coral' },
-    ca: { tagline: 'CRM multi-sector', desc: "El CRM que s'adapta al teu sector, no a l'inrevés. Implementació personalitzada per a clíniques, assessories, tallers i negocis amb clients i cites.", accent: 'coral' },
-    en: { tagline: 'Multi-sector CRM', desc: 'A CRM that adapts to your sector, not the other way round. Custom implementation for clinics, consultancies, workshops and any business with clients and appointments.', accent: 'coral' },
+    es: { tagline: 'CRM multi-sector', desc: 'El CRM que se adapta a tu sector, no al revés. Implementación personalizada para clínicas, asesorías, talleres y negocios con clientes y citas.' },
+    ca: { tagline: 'CRM multi-sector', desc: "El CRM que s'adapta al teu sector, no a l'inrevés. Implementació personalitzada per a clíniques, assessories, tallers i negocis amb clients i cites." },
+    en: { tagline: 'Multi-sector CRM', desc: 'A CRM that adapts to your sector, not the other way round. Custom implementation for clinics, consultancies, workshops and any business with clients and appointments.' },
   },
   strata: {
-    es: { tagline: 'CMS con IA', desc: 'CMS propio con editor visual y asistente IA. Reduce el coste de tu web a la mitad. Mantenimiento gratuito hasta 2027.', accent: 'navy' },
-    ca: { tagline: 'CMS amb IA', desc: 'CMS propi amb editor visual i assistent IA. Redueix el cost del teu web a la meitat. Manteniment gratuït fins al 2027.', accent: 'navy' },
-    en: { tagline: 'AI-powered CMS', desc: 'Our own CMS with visual editor and AI assistant. Cuts your website cost in half. Free maintenance until 2027.', accent: 'navy' },
+    es: { tagline: 'CMS con IA en alpha', desc: 'CMS propio con editor visual y asistente IA. Reduce el coste de tu web a la mitad. Apúntate a la lista de espera para acceso anticipado.' },
+    ca: { tagline: 'CMS amb IA en alpha', desc: 'CMS propi amb editor visual i assistent IA. Redueix el cost del teu web a la meitat. Apunta\'t a la llista d\'espera per a accés anticipat.' },
+    en: { tagline: 'AI-powered CMS in alpha', desc: 'Our own CMS with visual editor and AI assistant. Cuts your website cost in half. Join the waitlist for early access.' },
   },
 };
 
@@ -31,7 +31,7 @@ const h = heroCopy[locale];
 ---
 <Base
   title="Productos — Simplifica CRM y Strata CMS · Sincronia Agency"
-  description="Simplifica (CRM multi-sector) y Strata (CMS con IA): dos productos propios en beta, con implementación personalizada y hosting desde 20€/mes."
+  description="Simplifica (CRM multi-sector en beta) y Strata (CMS con IA en alpha): dos productos propios con implementación personalizada y hosting desde 20€/mes."
 >
   <Hero eyebrow={h.eyebrow} title={h.title} subtitle={h.subtitle} />
 
@@ -40,6 +40,8 @@ const h = heroCopy[locale];
       <div class="grid grid--2">
         {products.map((p) => {
           const d = descs[p.slug][locale];
+          // Producto destacado (Strata) = variante navy para diferenciarse.
+          const accent = p.featured ? 'navy' : 'coral';
           return (
             <ProductCard
               slug={p.slug}
@@ -47,10 +49,11 @@ const h = heroCopy[locale];
               tagline={d.tagline}
               description={d.desc}
               status={p.status}
-              priceFrom={p.priceFrom}
-              priceUnit={p.priceUnit}
+              featured={p.featured ?? false}
+              priceFrom={getStartingPrice(p)}
+              priceUnit="/mes"
               icon={p.icon}
-              accent={d.accent}
+              accent={accent as 'coral' | 'navy'}
             />
           );
         })}
