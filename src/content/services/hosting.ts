@@ -5,12 +5,12 @@ export const hosting: Record<Locale, ServiceContent> = {
   es: {
     meta: {
       title: 'Hosting especializado en Tarragona · Sincronia Agency',
-      description: 'Hosting optimizado para WordPress y aplicaciones web (Node, Angular, Python). Servidores en Europa, soporte en español, backups diarios. Desde 20€/mes.',
+      description: 'Hosting WordPress en AWS Lightsail con stack de plugins premium incluido (Divi, BerqWP, SEO Generator, EWWW, Security Ninja y más). Soporte en español, backups diarios. Desde 35€/mes.',
     },
     hero: {
       eyebrow: 'Servicio',
-      title: 'Hosting especializado para WordPress y apps web',
-      subtitle: 'Servidores rápidos, soporte humano en español, backups diarios, monitorización 24/7. Sin sustos, sin tickets sin respuesta.',
+      title: 'Hosting WordPress con plugins premium incluidos',
+      subtitle: 'Servidor en AWS Lightsail, soporte humano en español, backups diarios y un stack de plugins premium por el coste de un hosting normal. Sin sustos, sin tickets sin respuesta.',
     },
     intro: {
       title: 'Por qué el hosting "barato" sale caro',
@@ -42,18 +42,62 @@ export const hosting: Record<Locale, ServiceContent> = {
         { num: '04', title: 'Operación continua', desc: 'Monitorización, backups, soporte. Tu web funciona, tú duermes tranquilo.' },
       ],
     },
+    plugins: {
+      title: 'Stack de plugins premium incluido en todos los planes',
+      subtitle: 'Estos plugins cuestan más de 800€/año si los compras por separado. Con nuestro hosting vienen instalados, configurados y mantenidos por nosotros.',
+      categories: [
+        {
+          name: 'Diseño y construcción',
+          items: [
+            { name: 'Divi (Elegant Themes)', desc: 'Constructor visual y tema premium. El estándar de la industria para diseñar WordPress sin tocar código.' },
+            { name: 'Divi Next (Full Access)', desc: 'Extensiones y módulos extra para Divi: layouts, efectos, bloques adicionales.' },
+            { name: 'Pee Aye Creative (All Divi Plugins)', desc: 'Suite completa de plugins para Divi. Decenas de widgets, layouts y herramientas.' },
+          ],
+        },
+        {
+          name: 'Rendimiento y SEO',
+          items: [
+            { name: 'BerqWP', desc: 'Caché premium de nueva generación. WordPress carga 3-5x más rápido que con WP Rocket o LiteSpeed.' },
+            { name: 'EWWW Image Optimizer (5GB)', desc: 'Optimización y conversión automática de imágenes a WebP. Ahorra ancho de banda y mejora Core Web Vitals.' },
+            { name: 'SEO Generator', desc: 'Genera meta titles, descriptions y schema.org automáticamente. Ahorra horas de trabajo SEO en cada página.' },
+            { name: 'Sigma Media Manager', desc: 'Gestión avanzada de la biblioteca de medios: carpetas, búsqueda, reemplazo, optimización.' },
+          ],
+        },
+        {
+          name: 'Seguridad y mantenimiento',
+          items: [
+            { name: 'Security Ninja', desc: 'Suite de seguridad: firewall, escaneo de malware, hardening de WP. Más de 50 comprobaciones automáticas.' },
+            { name: 'WP Reset', desc: 'Reset y recuperación de WordPress para staging y emergencias. Resetea la web a fábrica en minutos.' },
+            { name: 'Database Cleaner', desc: 'Limpia revisions, transients, spam, drafts antiguos. Mantiene la base de datos ligera y rápida.' },
+            { name: 'WP 301 Redirects', desc: 'Gestor de redirecciones 301. Esencial para SEO cuando cambias URLs o migras contenido.' },
+          ],
+        },
+        {
+          name: 'Cumplimiento y extras',
+          items: [
+            { name: 'Plugin de cookies RGPD', desc: 'Banner de cookies conforme a RGPD. Hasta 1.000 visitas/mes gratuitas en el plan básico.' },
+            { name: 'DarkMySite', desc: 'Modo oscuro automático para tu web. Tendencia en diseño y mejora de accesibilidad.' },
+            { name: 'Deftform', desc: 'Constructor de formularios avanzado: lógica condicional, integraciones, anti-spam.' },
+            { name: 'North Commerce', desc: 'Alternativa ligera a WooCommerce. Tienda online sin la pesadez de WooCommerce.' },
+            { name: 'MySignature (1 signature)', desc: 'Firma de email profesional con tu marca.' },
+          ],
+        },
+      ],
+    },
     pricing: {
       title: 'Precio y compromiso',
-      body: 'Hosting desde 20€/mes (1 web WordPress, 25GB SSD, tráfico razonable). Si necesitas más webs, más recursos o una app web, te lo presupuestamos a medida. Sin permanencia. Migración inicial gratuita.',
+      body: 'Tres planes mensuales: Hosting WP Start a 35€ (2GB RAM), Hosting WP Pro a 60€ (4GB RAM, recomendado) y Hosting WP Business a 100€ (8GB RAM). Todos los planes incluyen el stack completo de plugins premium por el coste de un hosting normal. Sin permanencia. Migración inicial gratuita.',
     },
     faq: {
       title: 'Preguntas frecuentes',
       items: [
-        { q: '¿Cuánto cuesta el hosting?', a: 'WordPress desde 20€/mes. Para apps web, múltiples webs o casos especiales (alto tráfico, requisitos específicos), te lo presupuestamos a medida.' },
+        { q: '¿Cuánto cuesta el hosting?', a: 'Hosting WP Start desde 35€/mes, Hosting WP Pro a 60€/mes y Hosting WP Business a 100€/mes. Todos incluyen el stack de plugins premium.' },
+        { q: '¿Qué plugins premium están incluidos?', a: 'Más de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, plugin de cookies RGPD y más. Valor de mercado: más de 800€/año.' },
+        { q: '¿Las licencias de los plugins son vuestras?', a: 'Sí. Las gestionamos nosotros como parte del servicio. Tú no te preocupas de renovar, actualizar ni mantenerlas. Si te vas del hosting, los plugins se quedan con nosotros.' },
         { q: '¿Puedo mantener mi dominio actual?', a: 'Sí. Solo necesitamos que apuntes el DNS a nuestros servidores. Te guiamos paso a paso.' },
         { q: '¿Hacéis migración desde mi hosting actual?', a: 'Sí, gratuita. Migramos tu web, base de datos, emails. Sin pérdida de datos, con tiempo de inactividad mínimo.' },
         { q: '¿Y si necesito más recursos?', a: 'Escalamos vertical u horizontalmente según el caso. A veces es cambiar de plan, a veces mover a un servidor dedicado o a Vercel.' },
-        { q: '¿Tenéis servidores en España?', a: 'Servidores en centros de datos europeos (Países Bajos, Alemania, Francia según proveedor). Cumple RGPD, baja latencia desde España.' },
+        { q: '¿Tenéis servidores en España?', a: 'Servidores en AWS Lightsail (data centers europeos: Irlanda, Frankfurt, Londres según región). Cumple RGPD, baja latencia desde España.' },
         { q: '¿Y los emails?', a: 'Incluidos opcionalmente. Buzones con tu dominio, antispam, webmail, IMAP/SMTP. Si prefieres Google Workspace o Microsoft 365, también te lo configuramos.' },
       ],
     },
@@ -65,12 +109,12 @@ export const hosting: Record<Locale, ServiceContent> = {
   ca: {
     meta: {
       title: 'Hosting especialitzat a Tarragona · Sincronia Agency',
-      description: 'Hosting optimitzat per a WordPress i aplicacions web (Node, Angular, Python). Servidors a Europa, suport en espanyol, còpies de seguretat diàries. Des de 20€/mes.',
+      description: 'Hosting WordPress a AWS Lightsail amb stack de plugins premium inclòs (Divi, BerqWP, SEO Generator, EWWW, Security Ninja i més). Suport en espanyol, còpies de seguretat diàries. Des de 35€/mes.',
     },
     hero: {
       eyebrow: 'Servei',
-      title: 'Hosting especialitzat per a WordPress i apps web',
-      subtitle: 'Servidors ràpids, suport humà en espanyol, còpies de seguretat diàries, monitoratge 24/7. Sense ensurts, sense tiquets sense resposta.',
+      title: 'Hosting WordPress amb plugins premium inclosos',
+      subtitle: 'Servidor a AWS Lightsail, suport humà en espanyol, còpies de seguretat diàries i un stack de plugins premium pel cost d\'un hosting normal. Sense ensurts, sense tiquets sense resposta.',
     },
     intro: {
       title: 'Per què el hosting "barat" surt car',
@@ -102,18 +146,62 @@ export const hosting: Record<Locale, ServiceContent> = {
         { num: '04', title: 'Operació contínua', desc: 'Monitoratge, còpies de seguretat, suport. El teu web funciona, tu dorms tranquil.' },
       ],
     },
+    plugins: {
+      title: 'Stack de plugins premium inclòs a tots els plans',
+      subtitle: 'Aquests plugins costen més de 800€/any si els compres per separat. Amb el nostre hosting vénen instal·lats, configurats i mantinguts per nosaltres.',
+      categories: [
+        {
+          name: 'Disseny i construcció',
+          items: [
+            { name: 'Divi (Elegant Themes)', desc: 'Constructor visual i tema premium. L\'estàndard de la indústria per dissenyar WordPress sense tocar codi.' },
+            { name: 'Divi Next (Full Access)', desc: 'Extensions i mòduls extra per a Divi: layouts, efectes, blocs addicionals.' },
+            { name: 'Pee Aye Creative (All Divi Plugins)', desc: 'Suite completa de plugins per a Divi. Desenes de widgets, layouts i eines.' },
+          ],
+        },
+        {
+          name: 'Rendiment i SEO',
+          items: [
+            { name: 'BerqWP', desc: 'Caché premium de nova generació. WordPress carrega 3-5x més ràpid que amb WP Rocket o LiteSpeed.' },
+            { name: 'EWWW Image Optimizer (5GB)', desc: 'Optimització i conversió automàtica d\'imatges a WebP. Estalvia ample de banda i millora Core Web Vitals.' },
+            { name: 'SEO Generator', desc: 'Genera meta titles, descriptions i schema.org automàticament. Estalvia hores de feina SEO a cada pàgina.' },
+            { name: 'Sigma Media Manager', desc: 'Gestió avançada de la biblioteca de mitjans: carpetes, cerca, reemplaçament, optimització.' },
+          ],
+        },
+        {
+          name: 'Seguretat i manteniment',
+          items: [
+            { name: 'Security Ninja', desc: 'Suite de seguretat: tallafoc, escaneig de malware, enduriment de WP. Més de 50 comprovacions automàtiques.' },
+            { name: 'WP Reset', desc: 'Reset i recuperació de WordPress per a staging i emergències. Resseteja el web a fàbrica en minuts.' },
+            { name: 'Database Cleaner', desc: 'Neteja revisions, transients, spam, esborranys antics. Manté la base de dades lleugera i ràpida.' },
+            { name: 'WP 301 Redirects', desc: 'Gestor de redireccions 301. Essencial per SEO quan canvies URLs o migres contingut.' },
+          ],
+        },
+        {
+          name: 'Compliment i extres',
+          items: [
+            { name: 'Plugin de cookies RGPD', desc: 'Bàner de cookies conforme a RGPD. Fins a 1.000 visites/mes gratuïtes al pla bàsic.' },
+            { name: 'DarkMySite', desc: 'Mode fosc automàtic per al teu web. Tendència en disseny i millora d\'accessibilitat.' },
+            { name: 'Deftform', desc: 'Constructor de formularis avançat: lògica condicional, integracions, anti-spam.' },
+            { name: 'North Commerce', desc: 'Alternativa lleugera a WooCommerce. Botiga en línia sense la pesadesa de WooCommerce.' },
+            { name: 'MySignature (1 signature)', desc: 'Signatura de correu professional amb la teva marca.' },
+          ],
+        },
+      ],
+    },
     pricing: {
       title: 'Preu i compromís',
-      body: 'Hosting des de 20€/mes (1 web WordPress, 25GB SSD, trànsit raonable). Si necessites més webs, més recursos o una app web, t\'ho pressupostem a mida. Sense permanència. Migració inicial gratuïta.',
+      body: 'Tres plans mensuals: Hosting WP Start a 35€ (2GB RAM), Hosting WP Pro a 60€ (4GB RAM, recomanat) i Hosting WP Business a 100€ (8GB RAM). Tots els plans inclouen el stack complet de plugins premium pel cost d\'un hosting normal. Sense permanència. Migració inicial gratuïta.',
     },
     faq: {
       title: 'Preguntes freqüents',
       items: [
-        { q: 'Quant costa el hosting?', a: 'WordPress des de 20€/mes. Per a apps web, múltiples webs o casos especials (alt trànsit, requisits específics), t\'ho pressupostem a mida.' },
+        { q: 'Quant costa el hosting?', a: 'Hosting WP Start des de 35€/mes, Hosting WP Pro a 60€/mes i Hosting WP Business a 100€/mes. Tots inclouen el stack de plugins premium.' },
+        { q: 'Quins plugins premium estan inclosos?', a: 'Més de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, plugin de cookies RGPD i més. Valor de mercat: més de 800€/any.' },
+        { q: 'Les llicències dels plugins són vostres?', a: 'Sí. Les gestionem nosaltres com a part del servei. Tu no et preocupes de renovar, actualitzar ni mantenir-les. Si te\'n vas del hosting, els plugins es queden amb nosaltres.' },
         { q: 'Puc mantenir el meu domini actual?', a: 'Sí. Només necessitem que apuntis el DNS als nostres servidors. T\'acompanyem pas a pas.' },
         { q: 'Feu migració des del meu hosting actual?', a: 'Sí, gratuïta. Migrations el teu web, base de dades, correus. Sense pèrdua de dades, amb temps d\'inactivitat mínim.' },
         { q: 'I si necessito més recursos?', a: 'Escalem vertical o horitzontalment segons el cas. De vegades és canviar de pla, de vegades moure a un servidor dedicat o a Vercel.' },
-        { q: 'Teniu servidors a Espanya?', a: 'Servidors en centres de dades europeus (Països Baixos, Alemanya, França segons proveïdor). Compleix RGPD, baixa latència des d\'Espanya.' },
+        { q: 'Teniu servidors a Espanya?', a: 'Servidors a AWS Lightsail (data centers europeus: Irlanda, Frankfurt, Londres segons regió). Compleix RGPD, baixa latència des d\'Espanya.' },
         { q: 'I els correus?', a: 'Inclosos opcionalment. Bústies amb el teu domini, antispam, webmail, IMAP/SMTP. Si prefereixes Google Workspace o Microsoft 365, també t\'ho configurem.' },
       ],
     },
@@ -125,12 +213,12 @@ export const hosting: Record<Locale, ServiceContent> = {
   en: {
     meta: {
       title: 'Specialised hosting in Tarragona · Sincronia Agency',
-      description: 'Hosting optimised for WordPress and web applications (Node, Angular, Python). Servers in Europe, support in Spanish, daily backups. From €20/month.',
+      description: 'WordPress hosting on AWS Lightsail with a premium plugin stack included (Divi, BerqWP, SEO Generator, EWWW, Security Ninja and more). Support in Spanish, daily backups. From €35/month.',
     },
     hero: {
       eyebrow: 'Service',
-      title: 'Specialised hosting for WordPress and web apps',
-      subtitle: 'Fast servers, human support in Spanish, daily backups, 24/7 monitoring. No surprises, no unanswered tickets.',
+      title: 'WordPress hosting with premium plugins included',
+      subtitle: 'AWS Lightsail server, human support in Spanish, daily backups and a premium plugin stack for the price of a regular hosting. No surprises, no unanswered tickets.',
     },
     intro: {
       title: 'Why "cheap" hosting costs you more',
@@ -162,18 +250,62 @@ export const hosting: Record<Locale, ServiceContent> = {
         { num: '04', title: 'Continuous operation', desc: 'Monitoring, backups, support. Your site works, you sleep well.' },
       ],
     },
+    plugins: {
+      title: 'Premium plugin stack included in every plan',
+      subtitle: 'These plugins cost over €800/year if you buy them separately. With our hosting they come installed, configured and maintained by us.',
+      categories: [
+        {
+          name: 'Design and build',
+          items: [
+            { name: 'Divi (Elegant Themes)', desc: 'Premium visual builder and theme. The industry standard for designing WordPress without touching code.' },
+            { name: 'Divi Next (Full Access)', desc: 'Extra extensions and modules for Divi: layouts, effects, additional blocks.' },
+            { name: 'Pee Aye Creative (All Divi Plugins)', desc: 'Complete Divi plugin suite. Dozens of widgets, layouts and tools.' },
+          ],
+        },
+        {
+          name: 'Performance and SEO',
+          items: [
+            { name: 'BerqWP', desc: 'Next-generation premium cache. WordPress loads 3-5x faster than with WP Rocket or LiteSpeed.' },
+            { name: 'EWWW Image Optimizer (5GB)', desc: 'Automatic image optimisation and WebP conversion. Saves bandwidth and improves Core Web Vitals.' },
+            { name: 'SEO Generator', desc: 'Generates meta titles, descriptions and schema.org automatically. Saves hours of SEO work per page.' },
+            { name: 'Sigma Media Manager', desc: 'Advanced media library management: folders, search, replace, optimisation.' },
+          ],
+        },
+        {
+          name: 'Security and maintenance',
+          items: [
+            { name: 'Security Ninja', desc: 'Security suite: firewall, malware scan, WP hardening. Over 50 automatic checks.' },
+            { name: 'WP Reset', desc: 'WordPress reset and recovery for staging and emergencies. Resets the site to factory in minutes.' },
+            { name: 'Database Cleaner', desc: 'Cleans revisions, transients, spam, old drafts. Keeps the database light and fast.' },
+            { name: 'WP 301 Redirects', desc: '301 redirect manager. Essential for SEO when changing URLs or migrating content.' },
+          ],
+        },
+        {
+          name: 'Compliance and extras',
+          items: [
+            { name: 'GDPR cookie plugin', desc: 'GDPR-compliant cookie banner. Up to 1,000 visits/month free on the basic plan.' },
+            { name: 'DarkMySite', desc: 'Automatic dark mode for your site. Design trend and improved accessibility.' },
+            { name: 'Deftform', desc: 'Advanced form builder: conditional logic, integrations, anti-spam.' },
+            { name: 'North Commerce', desc: 'Lightweight WooCommerce alternative. Online store without WooCommerce bloat.' },
+            { name: 'MySignature (1 signature)', desc: 'Professional email signature with your brand.' },
+          ],
+        },
+      ],
+    },
     pricing: {
       title: 'Price and commitment',
-      body: 'Hosting from €20/month (1 WordPress site, 25GB SSD, reasonable traffic). If you need more sites, more resources or a web app, we quote it bespoke. No commitment. Initial migration free.',
+      body: 'Three monthly plans: Hosting WP Start at €35 (2GB RAM), Hosting WP Pro at €60 (4GB RAM, recommended) and Hosting WP Business at €100 (8GB RAM). Every plan includes the complete premium plugin stack for the price of a regular hosting. No commitment. Initial migration free.',
     },
     faq: {
       title: 'Frequently asked questions',
       items: [
-        { q: 'How much does hosting cost?', a: 'WordPress from €20/month. For web apps, multiple sites or special cases (high traffic, specific requirements), we quote it bespoke.' },
+        { q: 'How much does hosting cost?', a: 'Hosting WP Start from €35/month, Hosting WP Pro at €60/month and Hosting WP Business at €100/month. All include the premium plugin stack.' },
+        { q: 'Which premium plugins are included?', a: 'Over 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP cache, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, GDPR cookie plugin and more. Market value: over €800/year.' },
+        { q: 'Are the plugin licences yours?', a: 'Yes. We manage them as part of the service. You do not worry about renewing, updating or maintaining them. If you leave the hosting, the plugins stay with us.' },
         { q: 'Can I keep my current domain?', a: 'Yes. We just need you to point DNS to our servers. We guide you step by step.' },
         { q: 'Do you migrate from my current hosting?', a: 'Yes, for free. We migrate your site, database, emails. No data loss, minimal downtime.' },
         { q: 'What if I need more resources?', a: 'We scale vertically or horizontally depending on the case. Sometimes it is changing plans, sometimes moving to a dedicated server or Vercel.' },
-        { q: 'Do you have servers in Spain?', a: 'Servers in European data centres (Netherlands, Germany, France depending on provider). GDPR-compliant, low latency from Spain.' },
+        { q: 'Do you have servers in Spain?', a: 'Servers on AWS Lightsail (European data centres: Ireland, Frankfurt, London depending on region). GDPR-compliant, low latency from Spain.' },
         { q: 'What about email?', a: 'Optionally included. Mailboxes with your domain, antispam, webmail, IMAP/SMTP. If you prefer Google Workspace or Microsoft 365, we configure that too.' },
       ],
     },

@@ -3,11 +3,14 @@ import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
 import CTA from '~/components/CTA.astro';
 import FAQ from '~/components/FAQ.astro';
+import PricingTable from '~/components/PricingTable.astro';
 import { hosting } from '~/content/services/hosting';
+import { services } from '~/data/services';
 import { t } from '~/i18n/ui';
 import { localizePath } from '~/lib/i18n';
 
 const c = hosting.en;
+const service = services.find((s) => s.slug === 'hosting')!;
 ---
 <Base title={c.meta.title} description={c.meta.description}>
   <Hero eyebrow={c.hero.eyebrow} title={c.hero.title} subtitle={c.hero.subtitle} />
@@ -53,11 +56,45 @@ const c = hosting.en;
       </ol>
     </div>
   </section>
-  <section class="section section--alt">
-    <div class="container pricing-block">
-      <h2>{c.pricing.title}</h2>
-      <p class="lead">{c.pricing.body}</p>
-    </div>
+
+  {c.plugins && (
+    <section class="section section--alt plugins-section" aria-labelledby="plugins-heading">
+      <div class="container">
+        <header class="section-header plugins-header">
+          <span class="eyebrow">Included plus</span>
+          <h2 id="plugins-heading">{c.plugins.title}</h2>
+          <p class="lead">{c.plugins.subtitle}</p>
+        </header>
+        <div class="plugins-grid">
+          {c.plugins.categories.map((cat) => (
+            <div class="plugin-category">
+              <h3 class="plugin-category__title">{cat.name}</h3>
+              <ul class="plugin-list">
+                {cat.items.map((p) => (
+                  <li class="plugin-item">
+                    <span class="plugin-item__check" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" class="icon"><path d="M5 12l4 4L19 7"></path></svg>
+                    </span>
+                    <div>
+                      <strong>{p.name}</strong>
+                      <p>{p.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="pricing-anchor" aria-labelledby="pricing-heading">
+    <header class="section-header" style="text-align: center; max-width: 700px; margin: 0 auto var(--s-6);">
+      <h2 id="pricing-heading">{c.pricing.title}</h2>
+      <p class="lead" style="margin-top: var(--s-3);">{c.pricing.body}</p>
+    </header>
+    <PricingTable source={service} />
   </section>
   <FAQ title={c.faq.title} items={c.faq.items} />
   <CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: t('en', 'cta.quote'), href: localizePath('/contacto?service=hosting', 'en') }} />
@@ -81,6 +118,44 @@ const c = hosting.en;
   .process-step__num { position: absolute; left: 0; top: -0.5rem; font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700; color: var(--c-coral-500); line-height: 1; letter-spacing: -0.04em; }
   .process-step h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
   .process-step p { color: var(--c-muted); font-size: 0.9375rem; }
-  .pricing-block { max-width: 800px; }
-  .pricing-block h2 { margin-bottom: var(--s-4); }
+  .pricing-anchor { background: var(--c-bg-alt); border-block: 1px solid var(--c-line); }
+
+  .plugins-header { text-align: center; max-width: 800px; margin: 0 auto var(--s-10); }
+  .plugins-header .eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--c-coral-700);
+    margin-bottom: var(--s-3);
+    font-weight: 600;
+  }
+  .plugins-header h2 { margin-bottom: var(--s-3); }
+  .plugins-header .lead { color: var(--c-muted); }
+  .plugins-grid { display: grid; grid-template-columns: 1fr; gap: var(--s-5); max-width: 1100px; margin: 0 auto; }
+  @media (min-width: 768px) { .plugins-grid { grid-template-columns: repeat(2, 1fr); } }
+  .plugin-category {
+    background: #fff;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+    padding: var(--s-5);
+  }
+  .plugin-category__title {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-coral-700);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    margin-bottom: var(--s-4);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .plugin-list { list-style: none; display: flex; flex-direction: column; gap: var(--s-4); }
+  .plugin-item { display: flex; gap: var(--s-3); align-items: flex-start; }
+  .plugin-item__check { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; border-radius: var(--r-full); background: var(--c-coral-50); color: var(--c-coral-700); flex-shrink: 0; margin-top: 0.15rem; }
+  .plugin-item__check .icon { width: 0.85rem; height: 0.85rem; stroke-width: 2.5; }
+  .plugin-item strong { display: block; color: var(--c-ink); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .plugin-item p { color: var(--c-muted); font-size: 0.875rem; line-height: 1.5; margin: 0; }
 </style>

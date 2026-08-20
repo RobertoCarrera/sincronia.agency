@@ -6,6 +6,7 @@ export interface ServiceContent {
   intro: { title: string; paragraphs: string[] };
   includes: { title: string; items: Array<{ title: string; desc: string }> };
   process: { title: string; steps: Array<{ num: string; title: string; desc: string }> };
+  plugins?: { title: string; subtitle: string; categories: Array<{ name: string; items: Array<{ name: string; desc: string }> }> };
   pricing: { title: string; body: string };
   faq: { title: string; items: Array<{ q: string; a: string }> };
   cta: { title: string; subtitle: string };
