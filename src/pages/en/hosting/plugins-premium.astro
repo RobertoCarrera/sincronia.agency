@@ -1,0 +1,299 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import CTA from '~/components/CTA.astro';
+import { hostingPlugins, pluginList, TOTAL_ANNUAL_EUR, MONTHLY_SAVINGS_EUR } from '~/content/hosting-plugins';
+import { localizePath } from '~/lib/i18n';
+
+const c = hostingPlugins.en;
+const hostingHref = localizePath('/servicios/hosting', 'en');
+
+const categories: Array<{ id: 'design' | 'performance' | 'security' | 'compliance'; title: string }> = [
+  { id: 'design', title: 'Design and build' },
+  { id: 'performance', title: 'Performance and SEO' },
+  { id: 'security', title: 'Security and maintenance' },
+  { id: 'compliance', title: 'Compliance and extras' },
+];
+---
+<Base title={c.meta.title} description={c.meta.description}>
+  <Hero eyebrow={c.hero.eyebrow} title={c.hero.title} subtitle={c.hero.subtitle} />
+
+  <section class="savings section">
+    <div class="container">
+      <header class="savings-header">
+        <h2>{c.savings.title}</h2>
+        <p class="lead">{c.savings.intro}</p>
+      </header>
+      <div class="savings-grid">
+        <div class="savings-card savings-card--total">
+          <span class="savings-label">{c.savings.totalLabel}</span>
+          <span class="savings-value">{TOTAL_ANNUAL_EUR.toLocaleString('en-GB')}€</span>
+          <span class="savings-sub">/ year in licences</span>
+        </div>
+        <div class="savings-card savings-card--monthly">
+          <span class="savings-label">{c.savings.monthlyLabel}</span>
+          <span class="savings-value">{MONTHLY_SAVINGS_EUR}€</span>
+          <span class="savings-sub">/ month</span>
+        </div>
+        <div class="savings-card savings-card--cta">
+          <span class="savings-label">{c.savings.includedLabel}</span>
+          <a href={hostingHref} class="savings-value savings-value--link">35€</a>
+          <span class="savings-sub">/ month · 3 plans available</span>
+        </div>
+      </div>
+      <p class="savings-note">
+        Estimate based on official prices on each plugin's website as of 2026. Does not include coupon discounts, one-off offers or multi-site plans. Real prices may vary by plan and region.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container intro-block">
+      <h2>{c.intro.title}</h2>
+      {c.intro.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <section class="section plugins-table-section" aria-labelledby="plugins-table-heading">
+    <div class="container">
+      <header class="section-header" style="text-align: center; max-width: 800px; margin: 0 auto var(--s-10);">
+        <h2 id="plugins-table-heading">The complete stack, with official price and developer link</h2>
+        <p class="lead">Each plugin links to its official website. You can verify prices and features yourself.</p>
+      </header>
+
+      {categories.map((cat) => {
+        const items = pluginList.filter((p) => p.category === cat.id);
+        if (items.length === 0) return null;
+        return (
+          <div class="plugin-table-block">
+            <h3 class="plugin-table-cat">{cat.title}</h3>
+            <ul class="plugin-table">
+              {items.map((p) => (
+                <li class="plugin-table-row">
+                  <div class="plugin-table-info">
+                    <a
+                      href={p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="plugin-table-name"
+                    >
+                      {p.name}
+                      <svg class="external-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M14 3h7v7M10 14L21 3M21 14v7H3V3h7" stroke-width="2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                    <p class="plugin-table-desc">{p.desc}</p>
+                    {p.priceNote && <p class="plugin-table-note">{p.priceNote}</p>}
+                  </div>
+                  <div class="plugin-table-price">
+                    {p.priceAnnual === 0 ? (
+                      <span class="plugin-table-pricefree">Free</span>
+                    ) : (
+                      <>
+                        <span class="plugin-table-priceval">${p.priceAnnual}</span>
+                        <span class="plugin-table-pricesub">/ year official</span>
+                      </>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+
+      <p class="plugins-disclaimer">
+        Official prices are in USD. An approximate exchange rate of 0.92 EUR/USD was applied to calculate the total value in euros. Real prices may vary by plan, current offers and the buyer's region.
+      </p>
+    </div>
+  </section>
+
+  <CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: 'View hosting plans', href: hostingHref }} />
+</Base>
+
+<style>
+  .intro-block { max-width: 800px; }
+  .intro-block h2 { margin-bottom: var(--s-5); }
+  .intro-block p + p { margin-top: var(--s-4); }
+
+  .savings { background: linear-gradient(180deg, #fff 0%, var(--c-bg-alt) 100%); }
+  .savings-header { text-align: center; max-width: 800px; margin: 0 auto var(--s-10); }
+  .savings-header h2 { margin-bottom: var(--s-3); }
+  .savings-header .lead { color: var(--c-muted); font-size: 1.125rem; }
+
+  .savings-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  @media (min-width: 768px) {
+    .savings-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .savings-card {
+    background: #fff;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+    padding: var(--s-6);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .savings-card--total {
+    background: linear-gradient(180deg, var(--c-coral-50) 0%, #fff 100%);
+    border-color: var(--c-coral-200);
+  }
+  .savings-card--cta {
+    background: linear-gradient(180deg, var(--c-navy-800) 0%, var(--c-navy-900) 100%);
+    color: #fff;
+    border-color: var(--c-navy-800);
+  }
+  .savings-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-muted);
+    font-weight: 600;
+  }
+  .savings-card--cta .savings-label { color: rgba(255, 255, 255, 0.7); }
+  .savings-value {
+    font-family: var(--font-mono);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--c-ink);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin: var(--s-2) 0;
+  }
+  .savings-value--link {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .savings-value--link:hover { color: var(--c-coral-300); }
+  .savings-card--total .savings-value { color: var(--c-coral-700); }
+  .savings-sub {
+    font-size: 0.875rem;
+    color: var(--c-muted);
+  }
+  .savings-card--cta .savings-sub { color: rgba(255, 255, 255, 0.7); }
+
+  .savings-note {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--c-muted);
+    max-width: 800px;
+    margin: var(--s-6) auto 0;
+    line-height: 1.5;
+  }
+
+  .plugins-table-section { background: #fff; }
+  .plugin-table-block { margin-bottom: var(--s-10); }
+  .plugin-table-block:last-of-type { margin-bottom: 0; }
+  .plugin-table-cat {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--c-coral-700);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    margin-bottom: var(--s-4);
+    padding-bottom: var(--s-3);
+    border-bottom: 2px solid var(--c-coral-200);
+  }
+  .plugin-table {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .plugin-table-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-3);
+    padding: var(--s-5) 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+  @media (min-width: 768px) {
+    .plugin-table-row {
+      grid-template-columns: 1fr auto;
+      gap: var(--s-6);
+      align-items: center;
+    }
+  }
+  .plugin-table-row:last-child { border-bottom: none; }
+  .plugin-table-info { min-width: 0; }
+  .plugin-table-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--c-ink);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    margin-bottom: 0.4rem;
+    transition: color 0.2s ease;
+  }
+  .plugin-table-name:hover { color: var(--c-coral-700); }
+  .external-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    flex-shrink: 0;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+  }
+  .plugin-table-name:hover .external-icon { opacity: 1; }
+  .plugin-table-desc {
+    color: var(--c-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .plugin-table-note {
+    color: var(--c-coral-700);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin: 0.4rem 0 0;
+    font-family: var(--font-mono);
+  }
+  .plugin-table-price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    white-space: nowrap;
+  }
+  @media (min-width: 768px) {
+    .plugin-table-price { justify-content: flex-end; }
+  }
+  .plugin-table-priceval {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--c-ink);
+    letter-spacing: -0.02em;
+  }
+  .plugin-table-pricesub {
+    font-size: 0.8125rem;
+    color: var(--c-muted);
+  }
+  .plugin-table-pricefree {
+    font-family: var(--font-mono);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--c-coral-700);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .plugins-disclaimer {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--c-muted);
+    max-width: 800px;
+    margin: var(--s-8) auto 0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+</style>

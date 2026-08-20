@@ -64,6 +64,10 @@ const service = services.find((s) => s.slug === 'hosting')!;
           <span class="eyebrow">Plus incluido</span>
           <h2 id="plugins-heading">{c.plugins.title}</h2>
           <p class="lead">{c.plugins.subtitle}</p>
+          <a href={localizePath('/hosting/plugins-premium', 'es')} class="plugins-detail-link">
+            Ver detalle, precios oficiales y ahorro estimado
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="plugins-detail-icon"><path d="M5 12h14M13 5l7 7-7 7" stroke-width="2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </header>
         <div class="plugins-grid">
           {c.plugins.categories.map((cat) => (
@@ -134,6 +138,19 @@ const service = services.find((s) => s.slug === 'hosting')!;
   }
   .plugins-header h2 { margin-bottom: var(--s-3); }
   .plugins-header .lead { color: var(--c-muted); }
+  .plugins-detail-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: var(--s-4);
+    color: var(--c-coral-700);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: gap 0.2s ease, color 0.2s ease;
+  }
+  .plugins-detail-link:hover { color: var(--c-coral-900); gap: 0.6rem; }
+  .plugins-detail-icon { width: 1rem; height: 1rem; }
   .plugins-grid { display: grid; grid-template-columns: 1fr; gap: var(--s-5); max-width: 1100px; margin: 0 auto; }
   @media (min-width: 768px) { .plugins-grid { grid-template-columns: repeat(2, 1fr); } }
   .plugin-category {
