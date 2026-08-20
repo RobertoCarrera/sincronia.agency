@@ -10,7 +10,7 @@ const { title, items } = Astro.props;
     <header class="faq__header">
       <h2 id="faq-title">{title}</h2>
     </header>
-    <ul class="faq__list">
+    <ul class="faq__list" data-faq-accordion>
       {items.map((item) => (
         <li class="faq__item">
           <details>
@@ -27,6 +27,23 @@ const { title, items } = Astro.props;
     </ul>
   </div>
 </section>
+
+<script>
+  // Acordeón: al abrir un <details> se cierran los demás del mismo bloque FAQ.
+  // Scope: cada <ul data-faq-accordion> es independiente (cada FAQ en la página).
+  document.querySelectorAll<HTMLUListElement>('ul[data-faq-accordion]').forEach((list) => {
+    const items = list.querySelectorAll<HTMLDetailsElement>('details');
+    items.forEach((d) => {
+      d.addEventListener('toggle', () => {
+        if (!d.open) return;
+        items.forEach((other) => {
+          if (other !== d && other.open) other.open = false;
+        });
+      });
+    });
+  });
+</script>
+
 <style>
   .faq__header { text-align: center; margin-bottom: var(--s-10); }
   .faq__list { list-style: none; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--s-3); }
