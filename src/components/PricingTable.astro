@@ -64,15 +64,15 @@ function resolveCtaLabel(tierCtaLabel: string | undefined, isHighlight: boolean,
   return i18n.cta.default;
 }
 
-// Variante de tamaño para el grid según nº de tiers (5 = un pelín más compactos).
-const isWide = product.tiers.length >= 5;
+// Máximo 3 columnas siempre. Simplifica (4) = 3+1, Strata (5) = 3+2.
+// Mantiene el grid consistente entre productos y los cards respiran.
 ---
 <section class="pricing-table-section" aria-labelledby="pricing-table-heading">
   <div class="container">
     <h2 id="pricing-table-heading" class="pricing-table__title">{product.name}</h2>
     <p class="pricing-table__subtitle">{product.shortDescription[locale]}</p>
 
-    <div class={`pricing-grid ${isWide ? 'pricing-grid--wide' : ''}`}>
+    <div class="pricing-grid">
       {product.tiers.map((tier) => {
         const isHighlight = !!tier.highlight;
         const ctaLabel = resolveCtaLabel(tier.ctaLabel, isHighlight, product.slug);
@@ -145,19 +145,19 @@ const isWide = product.tiers.length >= 5;
   }
 
   /* === Grid de tiers === */
+  /* Max 3 columnas: Simplifica (4 tiers) = 3+1, Strata (5 tiers) = 3+2. */
   .pricing-grid {
     display: grid;
     gap: var(--s-5);
     grid-template-columns: 1fr;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
   }
   @media (min-width: 640px) {
     .pricing-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (min-width: 1024px) {
-    .pricing-grid { grid-template-columns: repeat(4, 1fr); }
-    .pricing-grid--wide { grid-template-columns: repeat(5, 1fr); }
+    .pricing-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
   /* === Tier card === */
