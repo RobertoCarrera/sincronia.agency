@@ -5,8 +5,8 @@ interface Props {
   eyebrow?: string;
   title: string;
   subtitle?: string;
-  primaryCta?: { label: string; href: string; external?: boolean };
-  secondaryCta?: { label: string; href: string; external?: boolean };
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
   variant?: 'light' | 'dark';
   align?: 'left' | 'center';
 }
@@ -19,8 +19,8 @@ const { eyebrow, title, subtitle, primaryCta, secondaryCta, variant = 'light', a
     {subtitle && <p class="hero__subtitle">{subtitle}</p>}
     {(primaryCta || secondaryCta) && (
       <div class="hero__actions">
-        {primaryCta && <Button href={primaryCta.href} variant="primary" size="lg" external={primaryCta.external}>{primaryCta.label}</Button>}
-        {secondaryCta && <Button href={secondaryCta.href} variant="ghost" size="lg" external={secondaryCta.external}>{secondaryCta.label}</Button>}
+        {primaryCta && <Button href={primaryCta.href} variant="primary" size="lg">{primaryCta.label}</Button>}
+        {secondaryCta && <Button href={secondaryCta.href} variant="ghost" size="lg">{secondaryCta.label}</Button>}
       </div>
     )}
   </div>
