@@ -58,7 +58,7 @@ export const hosting: Record<Locale, ServiceContent> = {
           name: 'Rendimiento y SEO',
           items: [
             { name: 'BerqWP', desc: 'Caché premium de nueva generación. WordPress carga 3-5x más rápido que con WP Rocket o LiteSpeed.' },
-            { name: 'EWWW Image Optimizer (5GB)', desc: 'Optimización y conversión automática de imágenes a WebP. Ahorra ancho de banda y mejora Core Web Vitals.' },
+            { name: 'EWWW Image Optimizer (Premium 5GB)', desc: 'Optimización premium de imágenes con CDN global, WebP/AVIF automático y backups de 30 días. Mejora drásticamente la carga de la web.' },
             { name: 'SEO Generator', desc: 'Genera meta titles, descriptions y schema.org automáticamente. Ahorra horas de trabajo SEO en cada página.' },
             { name: 'Sigma Media Manager', desc: 'Gestión avanzada de la biblioteca de medios: carpetas, búsqueda, reemplazo, optimización.' },
           ],
@@ -75,7 +75,7 @@ export const hosting: Record<Locale, ServiceContent> = {
         {
           name: 'Cumplimiento y extras',
           items: [
-            { name: 'Plugin de cookies RGPD', desc: 'Banner de cookies conforme a RGPD. Hasta 1.000 visitas/mes gratuitas en el plan básico.' },
+            { name: 'Cytrio (Cookie Consent RGPD)', desc: 'Banner de cookies conforme a RGPD con escaneo automático, geolocalización y registro de consentimientos.' },
             { name: 'DarkMySite', desc: 'Modo oscuro automático para tu web. Tendencia en diseño y mejora de accesibilidad.' },
             { name: 'Deftform', desc: 'Constructor de formularios avanzado: lógica condicional, integraciones, anti-spam.' },
             { name: 'North Commerce', desc: 'Alternativa ligera a WooCommerce. Tienda online sin la pesadez de WooCommerce.' },
@@ -92,7 +92,7 @@ export const hosting: Record<Locale, ServiceContent> = {
       title: 'Preguntas frecuentes',
       items: [
         { q: '¿Cuánto cuesta el hosting?', a: 'Hosting WP Start desde 35€/mes, Hosting WP Pro a 60€/mes y Hosting WP Business a 100€/mes. Todos incluyen el stack de plugins premium.' },
-        { q: '¿Qué plugins premium están incluidos?', a: 'Más de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, plugin de cookies RGPD y más. Valor de mercado: más de 75€/mes en licencias.' },
+        { q: '¿Qué plugins premium están incluidos?', a: 'Más de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer Premium, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, Cytrio cookies RGPD y más. Valor de mercado: más de 90€/mes en licencias.' },
         { q: '¿Las licencias de los plugins son vuestras?', a: 'Sí. Las gestionamos nosotros como parte del servicio. Tú no te preocupas de renovar, actualizar ni mantenerlas. Si te vas del hosting, los plugins se quedan con nosotros.' },
         { q: '¿Puedo mantener mi dominio actual?', a: 'Sí. Solo necesitamos que apuntes el DNS a nuestros servidores. Te guiamos paso a paso.' },
         { q: '¿Hacéis migración desde mi hosting actual?', a: 'Sí, gratuita. Migramos tu web, base de datos, emails. Sin pérdida de datos, con tiempo de inactividad mínimo.' },
@@ -162,7 +162,7 @@ export const hosting: Record<Locale, ServiceContent> = {
           name: 'Rendiment i SEO',
           items: [
             { name: 'BerqWP', desc: 'Caché premium de nova generació. WordPress carrega 3-5x més ràpid que amb WP Rocket o LiteSpeed.' },
-            { name: 'EWWW Image Optimizer (5GB)', desc: 'Optimització i conversió automàtica d\'imatges a WebP. Estalvia ample de banda i millora Core Web Vitals.' },
+            { name: 'EWWW Image Optimizer (Premium 5GB)', desc: 'Optimització premium d\'imatges amb CDN global, WebP/AVIF automàtic i còpies de seguretat de 30 dies. Millora dràsticament la càrrega del web.' },
             { name: 'SEO Generator', desc: 'Genera meta titles, descriptions i schema.org automàticament. Estalvia hores de feina SEO a cada pàgina.' },
             { name: 'Sigma Media Manager', desc: 'Gestió avançada de la biblioteca de mitjans: carpetes, cerca, reemplaçament, optimització.' },
           ],
@@ -179,7 +179,7 @@ export const hosting: Record<Locale, ServiceContent> = {
         {
           name: 'Compliment i extres',
           items: [
-            { name: 'Plugin de cookies RGPD', desc: 'Bàner de cookies conforme a RGPD. Fins a 1.000 visites/mes gratuïtes al pla bàsic.' },
+            { name: 'Cytrio (Cookie Consent RGPD)', desc: 'Bàner de cookies conforme a RGPD amb escaneig automàtic, geolocalització i registre de consentiments.' },
             { name: 'DarkMySite', desc: 'Mode fosc automàtic per al teu web. Tendència en disseny i millora d\'accessibilitat.' },
             { name: 'Deftform', desc: 'Constructor de formularis avançat: lògica condicional, integracions, anti-spam.' },
             { name: 'North Commerce', desc: 'Alternativa lleugera a WooCommerce. Botiga en línia sense la pesadesa de WooCommerce.' },
@@ -196,7 +196,7 @@ export const hosting: Record<Locale, ServiceContent> = {
       title: 'Preguntes freqüents',
       items: [
         { q: 'Quant costa el hosting?', a: 'Hosting WP Start des de 35€/mes, Hosting WP Pro a 60€/mes i Hosting WP Business a 100€/mes. Tots inclouen el stack de plugins premium.' },
-        { q: 'Quins plugins premium estan inclosos?', a: 'Més de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, plugin de cookies RGPD i més. Valor de mercat: més de 75€/mes en llicències.' },
+        { q: 'Quins plugins premium estan inclosos?', a: 'Més de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer Premium, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, Cytrio cookies RGPD i més. Valor de mercat: més de 90€/mes en llicències.' },
         { q: 'Les llicències dels plugins són vostres?', a: 'Sí. Les gestionem nosaltres com a part del servei. Tu no et preocupes de renovar, actualitzar ni mantenir-les. Si te\'n vas del hosting, els plugins es queden amb nosaltres.' },
         { q: 'Puc mantenir el meu domini actual?', a: 'Sí. Només necessitem que apuntis el DNS als nostres servidors. T\'acompanyem pas a pas.' },
         { q: 'Feu migració des del meu hosting actual?', a: 'Sí, gratuïta. Migrations el teu web, base de dades, correus. Sense pèrdua de dades, amb temps d\'inactivitat mínim.' },
@@ -266,7 +266,7 @@ export const hosting: Record<Locale, ServiceContent> = {
           name: 'Performance and SEO',
           items: [
             { name: 'BerqWP', desc: 'Next-generation premium cache. WordPress loads 3-5x faster than with WP Rocket or LiteSpeed.' },
-            { name: 'EWWW Image Optimizer (5GB)', desc: 'Automatic image optimisation and WebP conversion. Saves bandwidth and improves Core Web Vitals.' },
+            { name: 'EWWW Image Optimizer (Premium 5GB)', desc: 'Premium image optimisation with global CDN, automatic WebP/AVIF and 30-day backups. Dramatically improves site load time.' },
             { name: 'SEO Generator', desc: 'Generates meta titles, descriptions and schema.org automatically. Saves hours of SEO work per page.' },
             { name: 'Sigma Media Manager', desc: 'Advanced media library management: folders, search, replace, optimisation.' },
           ],
@@ -300,7 +300,7 @@ export const hosting: Record<Locale, ServiceContent> = {
       title: 'Frequently asked questions',
       items: [
         { q: 'How much does hosting cost?', a: 'Hosting WP Start from €35/month, Hosting WP Pro at €60/month and Hosting WP Business at €100/month. All include the premium plugin stack.' },
-        { q: 'Which premium plugins are included?', a: 'Over 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP cache, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, GDPR cookie plugin and more. Market value: over €75/month in licences.' },
+        { q: 'Which premium plugins are included?', a: 'Over 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP cache, EWWW Image Optimizer Premium, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, Cytrio GDPR cookies and more. Market value: over €90/month in licences.' },
         { q: 'Are the plugin licences yours?', a: 'Yes. We manage them as part of the service. You do not worry about renewing, updating or maintaining them. If you leave the hosting, the plugins stay with us.' },
         { q: 'Can I keep my current domain?', a: 'Yes. We just need you to point DNS to our servers. We guide you step by step.' },
         { q: 'Do you migrate from my current hosting?', a: 'Yes, for free. We migrate your site, database, emails. No data loss, minimal downtime.' },
