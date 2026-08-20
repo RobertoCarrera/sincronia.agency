@@ -1,9 +1,11 @@
 ---
+import Button from '~/components/Button.astro';
+
 interface Props {
   title: string;
   subtitle?: string;
-  primaryCta: { label: string; href: string };
-  secondaryCta?: { label: string; href: string };
+  primaryCta: { label: string; href: string; external?: boolean };
+  secondaryCta?: { label: string; href: string; external?: boolean };
 }
 const { title, subtitle, primaryCta, secondaryCta } = Astro.props;
 ---
@@ -15,8 +17,8 @@ const { title, subtitle, primaryCta, secondaryCta } = Astro.props;
         {subtitle && <p class="cta-card__subtitle">{subtitle}</p>}
       </div>
       <div class="cta-card__actions">
-        <a href={primaryCta.href} class="btn btn--primary btn--lg">{primaryCta.label}</a>
-        {secondaryCta && <a href={secondaryCta.href} class="btn btn--ghost btn--lg">{secondaryCta.label}</a>}
+        <Button href={primaryCta.href} variant="primary" size="lg" external={primaryCta.external}>{primaryCta.label}</Button>
+        {secondaryCta && <Button href={secondaryCta.href} variant="ghost" size="lg" external={secondaryCta.external}>{secondaryCta.label}</Button>}
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@ import Hero from '~/components/Hero.astro';
 import CTA from '~/components/CTA.astro';
 import ServiceCard from '~/components/ServiceCard.astro';
 import ProductCard from '~/components/ProductCard.astro';
+import Button from '~/components/Button.astro';
 import { home } from '~/content/home';
 import { services } from '~/data/services';
 import { products } from '~/data/products';
@@ -56,7 +57,7 @@ const productsToShow = c.productPreviews.map((pp) => {
         ))}
       </div>
       <div class="section-cta">
-        <a href={localizePath('/servicios', 'en')} class="btn btn--secondary btn--lg">{c.services.ctaAll}</a>
+        <Button href={localizePath('/servicios', 'en')} variant="secondary" size="lg">{c.services.ctaAll}</Button>
       </div>
     </div>
   </section>
@@ -84,7 +85,7 @@ const productsToShow = c.productPreviews.map((pp) => {
         ))}
       </div>
       <div class="section-cta">
-        <a href={localizePath('/productos', 'en')} class="btn btn--secondary btn--lg">{c.products.ctaAll}</a>
+        <Button href={localizePath('/productos', 'en')} variant="secondary" size="lg">{c.products.ctaAll}</Button>
       </div>
     </div>
   </section>
