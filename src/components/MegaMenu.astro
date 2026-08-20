@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '~/i18n/locales';
 import { services } from '~/data/services';
-import { products } from '~/data/products';
+import { products, getStartingPrice } from '~/data/products';
 import { getServiceIcon, getProductIcon } from '~/lib/icons';
 import { localizePath } from '~/lib/i18n';
 import { t } from '~/i18n/ui';
@@ -23,9 +23,9 @@ const subtitles: Record<typeof type, Record<Locale, string>> = {
     en: 'Five technical areas we cover with the same depth. On-page SEO from the first commit.',
   },
   products: {
-    es: 'Software propio en beta. Sin contratos, sin letra pequeña. Solo pagas el hosting.',
-    ca: 'Programari propi en beta. Sense contractes, sense lletra petita. Només pagues l\'hostatge.',
-    en: 'Our own software in beta. No contracts, no fine print. You only pay for hosting.',
+    es: 'Un CRM en beta con clientes, un CMS en alpha al que puedes apuntarte a la lista de espera.',
+    ca: 'Un CRM en beta amb clients, un CMS en alpha on pots apuntar-te a la llista d\'espera.',
+    en: 'A CRM in beta with clients, a CMS in alpha you can join the waitlist for.',
   },
 };
 const ctaTitle: Record<typeof type, Record<Locale, string>> = {
@@ -39,14 +39,21 @@ const ctaBody: Record<typeof type, Record<Locale, string>> = {
     en: 'Tell us about your project and we will recommend the ideal combination. No commitment, reply in under 24h.',
   },
   products: {
-    es: 'Solicita una demo personalizada con tus casos de uso reales. Sin coste durante la fase beta.',
-    ca: 'Sol·licita una demo personalitzada amb els teus casos d\'ús reals. Sense cost durant la fase beta.',
-    en: 'Request a personalised demo with your real use cases. No cost during beta phase.',
+    es: 'Solicita acceso anticipado por WhatsApp. Te preparamos un sandbox con tu caso y te enseñamos cómo encaja.',
+    ca: 'Sol·licita accés anticipat per WhatsApp. Et preparem un sandbox amb el teu cas i t\'ensenyem com encaixa.',
+    en: 'Request early access via WhatsApp. We set up a sandbox with your case and show you how it fits.',
   },
 };
 const footerLabel: Record<typeof type, Record<Locale, string>> = {
   services: { es: 'Ver todos los servicios', ca: 'Veure tots els serveis', en: 'View all services' },
   products: { es: 'Ver todos los productos', ca: 'Veure tots els productes', en: 'View all products' },
+};
+
+// Etiqueta corta del status para el badge (ALPHA / BETA / ESTABLE).
+const statusLabel: Record<'alpha' | 'beta' | 'estable', string> = {
+  alpha: 'ALPHA',
+  beta: 'BETA',
+  estable: 'ESTABLE',
 };
 ---
 <div class:list={['mega-menu', `mega-menu--${type}`]} data-mega-menu={type} role="menu" aria-label={titles[type][locale]} hidden>
@@ -83,7 +90,9 @@ const footerLabel: Record<typeof type, Record<Locale, string>> = {
             </ul>
           ) : (
             <ul class="mega-menu__list mega-menu__list--products">
-              {products.map((p, i) => (
+              {products.map((p, i) => {
+                const startPrice = getStartingPrice(p);
+                return (
                 <li class="mega-menu__item" style={`--i:${i}`}>
                   <a href={localizePath(`/productos/${p.slug}`, locale)} class="mega-menu__link" role="menuitem">
                     <span class="mega-menu__icon mega-menu__icon--lg" aria-hidden="true">
@@ -92,19 +101,25 @@ const footerLabel: Record<typeof type, Record<Locale, string>> = {
                     <span class="mega-menu__item-body">
                       <span class="mega-menu__item-title">
                         {p.name}
-                        {p.status === 'beta' && <span class="mega-menu__badge">BETA</span>}
+                        {p.status !== 'estable' && (
+                          <span class:list={['mega-menu__badge', `mega-menu__badge--${p.status}`]}>
+                            {statusLabel[p.status]}
+                          </span>
+                        )}
                       </span>
                       <span class="mega-menu__item-desc">{p.shortDescription[locale]}</span>
                     </span>
                     <span class="mega-menu__item-price">
-                      {p.priceFrom}€<span class="mega-menu__item-unit">{p.priceUnit}</span>
+                      <span class="mega-menu__item-price-amount">{startPrice}€</span>
+                      <span class="mega-menu__item-unit">/mes</span>
                     </span>
                     <span class="mega-menu__arrow" aria-hidden="true">
                       <svg viewBox="0 0 24 24" class="icon"><path d="M5 12h14m-7-7 7 7-7 7"></path></svg>
                     </span>
                   </a>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           )}
 
@@ -237,11 +252,12 @@ const footerLabel: Record<typeof type, Record<Locale, string>> = {
     font-size: 0.625rem;
     font-weight: 600;
     letter-spacing: 0.1em;
-    background: var(--c-coral-500);
     color: #fff;
     padding: 0.1rem 0.4rem;
     border-radius: var(--r-sm);
   }
+  .mega-menu__badge--beta { background: var(--c-coral-500); }
+  .mega-menu__badge--alpha { background: var(--c-navy-800); }
   .mega-menu__item-desc {
     color: var(--c-muted);
     font-size: 0.8125rem;
@@ -258,8 +274,11 @@ const footerLabel: Record<typeof type, Record<Locale, string>> = {
     color: var(--c-coral-700);
     font-size: 0.875rem;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: baseline;
   }
-  .mega-menu__item-unit { color: var(--c-muted); font-weight: 400; font-size: 0.75rem; }
+  .mega-menu__item-price-amount { font-weight: 700; }
+  .mega-menu__item-unit { color: var(--c-muted); font-weight: 400; font-size: 0.75rem; margin-left: 0.1rem; }
   .mega-menu__arrow {
     color: var(--c-muted);
     transition: transform 0.2s, color 0.2s;
