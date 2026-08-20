@@ -65,7 +65,7 @@ const arrowPath = 'M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12
         stroke-width="2.5"
         stroke-linecap="round"
         stroke-linejoin="round"
-        width="14"
+        width="18"
         class={`btn__icon-svg ${external ? 'btn__icon-svg--external' : 'btn__icon-svg--internal'}`}
       >
         {external ? (
@@ -81,7 +81,7 @@ const arrowPath = 'M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12
         stroke-width="2.5"
         stroke-linecap="round"
         stroke-linejoin="round"
-        width="14"
+        width="18"
         class={`btn__icon-svg btn__icon-svg--copy ${external ? 'btn__icon-svg--external' : 'btn__icon-svg--internal'}`}
       >
         {external ? (
@@ -103,7 +103,7 @@ const arrowPath = 'M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12
         stroke-width="2.5"
         stroke-linecap="round"
         stroke-linejoin="round"
-        width="14"
+        width="18"
         class="btn__icon-svg"
       >
         <path d={chevronPath}></path>
@@ -115,7 +115,7 @@ const arrowPath = 'M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12
         stroke-width="2.5"
         stroke-linecap="round"
         stroke-linejoin="round"
-        width="14"
+        width="18"
         class="btn__icon-svg btn__icon-svg--copy"
       >
         <path d={chevronPath}></path>
@@ -168,23 +168,26 @@ const arrowPath = 'M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12
   /* === Bolita blanca con el icono (animado) === */
   .btn__icon-wrapper {
     flex-shrink: 0;
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
     position: relative;
-    color: var(--clr, var(--c-coral-500));
+    color: var(--c-navy-800);
     background-color: #fff;
     border-radius: 50%;
     display: grid;
     place-items: center;
     overflow: hidden;
   }
-  .btn--lg .btn__icon-wrapper { width: 32px; height: 32px; }
+  .btn--lg .btn__icon-wrapper { width: 34px; height: 34px; }
+  .btn--primary .btn__icon-wrapper { color: var(--c-coral-500); }
+  .btn--secondary .btn__icon-wrapper { color: var(--c-navy-800); }
+  .btn--ghost .btn__icon-wrapper { color: var(--c-navy-800); }
   .btn__icon-svg {
     display: block;
   }
   .btn__icon-svg--internal {
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
   }
   .btn__icon-svg--external {
     width: 10px;
@@ -192,17 +195,27 @@ const arrowPath = 'M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12
   }
   .btn__icon-svg--copy {
     position: absolute;
-    transform: translate(-150%, 150%);
+    transform: translateX(-150%);
   }
 
-  /* === Hover: el icono sale volando y la copia entra desde fuera === */
+  /* === Hover: el icono sale volando y la copia entra desde fuera ===
+     - internal: animación horizontal (derecha). El `>` apunta hacia adelante,
+       simboliza "ir dentro de la web".
+     - external: animación diagonal (abajo-derecha), igual que el original Uiverse. */
   .btn:hover .btn__icon-wrapper { color: var(--c-ink); }
-  .btn:hover .btn__icon-svg:first-child {
+  .btn:hover .btn__icon-svg--internal:first-child {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(150%);
+  }
+  .btn:hover .btn__icon-svg--external:first-child {
     transition: transform 0.3s ease-in-out;
     transform: translate(150%, -150%);
   }
   .btn:hover .btn__icon-svg--copy {
     transition: transform 0.3s ease-in-out 0.1s;
-    transform: translate(0);
+    transform: translateX(0);
+  }
+  .btn:hover .btn__icon-svg--external.btn__icon-svg--copy {
+    transform: translate(0, 0);
   }
 </style>
