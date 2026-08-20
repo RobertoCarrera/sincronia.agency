@@ -32,3 +32,6 @@ stderr.txt
 
 # dev server log captures
 .dev-*.log
+
+# temp dev notes (commit-msg drafts, scratch files)
+dev-notes-*.txt
