@@ -125,14 +125,32 @@ const linkAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : 
 
   /* === Icono "external" (estilo Uiverse) === */
   .btn--external {
+    line-height: 1;
+    text-decoration: none;
+    display: inline-flex;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: var(--btn-bg, var(--c-coral-500));
+    color: #fff;
     border-radius: 10rem;
-    padding: 0.5rem 1.25rem 0.5rem 1.5rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    padding-left: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.3s;
   }
-  .btn--external.btn--lg { padding: 0.65rem 1.75rem 0.65rem 2rem; }
+  .btn--external.btn--lg {
+    padding: 1rem 2rem;
+    padding-left: 28px;
+  }
   .btn__icon-wrap--external {
     flex-shrink: 0;
-    width: 26px;
-    height: 26px;
+    width: 25px;
+    height: 25px;
     position: relative;
     color: var(--btn-bg, var(--c-coral-500));
     background-color: #fff;
@@ -141,13 +159,14 @@ const linkAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : 
     place-items: center;
     overflow: hidden;
   }
-  .btn--external.btn--lg .btn__icon-wrap--external { width: 30px; height: 30px; }
+  .btn--external.btn--lg .btn__icon-wrap--external { width: 32px; height: 32px; }
   .btn__icon-wrap--external .btn__icon-svg { width: 10px; height: 10px; }
   .btn__icon-wrap--external .btn__icon-svg--copy {
     position: absolute;
     transform: translate(-150%, 150%);
   }
   .btn--external:hover { background-color: var(--c-ink); }
+  .btn--external:hover .btn__icon-wrap--external { color: var(--c-ink); }
   .btn--external:hover .btn__icon-svg:first-child {
     transition: transform 0.3s ease-in-out;
     transform: translate(150%, -150%);
