@@ -16,7 +16,7 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
       title: 'WordPress a medida, no plantilla con tu logo',
       paragraphs: [
         'WordPress mueve el 43% de las webs del mundo, y por buenas razones: flexible, escalable, con un ecosistema que no depende de un único proveedor. Pero también es el CMS donde más "trampas" se cometen: themes comprados en marketplaces que no se actualizan, constructores visuales que añaden 800 KB de JavaScript, plugins premium abandonados por sus autores.',
-        'En Sincronia Agency no instalamos un theme y le cambiamos el color. Diseñamos y desarrollamos WordPress desde el inicio: theme propio o starter robusto (Sage, Customify), arquitectura de contenido pensada para SEO desde el día uno, plugins精选 y mantenidos, y código que otro desarrollador puede entender y extender sin maldecirnos.',
+        'En Sincronia Agency no instalamos un theme y le cambiamos el color. Diseñamos y desarrollamos WordPress desde el inicio: theme propio o starter robusto (Sage, Customify), arquitectura de contenido pensada para SEO desde el día uno, plugins seleccionados y mantenidos, y código que otro desarrollador puede entender y extender sin maldecirnos.',
         'Desde 2017 hemos lanzado webs para clientes de Tarragona, Reus, El Vendrell, Cambrils y Tortosa: landings de captación, e-commerce con WooCommerce, plataformas de reservas, webs corporativas multidioma. Si tu proyecto cabe en WordPress, lo construimos. Si no cabe, te decimos qué sí.',
       ],
     },
