@@ -1,91 +1,121 @@
 ---
 /**
- * PricingTable — renderiza los tiers de un producto en grid responsive.
+ * PricingTable — renderiza los tiers de un producto o servicio en grid responsive.
  *
- * Diseñado para soportar tanto Simplifica (4 tiers) como Strata (5 tiers).
+ * Diseñado para soportar tanto:
+ *  - Productos SaaS (Simplifica, Strata) con precio /mes.
+ *  - Servicios de mantenimiento/suscripcion (WordPress) con 4 tiers /mes.
+ *  - Servicios de proyecto (Desarrollo WP, Apps) con 1 tier /proyecto.
+ *
  * El tier con `highlight: true` se eleva y se marca con badge "RECOMENDADO".
+ * Cada tier puede tener un `target` ("Ideal para X") que se muestra bajo el nombre.
  *
- * Requiere que el padre le pase el product desde `~/data/products`:
- *
- *   <PricingTable product={products.find(p => p.slug === 'simplifica')!} />
+ * Uso:
+ *   <PricingTable source={products.find(p => p.slug === 'simplifica')!} />
+ *   <PricingTable source={services.find(s => s.slug === 'mantenimiento-wordpress')!} />
  */
-import type { ProductMeta } from '~/data/products';
+import type { Locale } from '~/i18n/locales';
+import type { Tier } from '~/data/products';
 import Button from '~/components/Button.astro';
 import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
 
-interface Props {
-  product: ProductMeta;
+type PriceUnit = 'mes' | 'proyecto';
+
+export interface PricingSource {
+  slug: string;
+  name: string;
+  shortDescription: Record<Locale, string>;
+  tiers: Array<Tier & { target?: string }>;
+  cta?: { label: string; href: string };
+  priceUnit?: PriceUnit;
 }
-const { product } = Astro.props;
+
+interface Props {
+  source: PricingSource;
+}
+const { source } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
 
 // Textos comunes por idioma
 const i18n = {
   es: {
     recommended: 'RECOMENDADO',
+    idealFor: 'Ideal para',
     perMonth: '/mes',
-    monthUnit: 'mes',
+    perProject: '/proyecto',
     cta: {
-      // Free tier (0€) -> lista de espera. Otros -> "Mas informacion".
       free: 'Apuntarme a la lista de espera',
       paid: 'Más información',
+      contact: 'Contactar',
     },
     setupTitle: 'Sobre el setup',
   },
   ca: {
     recommended: 'RECOMENDAT',
+    idealFor: 'Ideal per',
     perMonth: '/mes',
-    monthUnit: 'mes',
+    perProject: '/projecte',
     cta: {
       free: 'Apuntar-me a la llista d\'espera',
       paid: 'Més informació',
+      contact: 'Contactar',
     },
     setupTitle: 'Sobre el setup',
   },
   en: {
     recommended: 'RECOMMENDED',
+    idealFor: 'Best for',
     perMonth: '/month',
-    monthUnit: 'month',
+    perProject: '/project',
     cta: {
       free: 'Join the waitlist',
       paid: 'More information',
+      contact: 'Get in touch',
     },
     setupTitle: 'About setup',
   },
 }[locale];
 
-// Resuelve la etiqueta del CTA segun si el tier es Free (0€) o de pago.
+const unitLabel = source.priceUnit === 'proyecto' ? i18n.perProject : i18n.perMonth;
+
+// Resuelve la etiqueta del CTA segun si el tier es Free (0€) o de pago, y el source.
 function resolveCtaLabel(tierPrice: number, isHighlight: boolean): string {
   if (tierPrice === 0) return i18n.cta.free;
   return i18n.cta.paid;
 }
 
-// Resuelve el href del CTA: apunta al formulario de contacto del producto
-// con el tier como query param para pre-rellenar el plan en el form.
-function resolveCtaHref(productSlug: string, tierId: string, tierPrice: number): string {
-  // Free -> /contacto/{slug} (sin tier, ya cubre "lista de espera" por el intent)
-  // Pago -> /contacto/{slug}?tier={id} (pre-rellena el plan de interes)
-  const intent = tierPrice === 0 ? 'waitlist' : 'info';
-  const base = `/contacto/${productSlug}`;
+// Resuelve el href del CTA: para productos va a /contacto/{slug}?tier=...
+// Para servicios va a /contacto?service={slug}&tier=...
+function resolveCtaHref(source: PricingSource, tierId: string, tierPrice: number): string {
+  // Detectar si es producto (tiene slug que matchea products) o servicio.
+  // Simplificacion: si el slug es 'simplifica' o 'strata' es producto. Si no, servicio.
+  const isProduct = source.slug === 'simplifica' || source.slug === 'strata';
+  if (isProduct) {
+    const intent = tierPrice === 0 ? 'waitlist' : 'info';
+    const params = new URLSearchParams();
+    if (tierPrice !== 0) params.set('tier', tierId);
+    params.set('intent', intent);
+    return `/contacto/${source.slug}?${params.toString()}`;
+  }
+  // Servicio: CTA apunta al /contacto generico con prefill
   const params = new URLSearchParams();
-  if (tierPrice !== 0) params.set('tier', tierId);
-  params.set('intent', intent);
-  return `${base}?${params.toString()}`;
+  params.set('service', source.slug);
+  if (tierId) params.set('tier', tierId);
+  return `/contacto?${params.toString()}`;
 }
 
-// Máximo 3 columnas siempre. Simplifica (4) = 3+1, Strata (5) = 3+2.
-// Mantiene el grid consistente entre productos y los cards respiran.
+// Máximo 3 columnas siempre. Simplifica (4) = 3+1, Strata (5) = 3+2, Mantenimiento (4) = 3+1, single = 1.
 ---
 <section class="pricing-table-section" aria-labelledby="pricing-table-heading">
   <div class="container">
-    <h2 id="pricing-table-heading" class="pricing-table__title">{product.name}</h2>
-    <p class="pricing-table__subtitle">{product.shortDescription[locale]}</p>
+    <h2 id="pricing-table-heading" class="pricing-table__title">{source.name}</h2>
+    <p class="pricing-table__subtitle">{source.shortDescription[locale]}</p>
 
     <div class="pricing-grid">
-      {product.tiers.map((tier) => {
+      {source.tiers.map((tier) => {
         const isHighlight = !!tier.highlight;
         const ctaLabel = resolveCtaLabel(tier.price, isHighlight);
-        const ctaHref = resolveCtaHref(product.slug, tier.id, tier.price);
+        const ctaHref = resolveCtaHref(source, tier.id, tier.price);
         // El tier Free (0€) muestra "Gratis" o "Free" o 0€ según locale.
         const priceDisplay = tier.price === 0
           ? (locale === 'en' ? 'Free' : locale === 'ca' ? 'Gratis' : 'Gratis')
@@ -98,14 +128,15 @@ function resolveCtaHref(productSlug: string, tierId: string, tierPrice: number):
               isHighlight && 'tier-card--highlight',
             ]}
             data-tier={tier.id}
-            aria-label={`${tier.name} — ${priceDisplay}${tier.price > 0 ? ' ' + i18n.perMonth : ''}`}
+            aria-label={`${tier.name} — ${priceDisplay}${tier.price > 0 ? ' ' + unitLabel : ''}`}
           >
             {isHighlight && <span class="tier-card__ribbon">{i18n.recommended}</span>}
             <header class="tier-card__header">
               <h3 class="tier-card__name">{tier.name}</h3>
+              {tier.target && <p class="tier-card__target">{i18n.idealFor}: {tier.target}</p>}
               <div class="tier-card__price">
                 <span class="tier-card__price-amount">{priceDisplay}</span>
-                {tier.price > 0 && <span class="tier-card__price-unit">{i18n.perMonth}</span>}
+                {tier.price > 0 && <span class="tier-card__price-unit">{unitLabel}</span>}
               </div>
             </header>
 
@@ -135,11 +166,7 @@ function resolveCtaHref(productSlug: string, tierId: string, tierPrice: number):
       })}
     </div>
 
-    {product.setupNote && (
-      <p class="pricing-table__setup-note">
-        <strong>{i18n.setupTitle}:</strong> {product.setupNote}
-      </p>
-    )}
+    {source.cta?.href === '/contacto' && null}
   </div>
 </section>
 
@@ -218,10 +245,17 @@ function resolveCtaHref(productSlug: string, tierId: string, tierPrice: number):
     font-size: 1.125rem;
     font-weight: 600;
     color: var(--c-ink);
-    margin: 0 0 var(--s-3);
+    margin: 0 0 0.4rem;
     letter-spacing: -0.01em;
   }
   .tier-card--highlight .tier-card__name { color: #fff; }
+  .tier-card__target {
+    font-size: 0.8125rem;
+    color: var(--c-muted);
+    margin: 0 0 var(--s-3);
+    line-height: 1.35;
+  }
+  .tier-card--highlight .tier-card__target { color: rgba(255, 255, 255, 0.7); }
 
   .tier-card__price {
     display: flex;
@@ -278,19 +312,4 @@ function resolveCtaHref(productSlug: string, tierId: string, tierPrice: number):
     width: 100%;
     justify-content: center;
   }
-
-  /* === Setup note === */
-  .pricing-table__setup-note {
-    max-width: 800px;
-    margin: var(--s-8) auto 0;
-    padding: var(--s-4) var(--s-5);
-    background: var(--c-bg-alt);
-    border: 1px solid var(--c-line);
-    border-left: 3px solid var(--c-coral-500);
-    border-radius: var(--r-sm);
-    color: var(--c-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5;
-  }
-  .pricing-table__setup-note strong { color: var(--c-ink); }
 </style>

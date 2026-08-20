@@ -1,6 +1,6 @@
 ---
 import type { Locale } from '~/i18n/locales';
-import { services } from '~/data/services';
+import { services, getStartingServicePrice } from '~/data/services';
 import { products, getStartingPrice } from '~/data/products';
 import { getServiceIcon, getProductIcon } from '~/lib/icons';
 import { localizePath } from '~/lib/i18n';
@@ -68,7 +68,10 @@ const statusLabel: Record<'alpha' | 'beta' | 'estable', string> = {
 
           {type === 'services' ? (
             <ul class="mega-menu__list mega-menu__list--services">
-              {services.map((s, i) => (
+              {services.map((s, i) => {
+                const startPrice = getStartingServicePrice(s);
+                const unit = s.priceUnit === 'proyecto' ? '/proyecto' : '/mes';
+                return (
                 <li class="mega-menu__item" style={`--i:${i}`}>
                   <a href={localizePath(`/servicios/${s.slug}`, locale)} class="mega-menu__link" role="menuitem">
                     <span class="mega-menu__icon" aria-hidden="true">
@@ -79,14 +82,16 @@ const statusLabel: Record<'alpha' | 'beta' | 'estable', string> = {
                       <span class="mega-menu__item-desc">{s.shortDescription[locale]}</span>
                     </span>
                     <span class="mega-menu__item-price">
-                      {s.priceFrom}€<span class="mega-menu__item-unit">{s.priceUnit === 'mes' ? '/mes' : ''}</span>
+                      <span class="mega-menu__item-price-amount">{startPrice}€</span>
+                      <span class="mega-menu__item-unit">{unit}</span>
                     </span>
                     <span class="mega-menu__arrow" aria-hidden="true">
                       <svg viewBox="0 0 24 24" class="icon"><path d="M5 12h14m-7-7 7 7-7 7"></path></svg>
                     </span>
                   </a>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           ) : (
             <ul class="mega-menu__list mega-menu__list--products">

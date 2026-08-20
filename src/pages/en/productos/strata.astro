@@ -45,7 +45,7 @@ const product = products.find((p) => p.slug === 'strata')!;
       <h2 id="pricing-heading">{c.pricing.title}</h2>
       <p class="lead" style="margin-top: var(--s-3);">{c.pricing.body}</p>
     </header>
-    <PricingTable product={product} />
+    <PricingTable source={product} />
   </section>
   <FAQ title={c.faq.title} items={c.faq.items} />
   <CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: t('en', 'cta.demo'), href: localizePath('/contacto', 'en') }} />

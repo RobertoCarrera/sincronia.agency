@@ -10,8 +10,8 @@ export interface Tier {
   name: string;
   /** precio mensual en EUR. 0 = gratis */
   price: number;
-  /** número de usuarios incluidos. null = ilimitado */
-  users: number | null;
+  /** número de usuarios incluidos (productos). null = ilimitado. Opcional para servicios. */
+  users?: number | null;
   /** features destacadas (1-2 frases) */
   features: string[];
   /** destacar este tier como "popular" o "recomendado" */
