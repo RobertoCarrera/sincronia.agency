@@ -27,13 +27,13 @@ const categories: Array<{ id: 'design' | 'performance' | 'security' | 'complianc
       <div class="savings-grid">
         <div class="savings-card savings-card--total">
           <span class="savings-label">{c.savings.totalLabel}</span>
-          <span class="savings-value">{TOTAL_ANNUAL_EUR.toLocaleString('en-GB')}€</span>
-          <span class="savings-sub">/ year in licences</span>
+          <span class="savings-value">{MONTHLY_SAVINGS_EUR}€</span>
+          <span class="savings-sub">/ month if bought separately</span>
         </div>
         <div class="savings-card savings-card--monthly">
           <span class="savings-label">{c.savings.monthlyLabel}</span>
-          <span class="savings-value">{MONTHLY_SAVINGS_EUR}€</span>
-          <span class="savings-sub">/ month</span>
+          <span class="savings-value">{TOTAL_ANNUAL_EUR.toLocaleString('en-GB')}€</span>
+          <span class="savings-sub">/ year you do not pay in licences</span>
         </div>
         <div class="savings-card savings-card--cta">
           <span class="savings-label">{c.savings.includedLabel}</span>

@@ -44,7 +44,7 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     plugins: {
       title: 'Stack de plugins premium incluido en todos los planes',
-      subtitle: 'Estos plugins cuestan más de 800€/año si los compras por separado. Con nuestro hosting vienen instalados, configurados y mantenidos por nosotros.',
+      subtitle: 'Estos plugins valen más de 75€/mes si los compras por separado. Con nuestro hosting desde 35€/mes vienen instalados, configurados y mantenidos por nosotros.',
       categories: [
         {
           name: 'Diseño y construcción',
@@ -92,7 +92,7 @@ export const hosting: Record<Locale, ServiceContent> = {
       title: 'Preguntas frecuentes',
       items: [
         { q: '¿Cuánto cuesta el hosting?', a: 'Hosting WP Start desde 35€/mes, Hosting WP Pro a 60€/mes y Hosting WP Business a 100€/mes. Todos incluyen el stack de plugins premium.' },
-        { q: '¿Qué plugins premium están incluidos?', a: 'Más de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, plugin de cookies RGPD y más. Valor de mercado: más de 800€/año.' },
+        { q: '¿Qué plugins premium están incluidos?', a: 'Más de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, plugin de cookies RGPD y más. Valor de mercado: más de 75€/mes en licencias.' },
         { q: '¿Las licencias de los plugins son vuestras?', a: 'Sí. Las gestionamos nosotros como parte del servicio. Tú no te preocupas de renovar, actualizar ni mantenerlas. Si te vas del hosting, los plugins se quedan con nosotros.' },
         { q: '¿Puedo mantener mi dominio actual?', a: 'Sí. Solo necesitamos que apuntes el DNS a nuestros servidores. Te guiamos paso a paso.' },
         { q: '¿Hacéis migración desde mi hosting actual?', a: 'Sí, gratuita. Migramos tu web, base de datos, emails. Sin pérdida de datos, con tiempo de inactividad mínimo.' },
@@ -148,7 +148,7 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     plugins: {
       title: 'Stack de plugins premium inclòs a tots els plans',
-      subtitle: 'Aquests plugins costen més de 800€/any si els compres per separat. Amb el nostre hosting vénen instal·lats, configurats i mantinguts per nosaltres.',
+      subtitle: 'Aquests plugins valen més de 75€/mes si els compres per separat. Amb el nostre hosting des de 35€/mes vénen instal·lats, configurats i mantinguts per nosaltres.',
       categories: [
         {
           name: 'Disseny i construcció',
@@ -196,7 +196,7 @@ export const hosting: Record<Locale, ServiceContent> = {
       title: 'Preguntes freqüents',
       items: [
         { q: 'Quant costa el hosting?', a: 'Hosting WP Start des de 35€/mes, Hosting WP Pro a 60€/mes i Hosting WP Business a 100€/mes. Tots inclouen el stack de plugins premium.' },
-        { q: 'Quins plugins premium estan inclosos?', a: 'Més de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, plugin de cookies RGPD i més. Valor de mercat: més de 800€/any.' },
+        { q: 'Quins plugins premium estan inclosos?', a: 'Més de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, plugin de cookies RGPD i més. Valor de mercat: més de 75€/mes en llicències.' },
         { q: 'Les llicències dels plugins són vostres?', a: 'Sí. Les gestionem nosaltres com a part del servei. Tu no et preocupes de renovar, actualitzar ni mantenir-les. Si te\'n vas del hosting, els plugins es queden amb nosaltres.' },
         { q: 'Puc mantenir el meu domini actual?', a: 'Sí. Només necessitem que apuntis el DNS als nostres servidors. T\'acompanyem pas a pas.' },
         { q: 'Feu migració des del meu hosting actual?', a: 'Sí, gratuïta. Migrations el teu web, base de dades, correus. Sense pèrdua de dades, amb temps d\'inactivitat mínim.' },
@@ -252,7 +252,7 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     plugins: {
       title: 'Premium plugin stack included in every plan',
-      subtitle: 'These plugins cost over €800/year if you buy them separately. With our hosting they come installed, configured and maintained by us.',
+      subtitle: 'These plugins are worth over €75/month if you buy them separately. With our hosting from €35/month they come installed, configured and maintained by us.',
       categories: [
         {
           name: 'Design and build',
@@ -300,7 +300,7 @@ export const hosting: Record<Locale, ServiceContent> = {
       title: 'Frequently asked questions',
       items: [
         { q: 'How much does hosting cost?', a: 'Hosting WP Start from €35/month, Hosting WP Pro at €60/month and Hosting WP Business at €100/month. All include the premium plugin stack.' },
-        { q: 'Which premium plugins are included?', a: 'Over 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP cache, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, GDPR cookie plugin and more. Market value: over €800/year.' },
+        { q: 'Which premium plugins are included?', a: 'Over 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP cache, EWWW Image Optimizer, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, GDPR cookie plugin and more. Market value: over €75/month in licences.' },
         { q: 'Are the plugin licences yours?', a: 'Yes. We manage them as part of the service. You do not worry about renewing, updating or maintaining them. If you leave the hosting, the plugins stay with us.' },
         { q: 'Can I keep my current domain?', a: 'Yes. We just need you to point DNS to our servers. We guide you step by step.' },
         { q: 'Do you migrate from my current hosting?', a: 'Yes, for free. We migrate your site, database, emails. No data loss, minimal downtime.' },

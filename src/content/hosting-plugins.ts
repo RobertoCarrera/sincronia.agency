@@ -29,26 +29,26 @@ export const hostingPlugins: Record<Locale, {
   es: {
     meta: {
       title: 'Stack de plugins premium WordPress incluidos con el hosting · Sincronia Agency',
-      description: 'Más de 15 plugins premium de WordPress incluidos con tu hosting en Sincronia Agency: Divi, BerqWP, SEO Generator, Security Ninja, EWWW, North Commerce y más. Valor de mercado: más de 900€/año.',
+      description: 'Más de 15 plugins premium de WordPress incluidos con tu hosting en Sincronia Agency: Divi, BerqWP, SEO Generator, Security Ninja, EWWW, North Commerce y más. Valor de mercado: más de 75€/mes.',
     },
     hero: {
       eyebrow: 'Stack premium',
-      title: 'Plugins premium de WordPress incluidos con tu hosting',
-      subtitle: 'Más de 15 plugins que normalmente cuestan más de 900€/año, instalados, configurados y mantenidos por nosotros. Solo por contratar el hosting.',
+      title: 'Más de 75€/mes en plugins premium, incluidos con tu hosting de 35€',
+      subtitle: '15 plugins de WordPress (Divi, BerqWP, SEO Generator, Security Ninja, EWWW, North Commerce…) instalados, configurados y mantenidos por nosotros. Por el precio de un hosting normal.',
     },
     savings: {
       title: 'Tu ahorro con el hosting de Sincronia Agency',
-      intro: 'Si comprases cada plugin por separado, renovarías licencias todos los años. Con nuestro hosting, los gestionamos nosotros.',
-      totalLabel: 'Valor de mercado anual',
-      monthlyLabel: 'Ahorro mensual equivalente',
+      intro: 'Si comprases cada plugin por separado, pagarías más de 75€/mes solo en licencias. Con nuestro hosting, los gestionamos nosotros.',
+      totalLabel: 'Valor de mercado',
+      monthlyLabel: 'Ahorro anual estimado',
       perYearLabel: 'Ahorro anual con el hosting',
-      includedLabel: 'Incluido con tu hosting desde',
+      includedLabel: 'Tu hosting desde',
     },
     intro: {
       title: 'Por qué regalamos este stack de plugins',
       paragraphs: [
-        'Cuando montas una web WordPress en serio necesitas, como mínimo: un constructor visual decente (Divi), un plugin de caché que no se quede corto con el tráfico (BerqWP), una solución de SEO automatizado (SEO Generator), un firewall y suite de seguridad (Security Ninja), un optimizador de imágenes (EWWW), y un plugin de cookies conforme a RGPD. Solo con eso ya rondas los 400€/año en licencias.',
-        'Si además quieres formularios avanzados (Deftform), redirecciones 301 bien gestionadas (WP 301 Redirects), limpieza de base de datos (Database Cleaner), modo oscuro (DarkMySite), un e-commerce sin la pesadez de WooCommerce (North Commerce), un editor de firmas de email (MySignature) y una gestión profesional de medios (Sigma Media Manager)… te plantas fácilmente en los 900€/año.',
+        'Cuando montas una web WordPress en serio necesitas, como mínimo: un constructor visual decente (Divi), un plugin de caché que no se quede corto con el tráfico (BerqWP), una solución de SEO automatizado (SEO Generator), un firewall y suite de seguridad (Security Ninja), un optimizador de imágenes (EWWW) y un plugin de cookies conforme a RGPD. Solo con eso ya rondas los 30€/mes en licencias.',
+        'Si además quieres formularios avanzados (Deftform), redirecciones 301 bien gestionadas (WP 301 Redirects), limpieza de base de datos (Database Cleaner), modo oscuro (DarkMySite), un e-commerce sin la pesadez de WooCommerce (North Commerce), un editor de firmas de email (MySignature) y una gestión profesional de medios (Sigma Media Manager)… te plantas fácilmente en más de 75€/mes.',
         'Como para nosotros tu web tiene que funcionar bien sin que tú tengas que pelearte con plugins, los incluimos todos en el hosting. Así te olvidas de licencias, actualizaciones, compatibilidades y renovaciones. Si algún día te vas, los plugins se quedan con nosotros.',
       ],
     },
@@ -60,26 +60,26 @@ export const hostingPlugins: Record<Locale, {
   ca: {
     meta: {
       title: 'Stack de plugins premium WordPress inclosos amb el hosting · Sincronia Agency',
-      description: 'Més de 15 plugins premium de WordPress inclosos amb el teu hosting a Sincronia Agency: Divi, BerqWP, SEO Generator, Security Ninja, EWWW, North Commerce i més. Valor de mercat: més de 900€/any.',
+      description: 'Més de 15 plugins premium de WordPress inclosos amb el teu hosting a Sincronia Agency: Divi, BerqWP, SEO Generator, Security Ninja, EWWW, North Commerce i més. Valor de mercat: més de 75€/mes.',
     },
     hero: {
       eyebrow: 'Stack premium',
-      title: 'Plugins premium de WordPress inclosos amb el teu hosting',
-      subtitle: 'Més de 15 plugins que normalment costen més de 900€/any, instal·lats, configurats i mantinguts per nosaltres. Només per contractar el hosting.',
+      title: 'Més de 75€/mes en plugins premium, inclosos amb el teu hosting de 35€',
+      subtitle: '15 plugins de WordPress (Divi, BerqWP, SEO Generator, Security Ninja, EWWW, North Commerce…) instal·lats, configurats i mantinguts per nosaltres. Pel preu d\'un hosting normal.',
     },
     savings: {
       title: 'El teu estalvi amb el hosting de Sincronia Agency',
-      intro: 'Si compressis cada plugin per separat, renovaries llicències cada any. Amb el nostre hosting, les gestionem nosaltres.',
-      totalLabel: 'Valor de mercat anual',
-      monthlyLabel: 'Estalvi mensual equivalent',
+      intro: 'Si compressis cada plugin per separat, pagaries més de 75€/mes només en llicències. Amb el nostre hosting, les gestionem nosaltres.',
+      totalLabel: 'Valor de mercat',
+      monthlyLabel: 'Estalvi anual estimat',
       perYearLabel: 'Estalvi anual amb el hosting',
-      includedLabel: 'Inclos amb el teu hosting des de',
+      includedLabel: 'El teu hosting des de',
     },
     intro: {
       title: 'Per què regalem aquest stack de plugins',
       paragraphs: [
-        'Quan muntar un web WordPress en sèrio necessites, com a mínim: un constructor visual decent (Divi), un plugin de memòria cau que no es quedi curt amb el trànsit (BerqWP), una solució de SEO automatitzat (SEO Generator), un tallafoc i suite de seguretat (Security Ninja), un optimitzador d\'imatges (EWWW), i un plugin de cookies conforme a RGPD. Només amb això ja rondes els 400€/any en llicències.',
-        'Si a més vols formularis avançats (Deftform), redireccions 301 ben gestionades (WP 301 Redirects), neteja de base de dades (Database Cleaner), mode fosc (DarkMySite), un e-commerce sense la pesadesa de WooCommerce (North Commerce), un editor de signatures de correu (MySignature) i una gestió professional de mitjans (Sigma Media Manager)… te\'n plantes fàcilment en els 900€/any.',
+        'Quan muntar un web WordPress en sèrio necessites, com a mínim: un constructor visual decent (Divi), un plugin de memòria cau que no es quedi curt amb el trànsit (BerqWP), una solució de SEO automatitzat (SEO Generator), un tallafoc i suite de seguretat (Security Ninja), un optimitzador d\'imatges (EWWW) i un plugin de cookies conforme a RGPD. Només amb això ja rondes els 30€/mes en llicències.',
+        'Si a més vols formularis avançats (Deftform), redireccions 301 ben gestionades (WP 301 Redirects), neteja de base de dades (Database Cleaner), mode fosc (DarkMySite), un e-commerce sense la pesadesa de WooCommerce (North Commerce), un editor de signatures de correu (MySignature) i una gestió professional de mitjans (Sigma Media Manager)… te\'n plantes fàcilment en més de 75€/mes.',
         'Com que per a nosaltres el teu web ha de funcionar bé sense que tu hagis de barallar-te amb plugins, els incloem tots al hosting. Així t\'oblides de llicències, actualitzacions, compatibilitats i renovacions. Si algun dia te\'n vas, els plugins es queden amb nosaltres.',
       ],
     },
@@ -91,26 +91,26 @@ export const hostingPlugins: Record<Locale, {
   en: {
     meta: {
       title: 'Premium WordPress plugin stack included with hosting · Sincronia Agency',
-      description: 'Over 15 premium WordPress plugins included with your hosting at Sincronia Agency: Divi, BerqWP, SEO Generator, Security Ninja, EWWW, North Commerce and more. Market value: over €900/year.',
+      description: 'Over 15 premium WordPress plugins included with your hosting at Sincronia Agency: Divi, BerqWP, SEO Generator, Security Ninja, EWWW, North Commerce and more. Market value: over €75/month.',
     },
     hero: {
       eyebrow: 'Premium stack',
-      title: 'Premium WordPress plugins included with your hosting',
-      subtitle: 'Over 15 plugins that normally cost over €900/year, installed, configured and maintained by us. Just by signing up for the hosting.',
+      title: 'Over €75/month in premium plugins, included with your €35 hosting',
+      subtitle: '15 WordPress plugins (Divi, BerqWP, SEO Generator, Security Ninja, EWWW, North Commerce…) installed, configured and maintained by us. For the price of a regular hosting.',
     },
     savings: {
       title: 'Your savings with Sincronia Agency hosting',
-      intro: 'If you bought each plugin separately, you would renew licences every year. With our hosting, we handle all of it.',
-      totalLabel: 'Annual market value',
-      monthlyLabel: 'Equivalent monthly savings',
+      intro: 'If you bought each plugin separately, you would pay over €75/month in licences alone. With our hosting, we handle all of it.',
+      totalLabel: 'Market value',
+      monthlyLabel: 'Estimated annual savings',
       perYearLabel: 'Annual savings with hosting',
-      includedLabel: 'Included with your hosting from',
+      includedLabel: 'Your hosting from',
     },
     intro: {
       title: 'Why we give this plugin stack away',
       paragraphs: [
-        'When you build a serious WordPress site you need, at minimum: a decent visual builder (Divi), a cache plugin that handles traffic spikes (BerqWP), an automated SEO solution (SEO Generator), a firewall and security suite (Security Ninja), an image optimiser (EWWW), and a GDPR-compliant cookie plugin. That alone is around €400/year in licences.',
-        'If you also want advanced forms (Deftform), well-managed 301 redirects (WP 301 Redirects), database cleanup (Database Cleaner), dark mode (DarkMySite), a lightweight e-commerce alternative to WooCommerce (North Commerce), a professional email signature editor (MySignature) and a serious media library manager (Sigma Media Manager)… you easily reach €900/year.',
+        'When you build a serious WordPress site you need, at minimum: a decent visual builder (Divi), a cache plugin that handles traffic spikes (BerqWP), an automated SEO solution (SEO Generator), a firewall and security suite (Security Ninja), an image optimiser (EWWW) and a GDPR-compliant cookie plugin. That alone is around €30/month in licences.',
+        'If you also want advanced forms (Deftform), well-managed 301 redirects (WP 301 Redirects), database cleanup (Database Cleaner), dark mode (DarkMySite), a lightweight e-commerce alternative to WooCommerce (North Commerce), a professional email signature editor (MySignature) and a serious media library manager (Sigma Media Manager)… you easily reach over €75/month.',
         'Since we believe your site should work well without you wrestling with plugins, we include them all in the hosting. So you forget about licences, updates, compatibilities and renewals. If you ever leave, the plugins stay with us.',
       ],
     },
