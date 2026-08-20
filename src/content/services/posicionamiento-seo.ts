@@ -5,7 +5,7 @@ export const posicionamientoSeo: Record<Locale, ServiceContent> = {
   es: {
     meta: {
       title: 'Posicionamiento SEO en Tarragona · Sincronia Agency',
-      description: 'SEO técnico, contenido y link building local para que tu web aparezca en Google cuando alguien busca tus servicios en Tarragona y provincia. Desde 290€/mes.',
+      description: 'SEO técnico, contenido y link building local para que tu web aparezca en Google cuando alguien busca tus servicios en Tarragona y provincia. Desde 300€/mes.',
     },
     hero: {
       eyebrow: 'Servicio',
@@ -44,7 +44,7 @@ export const posicionamientoSeo: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Precio y compromiso',
-      body: 'Plan mensual de 290€. Incluye auditoría inicial, keyword research, optimizaciones técnicas, contenido (2-4 piezas/mes), link building, reportes y reuniones. Sin permanencia: cancelas con un email y te quedas con todos los activos (textos, enlaces, datos).',
+      body: 'Tres planes según tu alcance: SEO Local desde 300€/mes para un solo municipio, SEO Provincial a 500€/mes para dominar la provincia con páginas dedicadas por ciudad, y SEO Competitivo a 900€/mes para sectores muy disputados o e-commerce. Sin permanencia: cancelas con un email y te quedas con todos los activos (textos, enlaces, datos).',
     },
     faq: {
       title: 'Preguntas frecuentes',
@@ -65,7 +65,7 @@ export const posicionamientoSeo: Record<Locale, ServiceContent> = {
   ca: {
     meta: {
       title: 'Posicionament SEO a Tarragona · Sincronia Agency',
-      description: 'SEO tècnic, contingut i link building local perquè el teu web aparegui a Google quan algú busca els teus serveis a Tarragona i província. Des de 290€/mes.',
+      description: 'SEO tècnic, contingut i link building local perquè el teu web aparegui a Google quan algú busca els teus serveis a Tarragona i província. Des de 300€/mes.',
     },
     hero: {
       eyebrow: 'Servei',
@@ -104,7 +104,7 @@ export const posicionamientoSeo: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Preu i compromís',
-      body: 'Pla mensual de 290€. Inclou auditoria inicial, keyword research, optimitzacions tècniques, contingut (2-4 peces/mes), link building, reports i reunions. Sense permanència: cancel·les amb un correu i et quedes amb tots els actius (textos, enllaços, dades).',
+      body: 'Tres plans segons el teu abast: SEO Local des de 300€/mes per a un sol municipi, SEO Provincial a 500€/mes per dominar la província amb pàgines dedicades per ciutat, i SEO Competitiu a 900€/mes per a sectors molt disputats o e-commerce. Sense permanència: cancel·les amb un correu i et quedes amb tots els actius (textos, enllaços, dades).',
     },
     faq: {
       title: 'Preguntes freqüents',
@@ -125,7 +125,7 @@ export const posicionamientoSeo: Record<Locale, ServiceContent> = {
   en: {
     meta: {
       title: 'SEO positioning in Tarragona · Sincronia Agency',
-      description: 'Technical SEO, content and local link building so your site appears in Google when someone searches for your services in Tarragona and the province. From €290/month.',
+      description: 'Technical SEO, content and local link building so your site appears in Google when someone searches for your services in Tarragona and the province. From €300/month.',
     },
     hero: {
       eyebrow: 'Service',
@@ -164,7 +164,7 @@ export const posicionamientoSeo: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Price and commitment',
-      body: 'Monthly plan at €290. Includes initial audit, keyword research, technical optimisations, content (2-4 pieces/month), link building, reports and meetings. No commitment: cancel with an email and keep all assets (texts, links, data).',
+      body: 'Three plans by scope: SEO Local from €300/month for a single municipality, SEO Provincial at €500/month to dominate the province with dedicated city pages, and SEO Competitive at €900/month for highly contested sectors or e-commerce. No commitment: cancel with an email and keep all assets (texts, links, data).',
     },
     faq: {
       title: 'Frequently asked questions',
