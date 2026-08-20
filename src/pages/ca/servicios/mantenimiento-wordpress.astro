@@ -70,7 +70,7 @@ const service = services.find((s) => s.slug === 'mantenimiento-wordpress')!;
 
   <FAQ title={c.faq.title} items={c.faq.items} />
 
-  <CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: t('ca', 'cta.audit'), href: localizePath('/contacto', 'ca') }} />
+  <CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: t('ca', 'cta.audit'), href: localizePath('/contacto?service=mantenimiento-wordpress', 'ca') }} />
 </Base>
 
 <style>

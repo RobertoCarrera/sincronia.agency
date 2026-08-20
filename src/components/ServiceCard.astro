@@ -1,5 +1,5 @@
 ---
-import { services } from '~/data/services';
+import { services, getStartingServicePrice } from '~/data/services';
 import { t } from '~/i18n/ui';
 import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
 import { getServiceIcon } from '~/lib/icons';
@@ -14,9 +14,11 @@ interface Props {
 const { slug, title, shortDescription, icon } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
 const meta = services.find((s) => s.slug === slug);
-const priceLabel = meta
-  ? `${t(locale, 'common.from')} ${meta.priceFrom}€${meta.priceUnit === 'mes' ? t(locale, 'common.month') : ''}`
-  : '';
+const startPrice = meta ? getStartingServicePrice(meta) : null;
+const unit = meta?.priceUnit === 'proyecto' ? '/proyecto' : '/mes';
+// "Desde" solo si hay más de 1 tier; con 1 tier el precio es el del tier.
+const fromPrefix = meta && meta.tiers.length > 1 ? `${t(locale, 'common.from')} ` : '';
+const priceLabel = startPrice !== null ? `${fromPrefix}${startPrice}€${unit}` : '';
 ---
 <BorderGlow
   href={localizePath(`/servicios/${slug}`, locale)}

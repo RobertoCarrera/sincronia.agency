@@ -44,7 +44,7 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Precio y forma de pago',
-      body: 'Proyectos desde 890€ para landings básicas; plataformas corporativas y e-commerce completos entre 2.500€ y 8.000€ según complejidad. Forma de pago: 40% al inicio, 30% a mitad de proyecto, 30% al lanzamiento. Sin sorpresas, sin extras no acordados.',
+      body: 'Desde 890€ por proyecto. Cada web se presupuesta según alcance tras el discovery. Forma de pago: 40% al inicio, 30% a mitad, 30% al lanzamiento. Sin sorpresas, sin extras no acordados.',
     },
     faq: {
       title: 'Preguntas frecuentes',
@@ -104,7 +104,7 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Preu i forma de pagament',
-      body: 'Projectes des de 890€ per a landings bàsiques; plataformes corporatives i e-commerce complets entre 2.500€ i 8.000€ segons complexitat. Forma de pagament: 40% a l\'inici, 30% a meitat de projecte, 30% al llançament. Sense sorpreses, sense extres no acordats.',
+      body: 'Des de 890€ per projecte. Cada web es pressuposta segons l\'abast després del discovery. Forma de pagament: 40% a l\'inici, 30% a meitat, 30% al llançament. Sense sorpreses, sense extres no acordats.',
     },
     faq: {
       title: 'Preguntes freqüents',
@@ -164,7 +164,7 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Price and payment terms',
-      body: 'Projects from €890 for basic landings; corporate platforms and complete e-commerce between €2,500 and €8,000 depending on complexity. Payment: 40% upfront, 30% mid-project, 30% at launch. No surprises, no unagreed extras.',
+      body: 'From €890 per project. Each website is quoted based on scope after discovery. Payment: 40% upfront, 30% mid-project, 30% at launch. No surprises, no unagreed extras.',
     },
     faq: {
       title: 'Frequently asked questions',

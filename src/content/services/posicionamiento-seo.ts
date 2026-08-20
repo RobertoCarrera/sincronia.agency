@@ -44,7 +44,7 @@ export const posicionamientoSeo: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Precio y compromiso',
-      body: 'Planes desde 290€/mes. Incluye auditoría inicial, keyword research, optimizaciones técnicas, contenido (2-4 piezas/mes), link building, reportes y reuniones. Sin permanencia: cancelas con un email y te quedas con todos los activos (textos, enlaces, datos).',
+      body: 'Plan mensual de 290€. Incluye auditoría inicial, keyword research, optimizaciones técnicas, contenido (2-4 piezas/mes), link building, reportes y reuniones. Sin permanencia: cancelas con un email y te quedas con todos los activos (textos, enlaces, datos).',
     },
     faq: {
       title: 'Preguntas frecuentes',
@@ -104,7 +104,7 @@ export const posicionamientoSeo: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Preu i compromís',
-      body: 'Plans des de 290€/mes. Inclou auditoria inicial, keyword research, optimitzacions tècniques, contingut (2-4 peces/mes), link building, reports i reunions. Sense permanència: cancel·les amb un correu i et quedes amb tots els actius (textos, enllaços, dades).',
+      body: 'Pla mensual de 290€. Inclou auditoria inicial, keyword research, optimitzacions tècniques, contingut (2-4 peces/mes), link building, reports i reunions. Sense permanència: cancel·les amb un correu i et quedes amb tots els actius (textos, enllaços, dades).',
     },
     faq: {
       title: 'Preguntes freqüents',
@@ -164,7 +164,7 @@ export const posicionamientoSeo: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Price and commitment',
-      body: 'Plans from €290/month. Includes initial audit, keyword research, technical optimisations, content (2-4 pieces/month), link building, reports and meetings. No commitment: cancel with an email and keep all assets (texts, links, data).',
+      body: 'Monthly plan at €290. Includes initial audit, keyword research, technical optimisations, content (2-4 pieces/month), link building, reports and meetings. No commitment: cancel with an email and keep all assets (texts, links, data).',
     },
     faq: {
       title: 'Frequently asked questions',

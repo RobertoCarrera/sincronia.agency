@@ -51,7 +51,7 @@ const content = {
           </div>
           <div class="form-field">
             <label for="service-en">{content.form.service}</label>
-            <select id="service-en" name="Service">
+            <select id="service-en" name="Service" data-slug-map='{"mantenimiento-wordpress":"WordPress maintenance","desarrollo-wordpress":"WordPress development","desarrollo-aplicaciones-web":"Web application","posicionamiento-seo":"SEO","hosting":"Hosting","simplifica":"Simplifica","strata":"Strata"}'>
               <option value="">{content.form.servicePlaceholder}</option>
               <option value="WordPress maintenance">WordPress maintenance</option>
               <option value="WordPress development">WordPress development</option>
@@ -91,6 +91,25 @@ const content = {
     </div>
   </section>
 </Base>
+
+<script>
+  // Pre-fills the service select if the URL has ?service={slug}
+  // (used by service page CTAs / mega menu).
+  const sel = document.querySelector<HTMLSelectElement>('select[name="Service"]');
+  if (sel) {
+    const slug = new URLSearchParams(window.location.search).get('service');
+    if (slug) {
+      const mapAttr = sel.getAttribute('data-slug-map');
+      if (mapAttr) {
+        try {
+          const map = JSON.parse(mapAttr) as Record<string, string>;
+          const value = map[slug];
+          if (value) sel.value = value;
+        } catch { /* ignore */ }
+      }
+    }
+  }
+</script>
 
 <style>
   .contact-grid { display: grid; gap: var(--s-10); grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto; }

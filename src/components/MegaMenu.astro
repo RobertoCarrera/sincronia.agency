@@ -32,6 +32,10 @@ const ctaTitle: Record<typeof type, Record<Locale, string>> = {
   services: { es: '¿No sabes qué necesitas?', ca: 'No saps què necessites?', en: 'Not sure what you need?' },
   products: { es: 'Acceso anticipado', ca: 'Accés anticipat', en: 'Early access' },
 };
+const ctaEyebrow: Record<typeof type, Record<Locale, string>> = {
+  services: { es: 'Empezar', ca: 'Comença', en: 'Get started' },
+  products: { es: 'Lista de espera', ca: 'Llista d\'espera', en: 'Waitlist' },
+};
 const ctaBody: Record<typeof type, Record<Locale, string>> = {
   services: {
     es: 'Cuéntanos tu proyecto y te recomendamos la combinación ideal. Sin compromiso, respuesta en menos de 24h.',
@@ -138,7 +142,7 @@ const statusLabel: Record<'alpha' | 'beta' | 'estable', string> = {
 
         <aside class="mega-menu__aside">
           <div class="mega-menu__cta">
-            <span class="mega-menu__cta-eyebrow">{type === 'services' ? 'Quick start' : 'Beta'}</span>
+            <span class="mega-menu__cta-eyebrow">{ctaEyebrow[type][locale]}</span>
             <h3 class="mega-menu__cta-title">{ctaTitle[type][locale]}</h3>
             <p class="mega-menu__cta-body">{ctaBody[type][locale]}</p>
             <a href={localizePath('/contacto', locale)} class="btn btn--primary mega-menu__cta-btn">

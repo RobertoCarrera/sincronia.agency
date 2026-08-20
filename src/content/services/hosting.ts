@@ -44,12 +44,12 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Precio y compromiso',
-      body: 'Hosting WordPress desde 20€/mes (1 web, 25GB SSD, tráfico ilimitado razonable). Hosting aplicaciones web desde 35€/mes (1 instancia, según recursos). Sin permanencia: cancelas cuando quieras. Migración inicial gratuita.',
+      body: 'Hosting desde 20€/mes (1 web WordPress, 25GB SSD, tráfico razonable). Si necesitas más webs, más recursos o una app web, te lo presupuestamos a medida. Sin permanencia. Migración inicial gratuita.',
     },
     faq: {
       title: 'Preguntas frecuentes',
       items: [
-        { q: '¿Cuánto cuesta el hosting?', a: 'WordPress desde 20€/mes, aplicaciones web desde 35€/mes. Planes personalizados para casos especiales (muchas webs, alto tráfico, requisitos específicos).' },
+        { q: '¿Cuánto cuesta el hosting?', a: 'WordPress desde 20€/mes. Para apps web, múltiples webs o casos especiales (alto tráfico, requisitos específicos), te lo presupuestamos a medida.' },
         { q: '¿Puedo mantener mi dominio actual?', a: 'Sí. Solo necesitamos que apuntes el DNS a nuestros servidores. Te guiamos paso a paso.' },
         { q: '¿Hacéis migración desde mi hosting actual?', a: 'Sí, gratuita. Migramos tu web, base de datos, emails. Sin pérdida de datos, con tiempo de inactividad mínimo.' },
         { q: '¿Y si necesito más recursos?', a: 'Escalamos vertical u horizontalmente según el caso. A veces es cambiar de plan, a veces mover a un servidor dedicado o a Vercel.' },
@@ -104,12 +104,12 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Preu i compromís',
-      body: 'Hosting WordPress des de 20€/mes (1 web, 25GB SSD, trànsit il·limitat raonable). Hosting aplicacions web des de 35€/mes (1 instància, segons recursos). Sense permanència: cancel·les quan vulguis. Migració inicial gratuïta.',
+      body: 'Hosting des de 20€/mes (1 web WordPress, 25GB SSD, trànsit raonable). Si necessites més webs, més recursos o una app web, t\'ho pressupostem a mida. Sense permanència. Migració inicial gratuïta.',
     },
     faq: {
       title: 'Preguntes freqüents',
       items: [
-        { q: 'Quant costa el hosting?', a: 'WordPress des de 20€/mes, aplicacions web des de 35€/mes. Plans personalitzats per a casos especials (moltes webs, alt trànsit, requisits específics).' },
+        { q: 'Quant costa el hosting?', a: 'WordPress des de 20€/mes. Per a apps web, múltiples webs o casos especials (alt trànsit, requisits específics), t\'ho pressupostem a mida.' },
         { q: 'Puc mantenir el meu domini actual?', a: 'Sí. Només necessitem que apuntis el DNS als nostres servidors. T\'acompanyem pas a pas.' },
         { q: 'Feu migració des del meu hosting actual?', a: 'Sí, gratuïta. Migrations el teu web, base de dades, correus. Sense pèrdua de dades, amb temps d\'inactivitat mínim.' },
         { q: 'I si necessito més recursos?', a: 'Escalem vertical o horitzontalment segons el cas. De vegades és canviar de pla, de vegades moure a un servidor dedicat o a Vercel.' },
@@ -164,12 +164,12 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Price and commitment',
-      body: 'WordPress hosting from €20/month (1 site, 25GB SSD, reasonable unlimited traffic). Web application hosting from €35/month (1 instance, depending on resources). No commitment: cancel any time. Initial migration free.',
+      body: 'Hosting from €20/month (1 WordPress site, 25GB SSD, reasonable traffic). If you need more sites, more resources or a web app, we quote it bespoke. No commitment. Initial migration free.',
     },
     faq: {
       title: 'Frequently asked questions',
       items: [
-        { q: 'How much does hosting cost?', a: 'WordPress from €20/month, web applications from €35/month. Custom plans for special cases (many sites, high traffic, specific requirements).' },
+        { q: 'How much does hosting cost?', a: 'WordPress from €20/month. For web apps, multiple sites or special cases (high traffic, specific requirements), we quote it bespoke.' },
         { q: 'Can I keep my current domain?', a: 'Yes. We just need you to point DNS to our servers. We guide you step by step.' },
         { q: 'Do you migrate from my current hosting?', a: 'Yes, for free. We migrate your site, database, emails. No data loss, minimal downtime.' },
         { q: 'What if I need more resources?', a: 'We scale vertically or horizontally depending on the case. Sometimes it is changing plans, sometimes moving to a dedicated server or Vercel.' },

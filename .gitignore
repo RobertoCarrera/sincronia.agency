@@ -35,3 +35,4 @@ stderr.txt
 
 # temp dev notes (commit-msg drafts, scratch files)
 dev-notes-*.txt
+dev-notes-*.py

@@ -44,7 +44,7 @@ export const desarrolloAplicacionesWeb: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Precio y forma de pago',
-      body: 'Proyectos desde 2.400€ para herramientas internas; plataformas SaaS completas entre 8.000€ y 30.000€ según alcance. Forma de pago por hitos del proyecto. Para proyectos largos, también trabajamos en retainer mensual con horas garantizadas.',
+      body: 'Desde 2.400€ por proyecto. Cada proyecto se presupuesta según alcance tras el análisis técnico. Forma de pago por hitos. Para proyectos largos, también trabajamos en retainer mensual con horas garantizadas.',
     },
     faq: {
       title: 'Preguntas frecuentes',
@@ -104,7 +104,7 @@ export const desarrolloAplicacionesWeb: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Preu i forma de pagament',
-      body: 'Projectes des de 2.400€ per a eines internes; plataformes SaaS completes entre 8.000€ i 30.000€ segons abast. Forma de pagament per fites del projecte. Per a projectes llargs, també treballem en retainer mensual amb hores garantides.',
+      body: 'Des de 2.400€ per projecte. Cada projecte es pressuposta segons l\'abast després de l\'anàlisi tècnica. Forma de pagament per fites. Per a projectes llargs, també treballem en retainer mensual amb hores garantides.',
     },
     faq: {
       title: 'Preguntes freqüents',
@@ -164,7 +164,7 @@ export const desarrolloAplicacionesWeb: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Price and payment terms',
-      body: 'Projects from €2,400 for internal tools; complete SaaS platforms between €8,000 and €30,000 depending on scope. Payment by project milestones. For long projects, we also work on monthly retainer with guaranteed hours.',
+      body: 'From €2,400 per project. Each project is quoted based on scope after technical analysis. Payment by milestones. For long projects, we also work on monthly retainer with guaranteed hours.',
     },
     faq: {
       title: 'Frequently asked questions',
