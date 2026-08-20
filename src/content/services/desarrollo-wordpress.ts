@@ -5,7 +5,7 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
   es: {
     meta: {
       title: 'Desarrollo WordPress en Tarragona · Sincronia Agency',
-      description: 'Diseño y desarrollo de webs a medida con WordPress: landings, e-commerce, plataformas corporativas. SEO técnico integrado desde el primer commit. Proyectos desde 890€.',
+      description: 'Diseño y desarrollo de webs a medida con WordPress: desde landings de 400€ hasta e-commerce completo. SEO técnico integrado desde el primer commit.',
     },
     hero: {
       eyebrow: 'Servicio',
@@ -44,12 +44,13 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Precio y forma de pago',
-      body: 'Desde 890€ por proyecto. Cada web se presupuesta según alcance tras el discovery. Forma de pago: 40% al inicio, 30% a mitad, 30% al lanzamiento. Sin sorpresas, sin extras no acordados.',
+      body: '4 planes por proyecto: Landing 400€ (hasta 3 secciones, sin blog), One-Page 600€ (hasta 10 secciones, sin blog), Web corporativa 1000€ (5-10 páginas + blog), E-commerce 1400€ (WooCommerce + pasarela). Forma de pago: 40% al inicio, 30% a mitad, 30% al lanzamiento. Sin sorpresas, sin extras no acordados.',
     },
     faq: {
       title: 'Preguntas frecuentes',
       items: [
-        { q: '¿Cuánto tarda un proyecto web?', a: 'Una landing sencilla: 2-3 semanas. Una web corporativa: 4-6 semanas. Un e-commerce con varios productos: 6-10 semanas. Te lo confirmamos en el discovery.' },
+        { q: '¿Cuánto cuesta una web WordPress?', a: 'Desde 400€ para una landing de 1 vista, hasta 1400€ para un e-commerce con WooCommerce y pasarela. Los planes intermedios: One-Page 600€ y Web corporativa 1000€. Si tu proyecto se sale de estos planes, te presupuestamos a medida.' },
+        { q: '¿Cuánto tarda un proyecto web?', a: 'Una landing: 2-3 semanas. Una web corporativa: 4-6 semanas. Un e-commerce con varios productos: 6-10 semanas. Te lo confirmamos en el discovery.' },
         { q: '¿Usáis constructores como Elementor o Divi?', a: 'Solo si el cliente lo pide explícitamente y entiende las implicaciones (rendimiento, mantenimiento, lock-in). Por defecto, Gutenberg con bloques personalizados.' },
         { q: '¿Puedo traer mi propio diseño?', a: 'Por supuesto. Si tienes un diseño en Figma, Sketch o Adobe XD, lo implementamos tal cual. Si no tienes, lo diseñamos nosotros.' },
         { q: '¿La web será mía cuando termine el proyecto?', a: 'Sí. El código, los contenidos, el dominio y el hosting son tuyos al 100%. Te entregamos todo y te enseñamos a gestionarlo.' },
@@ -65,7 +66,7 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
   ca: {
     meta: {
       title: 'Desenvolupament WordPress a Tarragona · Sincronia Agency',
-      description: 'Disseny i desenvolupament de llocs web a mida amb WordPress: landings, e-commerce, plataformes corporatives. SEO tècnic integrat des del primer commit. Projectes des de 890€.',
+      description: 'Disseny i desenvolupament de llocs web a mida amb WordPress: des de landings de 400€ fins a e-commerce complet. SEO tècnic integrat des del primer commit.',
     },
     hero: {
       eyebrow: 'Servei',
@@ -104,12 +105,13 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Preu i forma de pagament',
-      body: 'Des de 890€ per projecte. Cada web es pressuposta segons l\'abast després del discovery. Forma de pagament: 40% a l\'inici, 30% a meitat, 30% al llançament. Sense sorpreses, sense extres no acordats.',
+      body: '4 plans per projecte: Landing 400€ (fins a 3 seccions, sense bloc), One-Page 600€ (fins a 10 seccions, sense bloc), Web corporativa 1000€ (5-10 pàgines + bloc), E-commerce 1400€ (WooCommerce + pasarel·la). Forma de pagament: 40% a l\'inici, 30% a meitat, 30% al llançament. Sense sorpreses, sense extres no acordats.',
     },
     faq: {
       title: 'Preguntes freqüents',
       items: [
-        { q: 'Quant triga un projecte web?', a: 'Una landing senzilla: 2-3 setmanes. Una web corporativa: 4-6 setmanes. Un e-commerce amb diversos productes: 6-10 setmanes. T\'ho confirmem al discovery.' },
+        { q: 'Quant costa un web WordPress?', a: 'Des de 400€ per a una landing d\'1 vista, fins a 1400€ per a un e-commerce amb WooCommerce i pasarel·la. Els plans intermitjos: One-Page 600€ i Web corporativa 1000€. Si el teu projecte surt d\'aquests plans, t\'ho pressupostem a mida.' },
+        { q: 'Quant triga un projecte web?', a: 'Una landing: 2-3 setmanes. Una web corporativa: 4-6 setmanes. Un e-commerce amb diversos productes: 6-10 setmanes. T\'ho confirmem al discovery.' },
         { q: 'Feu servir constructors com Elementor o Divi?', a: 'Només si el client ho demana explícitament i entén les implicacions (rendiment, manteniment, lock-in). Per defecte, Gutenberg amb blocs personalitzats.' },
         { q: 'Puc portar el meu propi disseny?', a: 'Per descomptat. Si tens un disseny en Figma, Sketch o Adobe XD, l\'implementem tal qual. Si no en tens, el dissenyem nosaltres.' },
         { q: 'El web serà meu quan acabi el projecte?', a: 'Sí. El codi, els continguts, el domini i el hosting són teus al 100%. T\'entreguem tot i t\'ensenyem a gestionar-ho.' },
@@ -125,7 +127,7 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
   en: {
     meta: {
       title: 'WordPress development in Tarragona · Sincronia Agency',
-      description: 'Bespoke WordPress design and development: landings, e-commerce, corporate platforms. Technical SEO integrated from the first commit. Projects from €890.',
+      description: 'Bespoke WordPress design and development: from €400 landings to full e-commerce. Technical SEO integrated from the first commit.',
     },
     hero: {
       eyebrow: 'Service',
@@ -164,12 +166,13 @@ export const desarrolloWordpress: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Price and payment terms',
-      body: 'From €890 per project. Each website is quoted based on scope after discovery. Payment: 40% upfront, 30% mid-project, 30% at launch. No surprises, no unagreed extras.',
+      body: '4 project plans: Landing €400 (up to 3 sections, no blog), One-Page €600 (up to 10 sections, no blog), Corporate website €1000 (5-10 pages + blog), E-commerce €1400 (WooCommerce + payment gateway). Payment: 40% upfront, 30% mid-project, 30% at launch. No surprises, no unagreed extras.',
     },
     faq: {
       title: 'Frequently asked questions',
       items: [
-        { q: 'How long does a web project take?', a: 'A simple landing: 2-3 weeks. A corporate site: 4-6 weeks. An e-commerce with several products: 6-10 weeks. We confirm in discovery.' },
+        { q: 'How much does a WordPress site cost?', a: 'From €400 for a 1-view landing, up to €1400 for an e-commerce with WooCommerce and payment gateway. Mid-range plans: One-Page €600 and Corporate website €1000. If your project falls outside these plans, we quote it bespoke.' },
+        { q: 'How long does a web project take?', a: 'A landing: 2-3 weeks. A corporate site: 4-6 weeks. An e-commerce with several products: 6-10 weeks. We confirm in discovery.' },
         { q: 'Do you use builders like Elementor or Divi?', a: 'Only if the client asks explicitly and understands the implications (performance, maintenance, lock-in). By default, Gutenberg with custom blocks.' },
         { q: 'Can I bring my own design?', a: 'Of course. If you have a design in Figma, Sketch or Adobe XD, we implement it as is. If you do not, we design it.' },
         { q: 'Will the website be mine when the project ends?', a: 'Yes. Code, content, domain and hosting are 100% yours. We hand over everything and teach you to manage it.' },

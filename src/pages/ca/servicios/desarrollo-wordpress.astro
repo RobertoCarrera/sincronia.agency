@@ -3,20 +3,25 @@ import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
 import CTA from '~/components/CTA.astro';
 import FAQ from '~/components/FAQ.astro';
+import PricingTable from '~/components/PricingTable.astro';
 import { desarrolloWordpress } from '~/content/services/desarrollo-wordpress';
+import { services } from '~/data/services';
 import { t } from '~/i18n/ui';
 import { localizePath } from '~/lib/i18n';
 
 const c = desarrolloWordpress.ca;
+const service = services.find((s) => s.slug === 'desarrollo-wordpress')!;
 ---
 <Base title={c.meta.title} description={c.meta.description}>
   <Hero eyebrow={c.hero.eyebrow} title={c.hero.title} subtitle={c.hero.subtitle} />
+
   <section class="section">
     <div class="container intro-block">
       <h2>{c.intro.title}</h2>
       {c.intro.paragraphs.map((p) => <p>{p}</p>)}
     </div>
   </section>
+
   <section class="section section--alt" aria-labelledby="includes-heading">
     <div class="container">
       <header class="section-header">
@@ -37,6 +42,7 @@ const c = desarrolloWordpress.ca;
       </ul>
     </div>
   </section>
+
   <section class="section" aria-labelledby="process-heading">
     <div class="container">
       <header class="section-header">
@@ -53,13 +59,17 @@ const c = desarrolloWordpress.ca;
       </ol>
     </div>
   </section>
-  <section class="section section--alt">
-    <div class="container pricing-block">
-      <h2>{c.pricing.title}</h2>
-      <p class="lead">{c.pricing.body}</p>
-    </div>
+
+  <section class="pricing-anchor" aria-labelledby="pricing-heading">
+    <header class="section-header" style="text-align: center; max-width: 700px; margin: 0 auto var(--s-6);">
+      <h2 id="pricing-heading">{c.pricing.title}</h2>
+      <p class="lead" style="margin-top: var(--s-3);">{c.pricing.body}</p>
+    </header>
+    <PricingTable source={service} />
   </section>
+
   <FAQ title={c.faq.title} items={c.faq.items} />
+
   <CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: t('ca', 'cta.quote'), href: localizePath('/contacto?service=desarrollo-wordpress', 'ca') }} />
 </Base>
 
@@ -81,6 +91,5 @@ const c = desarrolloWordpress.ca;
   .process-step__num { position: absolute; left: 0; top: -0.5rem; font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700; color: var(--c-coral-500); line-height: 1; letter-spacing: -0.04em; }
   .process-step h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
   .process-step p { color: var(--c-muted); font-size: 0.9375rem; }
-  .pricing-block { max-width: 800px; }
-  .pricing-block h2 { margin-bottom: var(--s-4); }
+  .pricing-anchor { background: var(--c-bg-alt); border-block: 1px solid var(--c-line); }
 </style>
