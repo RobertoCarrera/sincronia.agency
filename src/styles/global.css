@@ -120,12 +120,10 @@ p  { font-size: 1rem; line-height: 1.65; color: var(--c-text); }
   border: 1px solid var(--c-line);
   border-radius: var(--r-lg);
   padding: var(--s-6);
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 .card:hover {
   border-color: var(--c-navy-800);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
 }
 .card--feature {
   display: flex;
