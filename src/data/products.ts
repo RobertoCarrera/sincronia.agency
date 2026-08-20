@@ -96,6 +96,7 @@ export const products: ProductMeta[] = [
           'Automatizaciones simples',
           'Integraciones básicas',
         ],
+        highlight: true,
       },
       {
         id: 'pro',
@@ -111,7 +112,6 @@ export const products: ProductMeta[] = [
           'Multi-sucursal',
           'API',
         ],
-        highlight: true,
       },
       {
         id: 'business',
@@ -179,6 +179,7 @@ export const products: ProductMeta[] = [
           'Acceso a IA asistente',
           '3 idiomas',
         ],
+        highlight: true,
         ctaLabel: 'Apuntarme a la lista de espera',
       },
       {
@@ -234,7 +235,6 @@ export const products: ProductMeta[] = [
           '5 idiomas',
           'Optimizado para contenido editorial',
         ],
-        highlight: true,
         ctaLabel: 'Apuntarme a la lista de espera',
       },
     ] as StrataTier[],
