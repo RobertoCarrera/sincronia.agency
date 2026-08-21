@@ -28,6 +28,8 @@ const productsToShow = c.productPreviews.map((pp) => {
     priceUnit: '/mes',
     // Producto destacado (Strata) = variante navy para diferenciarse en la home.
     accent: (meta.featured ? 'navy' : 'coral') as 'coral' | 'navy',
+    // Logo real si existe (Simplifica). Strata sigue con SVG icon.
+    logo: meta.logo,
   };
 });
 ---
@@ -90,6 +92,7 @@ const productsToShow = c.productPreviews.map((pp) => {
             priceFrom={p.priceFrom}
             priceUnit={p.priceUnit}
             icon={p.icon}
+            logo={p.logo}
             accent={p.accent}
           />
         ))}

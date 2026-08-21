@@ -6,13 +6,22 @@ import FAQ from '~/components/FAQ.astro';
 import PricingTable from '~/components/PricingTable.astro';
 import { simplifica } from '~/content/products/simplifica';
 import { products } from '~/data/products';
+import { productJsonLd } from '~/lib/product-schema';
 import { t } from '~/i18n/ui';
 import { localizePath } from '~/lib/i18n';
 
 const c = simplifica.en;
 const product = products.find((p) => p.slug === 'simplifica')!;
+const productSchema = productJsonLd({
+  productSlug: 'simplifica',
+  name: c.hero.title,
+  description: c.meta.description,
+  locale: 'en',
+  imagePath: '/productos/simplifica/logo-on-light-640.webp',
+  faq: c.faq.items,
+});
 ---
-<Base title={c.meta.title} description={c.meta.description}>
+<Base title={c.meta.title} description={c.meta.description} jsonLd={productSchema}>
   <Hero eyebrow={c.hero.eyebrow} title={c.hero.title} subtitle={c.hero.subtitle} />
 
   <section class="section">

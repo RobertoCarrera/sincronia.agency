@@ -6,14 +6,48 @@ import FAQ from '~/components/FAQ.astro';
 import PricingTable from '~/components/PricingTable.astro';
 import { simplifica } from '~/content/products/simplifica';
 import { products } from '~/data/products';
+import { productJsonLd } from '~/lib/product-schema';
 import { t } from '~/i18n/ui';
 import { localizePath } from '~/lib/i18n';
 
 const c = simplifica.es;
 const product = products.find((p) => p.slug === 'simplifica')!;
+const productSchema = productJsonLd({
+  productSlug: 'simplifica',
+  name: c.hero.title,
+  description: c.meta.description,
+  locale: 'es',
+  imagePath: '/productos/simplifica/logo-on-light-640.webp',
+  faq: c.faq.items,
+});
 ---
-<Base title={c.meta.title} description={c.meta.description}>
+<Base title={c.meta.title} description={c.meta.description} jsonLd={productSchema}>
   <Hero eyebrow={c.hero.eyebrow} title={c.hero.title} subtitle={c.hero.subtitle} />
+
+  <section class="section product-identity" aria-label="Identidad de marca de Simplifica">
+    <div class="container">
+      <figure class="product-identity__figure">
+        <picture>
+          <source
+            srcset="/productos/simplifica/logo-on-light-320.webp 320w,
+                    /productos/simplifica/logo-on-light-480.webp 480w,
+                    /productos/simplifica/logo-on-light-640.webp 640w,
+                    /productos/simplifica/logo-on-light-800.webp 800w"
+            sizes="(min-width: 768px) 640px, 90vw"
+            type="image/webp"
+          />
+          <img
+            src="/productos/simplifica/logo-on-light.png"
+            alt="Simplifica — CRM multi-sector by Sincronia"
+            width="640"
+            height="274"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
+      </figure>
+    </div>
+  </section>
 
   <section class="section">
     <div class="container intro-block">
@@ -68,4 +102,18 @@ const product = products.find((p) => p.slug === 'simplifica')!;
   .feature-item h3 { font-size: 1.0625rem; margin-bottom: 0.4rem; }
   .feature-item p { font-size: 0.9375rem; color: var(--c-muted); }
   .pricing-anchor { background: var(--c-bg-alt); border-block: 1px solid var(--c-line); }
+
+  /* Identidad visual del producto: logo a tamaño hero */
+  .product-identity { padding-block: var(--s-8) var(--s-4); }
+  .product-identity__figure {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .product-identity__figure picture,
+  .product-identity__figure img {
+    max-width: min(640px, 90vw);
+    height: auto;
+    display: block;
+  }
 </style>

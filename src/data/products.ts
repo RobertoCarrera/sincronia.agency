@@ -52,6 +52,17 @@ export interface ProductMeta {
   cta: { label: string; href: string };
   /** si true, este producto es el destacado del index (badge "RECOMENDADO") */
   featured?: boolean;
+  /** Logo del producto (sustituye al icono SVG en el ProductCard cuando se proporciona) */
+  logo?: {
+    /** ruta pública base, sin extensión. El componente elige .webp con fallback .png */
+    src: string;
+    /** texto alternativo (mismo en todos los idiomas; describe el logo) */
+    alt: string;
+    /** ancho intrínseco del PNG original (para evitar layout shift) */
+    width: number;
+    /** alto intrínseco del PNG original */
+    height: number;
+  };
 }
 
 export const products: ProductMeta[] = [
@@ -61,6 +72,12 @@ export const products: ProductMeta[] = [
     shortName: 'Simplifica CRM',
     icon: 'users-round',
     status: 'beta',
+    logo: {
+      src: '/productos/simplifica/icon',
+      alt: 'Simplifica — CRM multi-sector by Sincronia',
+      width: 256,
+      height: 256,
+    },
     shortDescription: {
       es: 'CRM que se adapta a tu sector, no al revés.',
       ca: 'CRM que s\'adapta al teu sector, no a l\'inrevés.',

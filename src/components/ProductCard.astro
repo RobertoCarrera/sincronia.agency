@@ -34,11 +34,18 @@ interface Props {
   /** Si true, el producto es el destacado del index (badge "DESTACADO" reemplaza al de status). */
   featured?: boolean;
   accent?: 'coral' | 'navy';
+  /** Logo real del producto (sustituye al SVG icon). Usado por Simplifica. */
+  logo?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
 }
 
 const {
   slug, name, tagline, description,
-  status, priceFrom, priceUnit, icon,
+  status, priceFrom, priceUnit, icon, logo,
   featured = false, accent = 'coral',
 } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
@@ -67,12 +74,28 @@ const secondaryBadge = featured ? statusLabel : null; // sub-badge con el status
 >
   <div class="border-glow-inner product-card__inner">
     <div class="product-card__header">
-      <span class="icon-box" aria-hidden="true">
-        <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true">
-          {icon === 'users-round' && <><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></>}
-          {icon === 'layers' && <><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></>}
-        </svg>
-      </span>
+      {logo ? (
+        <span class="icon-box icon-box--logo" aria-hidden={logo.alt ? undefined : 'true'}>
+          <picture>
+            <source srcset={`${logo.src}.webp`} type="image/webp" />
+            <img
+              src={`${logo.src}.png`}
+              alt={logo.alt}
+              width={logo.width}
+              height={logo.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </span>
+      ) : (
+        <span class="icon-box" aria-hidden="true">
+          <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+            {icon === 'users-round' && <><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></>}
+            {icon === 'layers' && <><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></>}
+          </svg>
+        </span>
+      )}
       <div class="product-card__badges">
         <span class={`product-card__badge product-card__badge--primary`}>{primaryBadge}</span>
         {secondaryBadge && <span class="product-card__badge product-card__badge--secondary">{secondaryBadge}</span>}
@@ -116,6 +139,22 @@ const secondaryBadge = featured ? statusLabel : null; // sub-badge con el status
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--s-3);
+  }
+  /* Cuando el icono-box contiene un <img> del logo, lo dimensionamos como icono */
+  :global(.icon-box--logo) {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    width: 3rem;
+    height: 3rem;
+    overflow: hidden;
+    border-radius: 0.5rem;
+  }
+  :global(.icon-box--logo img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
   }
   :global(.product-card__badges) {
     display: inline-flex;
