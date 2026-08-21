@@ -8,6 +8,7 @@ import { nap, openingHoursSpecification } from '~/data/nap';
 import { locations } from '~/data/locations';
 import { getLocaleFromUrl } from '~/lib/i18n';
 import { localeHtmlLang, type Locale } from '~/i18n/locales';
+import { assetUrl } from '~/lib/assets';
 
 interface Props {
   title: string;
@@ -102,8 +103,8 @@ const localBusiness = {
   telephone: nap.phone,
   email: nap.email,
   priceRange: nap.priceRange,
-  image: 'https://sincronia.agency/logos/sincronia-logo-bg.png',
-  logo: 'https://sincronia.agency/logos/sincronia-logo-bg.png',
+  image: assetUrl('/logos/sincronia-logo-bg.png'),
+  logo: assetUrl('/logos/sincronia-logo-bg.png'),
   address: {
     '@type': 'PostalAddress',
     streetAddress: nap.street,
@@ -145,7 +146,7 @@ const organization = {
   name: nap.name,
   legalName: nap.legalName ?? nap.name,
   url: nap.url,
-  logo: 'https://sincronia.agency/logos/sincronia-logo-bg.png',
+  logo: assetUrl('/logos/sincronia-logo-bg.png'),
   foundingDate: '2022',
   founder: {
     '@type': 'Person',
@@ -214,27 +215,27 @@ const allSchemas = jsonLd
     <meta name="format-detection" content="telephone=yes" />
 
     <!-- Icons — favicon stack para todos los navegadores y dispositivos -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon.png" />
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1B3A6B" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href={assetUrl('/favicon.svg')} />
+    <link rel="icon" type="image/png" sizes="16x16" href={assetUrl('/favicon-16x16.png')} />
+    <link rel="icon" type="image/png" sizes="32x32" href={assetUrl('/favicon-32x32.png')} />
+    <link rel="icon" type="image/png" sizes="48x48" href={assetUrl('/favicon-48x48.png')} />
+    <link rel="icon" type="image/x-icon" href={assetUrl('/favicon.ico')} />
+    <link rel="apple-touch-icon" sizes="180x180" href={assetUrl('/apple-touch-icon.png')} />
+    <link rel="apple-touch-icon" sizes="152x152" href={assetUrl('/apple-touch-icon.png')} />
+    <link rel="apple-touch-icon" sizes="144x144" href={assetUrl('/apple-touch-icon.png')} />
+    <link rel="apple-touch-icon" sizes="120x120" href={assetUrl('/apple-touch-icon.png')} />
+    <link rel="apple-touch-icon" sizes="114x114" href={assetUrl('/apple-touch-icon.png')} />
+    <link rel="apple-touch-icon" sizes="76x76" href={assetUrl('/apple-touch-icon.png')} />
+    <link rel="apple-touch-icon" sizes="72x72" href={assetUrl('/apple-touch-icon.png')} />
+    <link rel="apple-touch-icon" sizes="57x57" href={assetUrl('/apple-touch-icon.png')} />
+    <link rel="mask-icon" href={assetUrl('/safari-pinned-tab.svg')} color="#1B3A6B" />
+    <link rel="manifest" href={assetUrl('/manifest.webmanifest')} />
     <meta name="msapplication-TileColor" content="#1B3A6B" />
-    <meta name="msapplication-config" content="/browserconfig.xml" />
-    <meta name="msapplication-square70x70logo" content="/mstile-70x70.png" />
-    <meta name="msapplication-square150x150logo" content="/mstile-150x150.png" />
-    <meta name="msapplication-square310x310logo" content="/mstile-310x310.png" />
-    <meta name="msapplication-wide310x150logo" content="/mstile-310x150.png" />
+    <meta name="msapplication-config" content={assetUrl('/browserconfig.xml')} />
+    <meta name="msapplication-square70x70logo" content={assetUrl('/mstile-70x70.png')} />
+    <meta name="msapplication-square150x150logo" content={assetUrl('/mstile-150x150.png')} />
+    <meta name="msapplication-square310x310logo" content={assetUrl('/mstile-310x310.png')} />
+    <meta name="msapplication-wide310x150logo" content={assetUrl('/mstile-310x150.png')} />
 
     <!-- Local SEO geo meta (legacy but still respected) -->
     <meta name="geo.region" content="ES-CT" />

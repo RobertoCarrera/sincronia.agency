@@ -9,6 +9,7 @@ import { products } from '~/data/products';
 import { productJsonLd } from '~/lib/product-schema';
 import { t } from '~/i18n/ui';
 import { localizePath } from '~/lib/i18n';
+import { assetUrl } from '~/lib/assets';
 
 const c = strata.es;
 const product = products.find((p) => p.slug === 'strata')!;
@@ -29,11 +30,11 @@ const productSchema = productJsonLd({
       <figure class="product-identity__figure">
         <picture>
           <source
-            srcset="/productos/strata/pwa-256.webp 1x, /productos/strata/pwa-512.webp 2x"
+            srcset={`${assetUrl('/productos/strata/pwa-256')} 1x, ${assetUrl('/productos/strata/pwa-512')} 2x`}
             type="image/webp"
           />
           <img
-            src="/productos/strata/pwa.png"
+            src={assetUrl('/productos/strata/pwa.png')}
             alt="Strata — CMS con editor visual by Sincronia"
             width="256"
             height="256"

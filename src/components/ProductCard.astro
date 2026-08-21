@@ -18,6 +18,7 @@
  */
 import { t } from '~/i18n/ui';
 import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
+import { assetUrl } from '~/lib/assets';
 import BorderGlow from '~/components/BorderGlow.astro';
 
 type ProductStatus = 'alpha' | 'beta' | 'estable';
@@ -77,9 +78,9 @@ const secondaryBadge = featured ? statusLabel : null; // sub-badge con el status
       {logo ? (
         <span class="icon-box icon-box--logo" aria-hidden={logo.alt ? undefined : 'true'}>
           <picture>
-            <source srcset={`${logo.src}.webp`} type="image/webp" />
+            <source srcset={`${assetUrl(logo.src)}.webp`} type="image/webp" />
             <img
-              src={`${logo.src}.png`}
+              src={`${assetUrl(logo.src)}.png`}
               alt={logo.alt}
               width={logo.width}
               height={logo.height}

@@ -9,6 +9,7 @@ import { products } from '~/data/products';
 import { productJsonLd } from '~/lib/product-schema';
 import { t } from '~/i18n/ui';
 import { localizePath } from '~/lib/i18n';
+import { assetUrl } from '~/lib/assets';
 
 const c = simplifica.es;
 const product = products.find((p) => p.slug === 'simplifica')!;
@@ -29,15 +30,15 @@ const productSchema = productJsonLd({
       <figure class="product-identity__figure">
         <picture>
           <source
-            srcset="/productos/simplifica/logo-on-light-320.webp 320w,
-                    /productos/simplifica/logo-on-light-480.webp 480w,
-                    /productos/simplifica/logo-on-light-640.webp 640w,
-                    /productos/simplifica/logo-on-light-800.webp 800w"
+            srcset={`${assetUrl('/productos/simplifica/logo-on-light-320')} 320w,
+                    ${assetUrl('/productos/simplifica/logo-on-light-480')} 480w,
+                    ${assetUrl('/productos/simplifica/logo-on-light-640')} 640w,
+                    ${assetUrl('/productos/simplifica/logo-on-light-800')} 800w`}
             sizes="(min-width: 768px) 640px, 90vw"
             type="image/webp"
           />
           <img
-            src="/productos/simplifica/logo-on-light.png"
+            src={assetUrl('/productos/simplifica/logo-on-light.png')}
             alt="Simplifica — CRM multi-sector by Sincronia"
             width="640"
             height="274"

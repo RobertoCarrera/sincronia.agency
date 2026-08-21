@@ -1,6 +1,8 @@
 ---
 import { getAlternateLinks } from '~/lib/i18n';
 import { localeHtmlLang, type Locale } from '~/i18n/locales';
+import { assetUrl } from '~/lib/assets';
+import { getOgImage } from '~/lib/og';
 
 interface Props {
   title: string;
@@ -15,10 +17,14 @@ interface Props {
   modifiedTime?: string;
 }
 
-const { title, description, locale, ogImage = '/og-default.png', ogType = 'website', noindex = false, canonical, jsonLd, publishedTime, modifiedTime } = Astro.props;
+const { title, description, locale, ogImage, ogType = 'website', noindex = false, canonical, jsonLd, publishedTime, modifiedTime } = Astro.props;
 const url = canonical ?? `https://sincronia.agency${Astro.url.pathname}`;
 const alternates = getAlternateLinks(Astro.url.pathname);
-const fullOgImage = ogImage.startsWith('http') ? ogImage : `https://sincronia.agency${ogImage}`;
+// Si la pagina pasa ogImage explicito, lo respetamos. Si no, el helper elige
+// el OG image que toque segun la ruta (o el og-home como fallback).
+const fullOgImage = ogImage
+  ? (ogImage.startsWith('http') ? ogImage : assetUrl(ogImage))
+  : getOgImage(Astro.url.pathname, locale);
 
 const ogLocaleMap: Record<Locale, string> = {
   es: 'es_ES',

@@ -1,10 +1,12 @@
 ---
+import { assetUrl } from '~/lib/assets';
+
 interface Props {
   variant?: 'dark' | 'light';
   width?: number;
 }
 const { variant = 'dark', width = 180 } = Astro.props;
-const logoFile = variant === 'light' ? '/logos/sincronia-logo-bg.png' : '/logos/sincronia-logo-transp.png';
+const logoFile = variant === 'light' ? assetUrl('/logos/sincronia-logo-bg.png') : assetUrl('/logos/sincronia-logo-transp.png');
 ---
 <a href="/" aria-label="Sincronia Agency — Inicio" class="logo">
   <img src={logoFile} alt="Sincronia" width={width} height="auto" loading="eager" />

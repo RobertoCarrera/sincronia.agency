@@ -9,6 +9,7 @@ import { products } from '~/data/products';
 import { nap } from '~/data/nap';
 import type { Locale } from '~/i18n/locales';
 import { localeHtmlLang } from '~/i18n/locales';
+import { assetUrl } from '~/lib/assets';
 
 interface ProductSchemaOpts {
   productSlug: string;
@@ -30,7 +31,7 @@ export function productJsonLd({ productSlug, description, name, locale, imagePat
   const url = `https://sincronia.agency${locale === 'es' ? '' : `/${locale}`}/productos/${productSlug}`;
   const startPrice = Math.min(...product.tiers.map((t) => t.price));
   const maxPrice = Math.max(...product.tiers.map((t) => t.price));
-  const fullImageUrl = imagePath ? `https://sincronia.agency${imagePath}` : undefined;
+  const fullImageUrl = imagePath ? assetUrl(imagePath) : undefined;
 
   // Mapear status a schema.org availability
   const availability = product.status === 'beta'
