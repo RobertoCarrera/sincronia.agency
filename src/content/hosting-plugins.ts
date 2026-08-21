@@ -54,7 +54,7 @@ export const hostingPlugins: Record<Locale, {
     },
     cta: {
       title: '¿Listo para un hosting WordPress con stack premium?',
-      subtitle: 'Tres planes desde 45€/mes con 1 mes gratis. Migración inicial gratuita, sin permanencia.',
+      subtitle: 'Tres planes desde 45€/mes con 30% de descuento los 3 primeros meses. Migración inicial gratuita, sin permanencia.',
     },
   },
   ca: {
@@ -85,7 +85,7 @@ export const hostingPlugins: Record<Locale, {
     },
     cta: {
       title: 'Llest per a un hosting WordPress amb stack premium?',
-      subtitle: 'Tres plans des de 45€/mes amb 1 mes gratis. Migració inicial gratuïta, sense permanència.',
+      subtitle: 'Tres plans des de 45€/mes amb 30% de descompte els 3 primers mesos. Migració inicial gratuïta, sense permanència.',
     },
   },
   en: {
@@ -116,7 +116,7 @@ export const hostingPlugins: Record<Locale, {
     },
     cta: {
       title: 'Ready for WordPress hosting with a premium stack?',
-      subtitle: 'Three plans from €45/month with 1 month free. Initial migration free, no commitment.',
+      subtitle: 'Three plans from €45/month with 30% off the first 3 months. Initial migration free, no commitment.',
     },
   },
 };

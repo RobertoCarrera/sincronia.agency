@@ -50,6 +50,8 @@ const i18n = {
     },
     setupTitle: 'Sobre el setup',
     offerFreeMonths: (n: number) => n === 1 ? '1 mes gratis' : `${n} meses gratis`,
+    offerDiscount: (percent: number) => `-${percent}%`,
+    offerDiscountMonths: (n: number) => n === 1 ? '1 mes' : `${n} meses`,
     offerThen: 'luego',
   },
   ca: {
@@ -64,6 +66,8 @@ const i18n = {
     },
     setupTitle: 'Sobre el setup',
     offerFreeMonths: (n: number) => n === 1 ? '1 mes gratis' : `${n} mesos gratis`,
+    offerDiscount: (percent: number) => `-${percent}%`,
+    offerDiscountMonths: (n: number) => n === 1 ? '1 mes' : `${n} mesos`,
     offerThen: 'després',
   },
   en: {
@@ -78,6 +82,8 @@ const i18n = {
     },
     setupTitle: 'About setup',
     offerFreeMonths: (n: number) => n === 1 ? '1 month free' : `${n} months free`,
+    offerDiscount: (percent: number) => `-${percent}%`,
+    offerDiscountMonths: (n: number) => n === 1 ? '1 month' : `${n} months`,
     offerThen: 'then',
   },
 }[locale];
@@ -123,9 +129,13 @@ function resolveCtaHref(source: PricingSource, tierId: string, tierPrice: number
         const ctaLabel = resolveCtaLabel(tier.price, isHighlight);
         const ctaHref = resolveCtaHref(source, tier.id, tier.price);
         // El tier Free (0€) muestra "Gratis" o "Free" o 0€ según locale.
-        const priceDisplay = tier.price === 0
-          ? (locale === 'en' ? 'Free' : locale === 'ca' ? 'Gratis' : 'Gratis')
-          : `${tier.price}€`;
+        const isFree = tier.price === 0;
+        const isDiscount = 'offer' in tier && tier.offer?.type === 'discount';
+        const discountedPrice = isDiscount ? (tier.offer as { discountedPrice: number }).discountedPrice : null;
+        const mainPrice = discountedPrice ?? tier.price;
+        const priceDisplay = isFree
+          ? (locale === 'en' ? 'Free' : 'Gratis')
+          : `${mainPrice}€`;
 
         return (
           <article
@@ -134,9 +144,14 @@ function resolveCtaHref(source: PricingSource, tierId: string, tierPrice: number
               isHighlight && 'tier-card--highlight',
             ]}
             data-tier={tier.id}
-            aria-label={`${tier.name} — ${priceDisplay}${tier.price > 0 ? ' ' + unitLabel : ''}`}
+            aria-label={`${tier.name} — ${priceDisplay}${mainPrice > 0 ? ' ' + unitLabel : ''}`}
           >
             {isHighlight && <span class="tier-card__ribbon">{i18n.recommended}</span>}
+            {isDiscount && (
+              <span class="tier-card__offer tier-card__offer--discount">
+                {i18n.offerDiscount((tier.offer as { percent: number }).percent)} {i18n.offerDiscountMonths((tier.offer as { months: number }).months)}
+              </span>
+            )}
             {'offer' in tier && tier.offer && tier.offer.type === 'free-months' && tier.offer.count > 0 && (
               <span class="tier-card__offer">{i18n.offerFreeMonths(tier.offer.count)}</span>
             )}
@@ -145,10 +160,18 @@ function resolveCtaHref(source: PricingSource, tierId: string, tierPrice: number
               {tier.target && <p class="tier-card__target">{i18n.idealFor}: {tier.target}</p>}
               <div class="tier-card__price">
                 <span class="tier-card__price-amount">{priceDisplay}</span>
-                {tier.price > 0 && <span class="tier-card__price-unit">{unitLabel}</span>}
+                {mainPrice > 0 && <span class="tier-card__price-unit">{unitLabel}</span>}
+                {isDiscount && (
+                  <span class="tier-card__price-original">{tier.price}€{unitLabel}</span>
+                )}
               </div>
-              {'offer' in tier && tier.offer && tier.offer.type === 'free-months' && tier.offer.count > 0 && tier.price > 0 && (
-                <p class="tier-card__offer-note">{i18n.offerFreeMonths(tier.offer.count)} · {i18n.offerThen} {priceDisplay}{unitLabel}</p>
+              {isDiscount && (
+                <p class="tier-card__offer-note">
+                  {i18n.offerDiscount((tier.offer as { percent: number }).percent)} {i18n.offerDiscountMonths((tier.offer as { months: number }).months)} · {i18n.offerThen} {tier.price}€{unitLabel}
+                </p>
+              )}
+              {'offer' in tier && tier.offer && tier.offer.type === 'free-months' && tier.offer.count > 0 && !isFree && (
+                <p class="tier-card__offer-note">{i18n.offerFreeMonths(tier.offer.count)} · {i18n.offerThen} {tier.price}€{unitLabel}</p>
               )}
             </header>
 
@@ -321,6 +344,28 @@ function resolveCtaHref(source: PricingSource, tierId: string, tierPrice: number
     color: var(--c-muted);
   }
   .tier-card--highlight .tier-card__price-unit { color: rgba(255, 255, 255, 0.65); }
+
+  /* Precio original tachado junto al precio con descuento */
+  .tier-card__price-original {
+    font-size: 0.875rem;
+    color: var(--c-muted);
+    text-decoration: line-through;
+    margin-left: 0.4rem;
+    font-weight: 500;
+  }
+  .tier-card--highlight .tier-card__price-original { color: rgba(255, 255, 255, 0.5); }
+
+  /* Variante del badge para descuento (más prominente que "X mes gratis") */
+  .tier-card__offer--discount {
+    background: var(--c-coral-500);
+    color: #fff;
+    border-color: var(--c-coral-500);
+  }
+  .tier-card--highlight .tier-card__offer--discount {
+    background: var(--c-coral-300);
+    color: var(--c-navy-900);
+    border-color: var(--c-coral-300);
+  }
 
   /* === Features === */
   .tier-card__features {
