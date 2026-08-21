@@ -1,0 +1,24 @@
+# Sincronia
+
+> Agencia técnica de diseño, desarrollo y SEO en Tarragona. Especializados en WordPress, aplicaciones web a medida, SEO local y hosting gestionado con stack de plugins premium.
+
+## Servicios
+- [Mantenimiento WordPress](https://sincronia.agency/servicios/mantenimiento-wordpress): desde 35 €/mes. Web actualizada, segura, monitorizada 24/7.
+- [Desarrollo WordPress](https://sincronia.agency/servicios/desarrollo-wordpress): desde 400 €/proyecto. Landings, webs corporativas, e-commerce WooCommerce.
+- [Aplicaciones web](https://sincronia.agency/servicios/desarrollo-aplicaciones-web): desde 3.500 €/proyecto. SPAs, dashboards y SaaS con Angular, React o Vue.
+- [Posicionamiento SEO](https://sincronia.agency/servicios/posicionamiento-seo): desde 300 €/mes. SEO técnico, contenido y link building local en Tarragona.
+- [Hosting WordPress](https://sincronia.agency/servicios/hosting): desde 45 €/mes. AWS Lightsail con stack de 15 plugins premium incluido.
+
+## Productos propios
+- [Simplifica](https://sincronia.agency/productos/simplifica): CRM en beta que se adapta al sector del cliente, no al revés.
+- [Strata](https://sincronia.agency/productos/strata): CMS en alpha con editor visual y asistente IA. Reduce el coste a la mitad.
+
+## Sobre nosotros
+- [Quiénes somos](https://sincronia.agency/sobre-nosotros): agencia de una persona en Segur de Calafell, Tarragona.
+
+## Contacto
+- Formulario: https://sincronia.agency/contacto
+- WhatsApp: +34 624 34 49 17
+- Email: hola@sincronia.agency
+- Dirección: Carrer del Pisuerga 32, 43882 Segur de Calafell (Tarragona), España
+- Horario: lunes a domingo, 7:00–24:00

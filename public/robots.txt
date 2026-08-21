@@ -14,6 +14,11 @@ Disallow: /demo-headers.html
 # Sitemaps
 Sitemap: https://sincronia.agency/sitemap-index.xml
 
+# llms.txt: índice legible para modelos de IA (estándar llmstxt.org).
+# Les indica qué servicios y productos ofrece la agencia y cómo citarnos.
+# https://llmstxt.org
+# Ubicación: https://sincronia.agency/llms.txt
+
 # Bots generativos (GPTBot, Claude, Perplexity, etc.)
 # Los dejamos indexar — queremos presencia en respuestas generativas.
 User-agent: GPTBot
