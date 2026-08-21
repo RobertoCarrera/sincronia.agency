@@ -104,19 +104,41 @@ async function processIcon(srcFile) {
   console.log(`  -> icon.png (${png256.length} bytes) + icon-{32..512}.webp`);
 }
 
+async function processPwa(srcFile) {
+  const buf = readFileSync(join(SRC, srcFile));
+  const meta = await sharp(buf).metadata();
+  console.log(`[pwa] source: ${meta.width}x${meta.height} ${meta.format}`);
+
+  // pwa.png ya viene con rounded corners + fondo azul oscuro. Solo necesitamos
+  // 256/512 para el hero de la pagina de producto (10rem ~ 160px).
+  const sizes = [256, 512];
+  for (const s of sizes) {
+    const out = await toWebp(buf, s, s, {
+      cleanAlpha: false,
+      resize: { fit: 'cover' },
+    });
+    writeFileSync(join(OUT, `pwa-${s}.webp`), out);
+    console.log(`  -> pwa-${s}.webp (${out.length} bytes)`);
+  }
+  // PNG fallback (256px, para navegadores sin WebP).
+  const png = await toPng(buf, 256, 256, {
+    cleanAlpha: false,
+    resize: { fit: 'cover' },
+  });
+  writeFileSync(join(OUT, 'pwa.png'), png);
+  console.log(`  -> pwa.png (${png.length} bytes)`);
+}
+
 async function main() {
   // Strata solo tiene una variante de logo (sobre fondo blanco) — usamos
   // logo-fondo.png como fuente del lockup horizontal.
   await processLogo('logo-on-light', 'logo-fondo.png', { cleanAlpha: true });
   // Icono: del favicon.png (icono solo sobre fondo blanco).
   await processIcon('favicon.png');
-
-  // pwa.png se copia tal cual a public/ (sin redimensionar) — esta disennado
-  // ya como icono PWA (rounded square sobre fondo azul oscuro). Para uso
-  // futuro en manifest, OG, o icono de instalacion.
-  const pwaBuf = readFileSync(join(SRC, 'pwa.png'));
-  writeFileSync(join(OUT, 'pwa.png'), pwaBuf);
-  console.log(`  -> pwa.png (${pwaBuf.length} bytes) [copia tal cual]`);
+  // PWA: genera pwa-256/512.webp + pwa.png (PNG fallback) desde el pwa.png
+  // fuente (rounded square + fondo azul oscuro). Usado en el hero de la
+  // pagina de producto donde el favicon queda "tajado" por el fondo blanco.
+  await processPwa('pwa.png');
 }
 
 main().catch((e) => {
