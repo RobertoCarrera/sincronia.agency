@@ -70,7 +70,7 @@ const isActive = (item: NavItem): boolean => {
     </div>
   </div>
 
-  <!-- Main bar: logo + nav + idioma + CTA -->
+  <!-- Main bar: logo + nav + acciones (escritorio) + toggle (móvil) -->
   <div class="site-header__main">
     <div class="container site-header__main-inner">
       <Logo />
@@ -103,6 +103,14 @@ const isActive = (item: NavItem): boolean => {
             </li>
           ))}
         </ul>
+
+        <!-- Footer del drawer: solo visible en móvil, al final de la nav -->
+        <div class="main-nav__drawer-footer">
+          <LangSwitcher />
+          <Button href={localizePath('/contacto', locale)} variant="primary" className="drawer-cta">
+            {t(locale, 'cta.quote')}
+          </Button>
+        </div>
       </nav>
 
       <div class="site-header__actions">
@@ -284,6 +292,11 @@ const isActive = (item: NavItem): boolean => {
   .site-header__actions { display: flex; align-items: center; gap: var(--s-3); }
   .site-header__actions .main-cta { display: none; }
 
+  /* Footer dentro del drawer (oculto en escritorio) */
+  .main-nav__drawer-footer {
+    display: none;
+  }
+
   /* --- Mobile toggle ---------------------------------------- */
   .site-header__toggle {
     display: inline-flex;
@@ -355,8 +368,15 @@ const isActive = (item: NavItem): boolean => {
 
   /* Móvil: nav drawer */
   @media (max-width: 1023.98px) {
+    /* En móvil solo logo + toggle en el header. Las acciones (lang + CTA)
+       se mueven al final del drawer para no saturar la barra. */
+    .site-header__actions { display: none; }
+    .site-header__main-inner { gap: var(--s-3); }
+    .logo img { max-width: 140px; }
+
     :global(.site-header.is-nav-open) .main-nav {
-      display: block;
+      display: flex;
+      flex-direction: column;
       position: absolute;
       top: 100%;
       left: 0;
@@ -373,7 +393,7 @@ const isActive = (item: NavItem): boolean => {
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      padding: var(--s-3);
+      padding: var(--s-3) var(--s-3) 0;
     }
     :global(.site-header.is-nav-open) .main-nav__item { width: 100%; }
     :global(.site-header.is-nav-open) .main-nav__link {
@@ -385,6 +405,21 @@ const isActive = (item: NavItem): boolean => {
     :global(.site-header.is-nav-open) .main-nav__link::after { display: none; }
     /* En móvil el mega menu NO se muestra — tapping Servicios va a /servicios */
     :global(.site-header .mega-menu) { display: none !important; }
+
+    /* Footer del drawer: lang + CTA en la parte de abajo */
+    :global(.site-header.is-nav-open) .main-nav__drawer-footer {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+      padding: var(--s-4) var(--s-3) var(--s-4);
+      margin-top: var(--s-3);
+      border-top: 1px solid var(--c-line);
+      background: var(--c-bg-alt);
+    }
+    :global(.site-header.is-nav-open) .main-nav__drawer-footer .drawer-cta {
+      width: 100%;
+      justify-content: center;
+    }
   }
   @keyframes site-drawer-slide {
     from { opacity: 0; transform: translateY(-8px); }
