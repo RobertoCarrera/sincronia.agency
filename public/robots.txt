@@ -1,7 +1,7 @@
 # Sincronia Agency — robots.txt
 # Permitimos todo el contenido público. Bloqueamos flujos internos
-# (checkout, API, assets internos) y我们知道 que no aportan valor a
-# los buscadores ni a los LLMs.
+# (checkout, API, assets internos) que no aportan valor a los
+# buscadores ni a los LLMs.
 
 User-agent: *
 Allow: /

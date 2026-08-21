@@ -16,6 +16,13 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.dev.vars
+.dev.vars.*
+!payments/.dev.vars.example
+
+# Cloudflare Workers local state and test output
+.wrangler/
+coverage/
 
 # macOS-specific files
 .DS_Store
@@ -36,3 +43,6 @@ stderr.txt
 # temp dev notes (commit-msg drafts, scratch files)
 dev-notes-*.txt
 dev-notes-*.py
+
+# Favicon source lives in dev-assets/; output goes to public/ (committed).
+# Si quieres regenerar: node dev-notes-gen-favicons.mjs
