@@ -285,10 +285,17 @@ const allSchemas = jsonLd
     />
 
     <!--
-      Scripts de analítica (Microsoft Clarity y Cloudflare Web Analytics)
-      NO se cargan aquí. CookieBanner.astro los inyecta solo cuando el usuario
-      consiente explícitamente la categoría "Analítica" (RGPD/LSSI).
+      NytroSEO: herramienta de auditoria SEO que el equipo usa desde su dashboard.
+      Se carga en el head a peticion del propietario para mantener el flujo
+      de auditoria continua. NO reemplaza a los scripts de consentimiento
+      del banner (Clarity, Cloudflare), que siguen gated hasta aceptacion.
+      Si en el futuro NytroSEO empieza a poner cookies, hay que moverlo
+      detras del banner de cookies.
     -->
+    <script
+      src="https://plugin.nytsys.com/api/site/f06b5630-e22f-44b1-8212-90b5c4def0d4/nytsys.min.js"
+      defer
+    ></script>
   </head>
   <body>
     <Header />
