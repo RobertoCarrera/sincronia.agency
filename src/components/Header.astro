@@ -4,7 +4,7 @@ import LangSwitcher from '~/components/LangSwitcher.astro';
 import MegaMenu from '~/components/MegaMenu.astro';
 import Button from '~/components/Button.astro';
 import { t, type UIKey } from '~/i18n/ui';
-import { getLocaleFromUrl, localizePath } from '~/lib/i18n';
+import { getLocaleFromUrl, getPathWithoutLocale, localizePath } from '~/lib/i18n';
 import type { Locale } from '~/i18n/locales';
 
 const locale = getLocaleFromUrl(Astro.url) as Locale;
@@ -104,9 +104,21 @@ const isActive = (item: NavItem): boolean => {
           ))}
         </ul>
 
-        <!-- Footer del drawer: solo visible en móvil, al final de la nav -->
+        <!-- Footer del drawer: solo visible en móvil, al final de la nav.
+             Selector de idioma inline (3 botones) en lugar de dropdown para
+             evitar problemas de overflow/clip dentro del drawer. -->
         <div class="main-nav__drawer-footer">
-          <LangSwitcher />
+          <div class="lang-inline" role="group" aria-label={t(locale, 'lang.switcher')}>
+            {(['es', 'ca', 'en'] as Locale[]).map((loc) => (
+              <a
+                href={localizePath(getPathWithoutLocale(Astro.url.pathname), loc)}
+                class:list={['lang-inline__btn', loc === locale && 'is-current']}
+                aria-current={loc === locale ? 'true' : undefined}
+              >
+                {loc.toUpperCase()}
+              </a>
+            ))}
+          </div>
           <Button href={localizePath('/contacto', locale)} variant="primary" className="drawer-cta">
             {t(locale, 'cta.quote')}
           </Button>
@@ -384,8 +396,6 @@ const isActive = (item: NavItem): boolean => {
       background: #fff;
       border-bottom: 1px solid var(--c-line);
       box-shadow: 0 8px 24px -4px rgba(11, 18, 32, 0.12);
-      max-height: calc(100vh - 64px);
-      overflow-y: auto;
       z-index: 39;
       animation: site-drawer-slide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -393,12 +403,14 @@ const isActive = (item: NavItem): boolean => {
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      padding: var(--s-3) var(--s-3) 0;
+      /* Padding más compacto para que el drawer no sea tan alto. */
+      padding: var(--s-2) var(--s-2) 0;
     }
     :global(.site-header.is-nav-open) .main-nav__item { width: 100%; }
     :global(.site-header.is-nav-open) .main-nav__link {
       width: 100%;
-      padding: var(--s-4);
+      /* Padding compacto (var(--s-2) = 0.5rem vertical) */
+      padding: var(--s-2) var(--s-3);
       justify-content: space-between;
       border-radius: var(--r-md);
     }
@@ -406,19 +418,52 @@ const isActive = (item: NavItem): boolean => {
     /* En móvil el mega menu NO se muestra — tapping Servicios va a /servicios */
     :global(.site-header .mega-menu) { display: none !important; }
 
-    /* Footer del drawer: lang + CTA en la parte de abajo */
+    /* Footer del drawer: lang inline + CTA en la parte de abajo, más compacto */
     :global(.site-header.is-nav-open) .main-nav__drawer-footer {
       display: flex;
-      flex-direction: column;
-      gap: var(--s-3);
-      padding: var(--s-4) var(--s-3) var(--s-4);
-      margin-top: var(--s-3);
+      flex-direction: row;
+      align-items: center;
+      gap: var(--s-2);
+      padding: var(--s-2) var(--s-3);
+      margin-top: var(--s-2);
       border-top: 1px solid var(--c-line);
       background: var(--c-bg-alt);
     }
     :global(.site-header.is-nav-open) .main-nav__drawer-footer .drawer-cta {
-      width: 100%;
+      flex: 1;
       justify-content: center;
+    }
+
+    /* Selector de idioma inline (3 botones ES/CA/EN), solo en mobile drawer */
+    :global(.site-header.is-nav-open) .lang-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem;
+      background: #fff;
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-md);
+      flex-shrink: 0;
+    }
+    :global(.site-header.is-nav-open) .lang-inline__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+      height: 2.25rem;
+      padding: 0 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--c-text);
+      border-radius: var(--r-sm);
+      transition: background 0.15s, color 0.15s;
+    }
+    :global(.site-header.is-nav-open) .lang-inline__btn:hover { background: var(--c-bg-alt); }
+    :global(.site-header.is-nav-open) .lang-inline__btn.is-current {
+      background: var(--c-navy-900);
+      color: #fff;
     }
   }
   @keyframes site-drawer-slide {
