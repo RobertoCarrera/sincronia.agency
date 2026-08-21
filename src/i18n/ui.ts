@@ -29,6 +29,7 @@ export const ui = {
     'footer.cookies': 'Política de cookies',
     'footer.rights': 'Todos los derechos reservados',
     'footer.tagline': 'Agencia técnica de diseño, desarrollo y SEO en Tarragona',
+    'footer.cookies-manage': 'Gestionar cookies',
     'lang.switcher': 'Idioma',
   },
   ca: {
@@ -59,6 +60,7 @@ export const ui = {
     'footer.cookies': 'Política de cookies',
     'footer.rights': 'Tots els drets reservats',
     'footer.tagline': 'Agència tècnica de disseny, desenvolupament i SEO a Tarragona',
+    'footer.cookies-manage': 'Gestionar cookies',
     'lang.switcher': 'Idioma',
   },
   en: {
@@ -88,6 +90,7 @@ export const ui = {
     'footer.cookies': 'Cookie policy',
     'footer.rights': 'All rights reserved',
     'footer.tagline': 'Technical agency for design, development and SEO in Tarragona',
+    'footer.cookies-manage': 'Manage cookies',
     'lang.switcher': 'Language',
   },
 } as const;

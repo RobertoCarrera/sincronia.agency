@@ -2,7 +2,7 @@
 import Base from '~/layouts/Base.astro';
 import { nap } from '~/data/nap';
 
-const lastUpdated = '2026-08-19';
+const lastUpdated = '2026-08-21';
 ---
 <Base title="Política de cookies · Sincronia Agency" description="Política de cookies de sincronia.agency: qué cookies usamos, para qué y cómo gestionarlas.">
   <article class="legal section">
@@ -14,35 +14,51 @@ const lastUpdated = '2026-08-19';
       </header>
       <div class="legal__content">
         <h2>1. ¿Qué son las cookies?</h2>
-        <p>Las cookies son pequeños archivos de texto que un sitio web almacena en tu dispositivo cuando lo visitas. Permiten al sitio recordar tus acciones y preferencias durante un periodo determinado.</p>
+        <p>Las cookies son pequeños archivos de texto que un sitio web almacena en tu dispositivo cuando lo visitas. Permiten al sitio recordar tus acciones y preferencias durante un periodo determinado. Otras tecnologías similares (localStorage, sessionStorage, balizas web) tienen un funcionamiento análogo y a efectos de esta política se tratan como cookies.</p>
 
         <h2>2. ¿Qué cookies usamos?</h2>
         <h3>Cookies estrictamente necesarias</h3>
-        <p>Cookies técnicas que permiten al usuario navegar por el sitio web y utilizar sus funciones. Sin ellas, el sitio no puede funcionar correctamente.</p>
+        <p>Cookies técnicas que permiten al usuario navegar por el sitio web y utilizar sus funciones. Sin ellas, el sitio no puede funcionar correctamente. Se sirven desde el edge de Cloudflare y <strong>no requieren tu consentimiento</strong> porque son imprescindibles para prestar el servicio solicitado por el usuario.</p>
         <h3>Cookies de análisis</h3>
-        <p>Cookies que nos permiten medir el número de visitantes y analizar cómo navegan por el sitio, con el fin de mejorar el servicio. Solo se activan si das tu consentimiento.</p>
-        <h3>Cookies de terceros</h3>
-        <p>El sitio puede incrustar contenido de terceros (vídeos, mapas, etc.) que pueden establecer sus propias cookies. No tenemos control sobre estas cookies; consulta las políticas de cada proveedor.</p>
+        <p>Cookies que nos permiten medir el número de visitantes y analizar cómo navegan por el sitio, con el fin de mejorar el servicio. <strong>Solo se activan si das tu consentimiento</strong> desde el banner de cookies. Puedes aceptarlas, rechazarlas o configurar su uso por categorías en cualquier momento.</p>
 
         <h2>3. Cookies específicas que usamos</h2>
         <table class="cookie-table">
-          <thead><tr><th>Cookie</th><th>Tipo</th><th>Duración</th><th>Finalidad</th></tr></thead>
+          <thead><tr><th>Cookie</th><th>Tipo</th><th>Duración</th><th>Finalidad</th><th>Proveedor</th></tr></thead>
           <tbody>
-            <tr><td>astro-*</td><td>Técnica</td><td>Sesión</td><td>Estado de navegación y preferencias</td></tr>
-            <tr><td>__cf_bm</td><td>Técnica</td><td>30 min</td><td>Protección bot de Cloudflare</td></tr>
+            <tr><td>__cf_bm</td><td>Técnica</td><td>30 min</td><td>Protección anti-bot de Cloudflare</td><td>Cloudflare</td></tr>
+            <tr><td>sincronia-consent</td><td>Técnica</td><td>12 meses</td><td>Almacena tu decisión sobre el consentimiento de cookies (localStorage)</td><td>Sincronia Agency</td></tr>
+            <tr><td>_clck</td><td>Analítica</td><td>12 meses</td><td>Persistencia del ID de Clarity y atribución de sesión</td><td>Microsoft Clarity</td></tr>
+            <tr><td>_clsk</td><td>Analítica</td><td>Sesión</td><td>Agrupar acciones de un usuario en una misma sesión</td><td>Microsoft Clarity</td></tr>
+            <tr><td>_clv</td><td>Analítica</td><td>12 meses</td><td>Métricas agregadas de comportamiento</td><td>Microsoft Clarity</td></tr>
+            <tr><td>CLID</td><td>Analítica</td><td>12 meses</td><td>Identificador de visitante para Clarity</td><td>Microsoft Clarity</td></tr>
           </tbody>
         </table>
+        <p class="legal__note"><strong>Cloudflare Web Analytics</strong> no utiliza cookies ni identifica a personas: mide tráfico agregado en el edge. Solo se activa si aceptas la categoría "Analítica".</p>
 
-        <h2>4. ¿Cómo gestionar las cookies?</h2>
-        <p>Puedes permitir, bloquear o eliminar las cookies instaladas en tu dispositivo mediante la configuración de las opciones del navegador. Si no permites la instalación de cookies, es posible que no puedas acceder a algunas funcionalidades del sitio web.</p>
+        <h2>4. Consentimiento</h2>
+        <p>Cuando visitas el sitio por primera vez, te mostramos un banner con tres opciones:</p>
+        <ul>
+          <li><strong>Aceptar todas:</strong> activas todas las categorías.</li>
+          <li><strong>Rechazar todas:</strong> solo se mantienen las cookies estrictamente necesarias.</li>
+          <li><strong>Configurar:</strong> puedes activar o desactivar la categoría "Analítica" de forma granular y guardar tu preferencia.</li>
+        </ul>
+        <p>Tu decisión se guarda en <code>localStorage</code> durante 12 meses. Hasta que no decidas, no cargamos ningún script de analítica ni se establece ninguna cookie de medición.</p>
+
+        <h2>5. Cómo retirar o modificar tu consentimiento</h2>
+        <p>Puedes cambiar tu decisión en cualquier momento pulsando el botón <strong>"Gestionar cookies"</strong> en el pie de página, o eliminando manualmente los datos de almacenamiento del navegador para este sitio. También puedes bloquear o eliminar las cookies desde la configuración del navegador:</p>
         <ul>
           <li><a href="https://support.google.com/chrome/answer/95647" rel="noopener" target="_blank">Chrome</a></li>
           <li><a href="https://support.mozilla.org/es/kb/Borrar%20cookies" rel="noopener" target="_blank">Firefox</a></li>
           <li><a href="https://support.apple.com/es-es/guide/safari/manage-cookies-and-website-data-sfri11471/mac" rel="noopener" target="_blank">Safari</a></li>
           <li><a href="https://support.microsoft.com/es-es/microsoft-edge/delete-cookies-in-microsoft-edge" rel="noopener" target="_blank">Edge</a></li>
         </ul>
+        <p>Ten en cuenta que, si bloqueas todas las cookies, es posible que no puedas acceder a algunas funcionalidades del sitio web.</p>
 
-        <h2>5. Más información</h2>
+        <h2>6. Transferencias internacionales</h2>
+        <p>Microsoft Clarity (Microsoft Corporation, EE. UU.) puede transferir datos a servidores fuera del Espacio Económico Europeo. Esta transferencia se ampara en las Cláusulas Contractuales Tipo de la Comisión Europea y en decisiones de adecuación aplicables a Estados Unidos (Data Privacy Framework). Más información en la <a href="https://privacy.microsoft.com/es-es/privacystatement" rel="noopener" target="_blank">política de privacidad de Microsoft</a>.</p>
+
+        <h2>7. Más información</h2>
         <p>Si tienes dudas sobre nuestra política de cookies, escríbenos a <a href={`mailto:${nap.email}`}>{nap.email}</a>.</p>
       </div>
     </div>
@@ -61,7 +77,9 @@ const lastUpdated = '2026-08-19';
   .legal__content ul { padding-left: var(--s-5); }
   .legal__content li { margin-bottom: 0.4rem; }
   .legal__content a { color: var(--c-coral-700); text-decoration: underline; }
-  .cookie-table { width: 100%; border-collapse: collapse; margin: var(--s-4) 0 var(--s-6); font-size: 0.9375rem; }
-  .cookie-table th, .cookie-table td { text-align: left; padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--c-line); }
+  .legal__content code { background: var(--c-bg-alt); padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.85em; }
+  .legal__note { font-size: 0.875rem; color: var(--c-muted); margin-top: var(--s-2); }
+  .cookie-table { width: 100%; border-collapse: collapse; margin: var(--s-4) 0 var(--s-6); font-size: 0.875rem; }
+  .cookie-table th, .cookie-table td { text-align: left; padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--c-line); vertical-align: top; }
   .cookie-table th { background: var(--c-bg-alt); font-weight: 600; color: var(--c-ink); }
 </style>

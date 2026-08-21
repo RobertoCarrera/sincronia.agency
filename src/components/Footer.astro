@@ -45,6 +45,9 @@ const legal = [
     </div>
     <div class="site-footer__bottom">
       <p>© {year} {nap.name} · {t(locale, 'footer.rights')}</p>
+      <button type="button" class="site-footer__manage" data-cookie-manage aria-label={t(locale, 'footer.cookies-manage')}>
+        {t(locale, 'footer.cookies-manage')}
+      </button>
     </div>
   </div>
 </footer>
@@ -105,5 +108,29 @@ const legal = [
     border-top: 1px solid rgba(255,255,255,0.1);
     font-size: 0.8125rem;
     color: rgba(255,255,255,0.5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .site-footer__manage {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    padding: var(--s-1) var(--s-3);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color .15s, color .15s;
+  }
+  .site-footer__manage:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.5);
+  }
+  .site-footer__manage:focus-visible {
+    outline: 2px solid var(--c-coral-500);
+    outline-offset: 2px;
   }
 </style>

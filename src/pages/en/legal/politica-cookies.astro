@@ -2,9 +2,9 @@
 import Base from '~/layouts/Base.astro';
 import { nap } from '~/data/nap';
 
-const lastUpdated = '2026-08-19';
+const lastUpdated = '2026-08-21';
 ---
-<Base title="Cookie policy · Sincronia Agency" description="Cookie policy of sincronia.agency: which cookies we use, for what and how to manage them.">
+<Base title="Cookie policy · Sincronia Agency" description="Cookie policy of sincronia.agency: which cookies we use, for what purpose and how to manage them.">
   <article class="legal section">
     <div class="container">
       <header class="legal__header">
@@ -14,36 +14,52 @@ const lastUpdated = '2026-08-19';
       </header>
       <div class="legal__content">
         <h2>1. What are cookies?</h2>
-        <p>Cookies are small text files that a website stores on your device when you visit it. They allow the site to remember your actions and preferences for a certain period.</p>
+        <p>Cookies are small text files that a website stores on your device when you visit it. They let the site remember your actions and preferences for a certain period of time. Similar technologies (localStorage, sessionStorage, web beacons) work in a comparable way and are treated as cookies for the purposes of this policy.</p>
 
         <h2>2. Which cookies do we use?</h2>
         <h3>Strictly necessary cookies</h3>
-        <p>Technical cookies that allow the user to navigate the website and use its functions. Without them, the site cannot function properly.</p>
+        <p>Technical cookies that allow the user to browse the website and use its features. Without them, the site cannot work properly. They are served from the Cloudflare edge and <strong>do not require your consent</strong> because they are essential to deliver the service requested by the user.</p>
         <h3>Analytics cookies</h3>
-        <p>Cookies that allow us to measure the number of visitors and analyse how they navigate the site, in order to improve the service. Only activated if you give your consent.</p>
-        <h3>Third-party cookies</h3>
-        <p>The site may embed third-party content (videos, maps, etc.) that may set their own cookies. We have no control over these cookies; consult each provider's policies.</p>
+        <p>Cookies that let us measure the number of visitors and analyse how they browse the site, in order to improve the service. <strong>They are only activated if you give your consent</strong> through the cookie banner. You can accept, reject or configure their use by category at any time.</p>
 
         <h2>3. Specific cookies we use</h2>
         <table class="cookie-table">
-          <thead><tr><th>Cookie</th><th>Type</th><th>Duration</th><th>Purpose</th></tr></thead>
+          <thead><tr><th>Cookie</th><th>Type</th><th>Duration</th><th>Purpose</th><th>Provider</th></tr></thead>
           <tbody>
-            <tr><td>astro-*</td><td>Technical</td><td>Session</td><td>Navigation state and preferences</td></tr>
-            <tr><td>__cf_bm</td><td>Technical</td><td>30 min</td><td>Cloudflare bot protection</td></tr>
+            <tr><td>__cf_bm</td><td>Technical</td><td>30 min</td><td>Cloudflare bot protection</td><td>Cloudflare</td></tr>
+            <tr><td>sincronia-consent</td><td>Technical</td><td>12 months</td><td>Stores your cookie consent decision (localStorage)</td><td>Sincronia Agency</td></tr>
+            <tr><td>_clck</td><td>Analytics</td><td>12 months</td><td>Clarity ID persistence and session attribution</td><td>Microsoft Clarity</td></tr>
+            <tr><td>_clsk</td><td>Analytics</td><td>Session</td><td>Groups a user's actions into a single session</td><td>Microsoft Clarity</td></tr>
+            <tr><td>_clv</td><td>Analytics</td><td>12 months</td><td>Aggregated behaviour metrics</td><td>Microsoft Clarity</td></tr>
+            <tr><td>CLID</td><td>Analytics</td><td>12 months</td><td>Visitor identifier for Clarity</td><td>Microsoft Clarity</td></tr>
           </tbody>
         </table>
+        <p class="legal__note"><strong>Cloudflare Web Analytics</strong> does not use cookies and does not identify people: it measures aggregated traffic at the edge. It is only activated if you accept the "Analytics" category.</p>
 
-        <h2>4. How to manage cookies?</h2>
-        <p>You can allow, block or delete cookies installed on your device through your browser's options. If you do not allow the installation of cookies, you may not be able to access some functionalities of the website.</p>
+        <h2>4. Consent</h2>
+        <p>When you visit the site for the first time, we show you a banner with three options:</p>
+        <ul>
+          <li><strong>Accept all:</strong> activates all categories.</li>
+          <li><strong>Reject all:</strong> only strictly necessary cookies are kept.</li>
+          <li><strong>Configure:</strong> you can enable or disable the "Analytics" category granularly and save your preference.</li>
+        </ul>
+        <p>Your decision is stored in <code>localStorage</code> for 12 months. Until you decide, we do not load any analytics script nor set any measurement cookie.</p>
+
+        <h2>5. How to withdraw or change your consent</h2>
+        <p>You can change your decision at any time by clicking the <strong>"Manage cookies"</strong> button in the page footer, or by manually clearing the browser's storage data for this site. You can also block or delete cookies from your browser settings:</p>
         <ul>
           <li><a href="https://support.google.com/chrome/answer/95647" rel="noopener" target="_blank">Chrome</a></li>
           <li><a href="https://support.mozilla.org/en-US/kb/clear-cookies-and-site-data-firefox" rel="noopener" target="_blank">Firefox</a></li>
-          <li><a href="https://support.apple.com/en-us/guide/safari/manage-cookies-and-website-data-sfri11471/mac" rel="noopener" target="_blank">Safari</a></li>
+          <li><a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac" rel="noopener" target="_blank">Safari</a></li>
           <li><a href="https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge" rel="noopener" target="_blank">Edge</a></li>
         </ul>
+        <p>Please note that, if you block all cookies, you may not be able to access some features of the website.</p>
 
-        <h2>5. More information</h2>
-        <p>If you have questions about our cookie policy, email us at <a href={`mailto:${nap.email}`}>{nap.email}</a>.</p>
+        <h2>6. International transfers</h2>
+        <p>Microsoft Clarity (Microsoft Corporation, USA) may transfer data to servers outside the European Economic Area. Such transfers rely on the European Commission's Standard Contractual Clauses and on adequacy decisions applicable to the United States (Data Privacy Framework). More information in the <a href="https://privacy.microsoft.com/en-us/privacystatement" rel="noopener" target="_blank">Microsoft privacy statement</a>.</p>
+
+        <h2>7. More information</h2>
+        <p>If you have any questions about our cookie policy, write to us at <a href={`mailto:${nap.email}`}>{nap.email}</a>.</p>
       </div>
     </div>
   </article>
@@ -61,7 +77,9 @@ const lastUpdated = '2026-08-19';
   .legal__content ul { padding-left: var(--s-5); }
   .legal__content li { margin-bottom: 0.4rem; }
   .legal__content a { color: var(--c-coral-700); text-decoration: underline; }
-  .cookie-table { width: 100%; border-collapse: collapse; margin: var(--s-4) 0 var(--s-6); font-size: 0.9375rem; }
-  .cookie-table th, .cookie-table td { text-align: left; padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--c-line); }
+  .legal__content code { background: var(--c-bg-alt); padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.85em; }
+  .legal__note { font-size: 0.875rem; color: var(--c-muted); margin-top: var(--s-2); }
+  .cookie-table { width: 100%; border-collapse: collapse; margin: var(--s-4) 0 var(--s-6); font-size: 0.875rem; }
+  .cookie-table th, .cookie-table td { text-align: left; padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--c-line); vertical-align: top; }
   .cookie-table th { background: var(--c-bg-alt); font-weight: 600; color: var(--c-ink); }
 </style>
