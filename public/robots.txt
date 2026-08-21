@@ -1,4 +1,54 @@
+# Sincronia Agency — robots.txt
+# Permitimos todo el contenido público. Bloqueamos flujos internos
+# (checkout, API, assets internos) y我们知道 que no aportan valor a
+# los buscadores ni a los LLMs.
+
 User-agent: *
 Allow: /
+Disallow: /checkout/
+Disallow: /checkout/resultado/
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /demo-headers.html
 
+# Sitemaps
 Sitemap: https://sincronia.agency/sitemap-index.xml
+
+# Bots generativos (GPTBot, Claude, Perplexity, etc.)
+# Los dejamos indexar — queremos presencia en respuestas generativas.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Bloqueo de scrapers que no respetan robots y no aportan
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

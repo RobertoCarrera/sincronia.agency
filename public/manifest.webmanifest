@@ -1,0 +1,29 @@
+{
+  "name": "Sincronia Agency",
+  "short_name": "Sincronia",
+  "description": "Agencia técnica de diseño, desarrollo y SEO en Tarragona",
+  "lang": "es-ES",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#1B3A6B",
+  "categories": ["business", "productivity", "developer"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    }
+  ],
+  "prefer_related_applications": false
+}

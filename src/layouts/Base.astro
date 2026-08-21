@@ -16,15 +16,83 @@ interface Props {
   noindex?: boolean;
   canonical?: string;
   jsonLd?: object | object[];
+  publishedTime?: string;
+  modifiedTime?: string;
 }
 
-const { title, description, ogImage, ogType, noindex, canonical, jsonLd } = Astro.props;
+const { title, description, ogImage, ogType, noindex, canonical, jsonLd, publishedTime, modifiedTime } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url) as Locale;
+const currentPath = Astro.url.pathname;
+
+// Auto-genera BreadcrumbList desde la URL. Para servicios y productos
+// (que tienen jerarquía más rica), la página puede sobreescribir pasándolo
+// en `jsonLd` y desactivando este con `noBreadcrumb`.
+const homeLabels: Record<Locale, string> = { es: 'Inicio', ca: 'Inici', en: 'Home' };
+const sectionLabels: Record<string, Record<Locale, string>> = {
+  servicios: { es: 'Servicios', ca: 'Serveis', en: 'Services' },
+  productos: { es: 'Productos', ca: 'Productes', en: 'Products' },
+  contacto: { es: 'Contacto', ca: 'Contacte', en: 'Contact' },
+  sobre: { es: 'Sobre nosotros', ca: 'Sobre nosaltres', en: 'About us' },
+  legal: { es: 'Legal', ca: 'Legal', en: 'Legal' },
+  hosting: { es: 'Hosting', ca: 'Hosting', en: 'Hosting' },
+};
+const slugLabels: Record<string, Record<Locale, string>> = {
+  'mantenimiento-wordpress': { es: 'Mantenimiento WordPress', ca: 'Manteniment WordPress', en: 'WordPress maintenance' },
+  'desarrollo-wordpress': { es: 'Desarrollo WordPress', ca: 'Desenvolupament WordPress', en: 'WordPress development' },
+  'desarrollo-aplicaciones-web': { es: 'Desarrollo de aplicaciones web', ca: 'Desenvolupament d\'aplicacions web', en: 'Web application development' },
+  'posicionamiento-seo': { es: 'Posicionamiento SEO', ca: 'Posicionament SEO', en: 'SEO positioning' },
+  hosting: { es: 'Hosting WordPress', ca: 'Hosting WordPress', en: 'WordPress hosting' },
+  'plugins-premium': { es: 'Plugins premium', ca: 'Plugins premium', en: 'Premium plugins' },
+  simplifica: { es: 'Simplifica (CRM)', ca: 'Simplifica (CRM)', en: 'Simplifica (CRM)' },
+  strata: { es: 'Strata (CMS)', ca: 'Strata (CMS)', en: 'Strata (CMS)' },
+  'aviso-legal': { es: 'Aviso legal', ca: 'Avís legal', en: 'Legal notice' },
+  'politica-privacidad': { es: 'Política de privacidad', ca: 'Política de privacitat', en: 'Privacy policy' },
+  'politica-cookies': { es: 'Política de cookies', ca: 'Política de cookies', en: 'Cookie policy' },
+  'aviso-legal': { es: 'Aviso legal', ca: 'Avís legal', en: 'Legal notice' },
+};
+// humanize fallback: kebab → Title Case
+const humanize = (s: string) =>
+  s.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+// Construir la jerarquía de crumbs
+const pathSegments = currentPath.split('/').filter(Boolean);
+// Quitar el prefijo de locale del principio si existe
+const cleanSegments = (pathSegments[0] === 'ca' || pathSegments[0] === 'en')
+  ? pathSegments.slice(1)
+  : pathSegments;
+const crumbs: Array<{ name: string; href: string }> = [];
+if (cleanSegments.length > 0) {
+  // Home
+  const homeHref = locale === 'es' ? 'https://sincronia.agency/' : `https://sincronia.agency/${locale}/`;
+  crumbs.push({ name: homeLabels[locale], href: homeHref });
+  // Acumular paths
+  let acc = locale === 'es' ? '' : `/${locale}`;
+  for (let i = 0; i < cleanSegments.length; i++) {
+    const seg = cleanSegments[i];
+    acc += `/${seg}`;
+    const href = `https://sincronia.agency${acc}/`;
+    const labelMap = sectionLabels[seg] ?? slugLabels[seg];
+    const name = labelMap ? labelMap[locale] : humanize(seg);
+    crumbs.push({ name, href });
+  }
+}
+const autoBreadcrumb = crumbs.length > 1
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.name,
+        item: c.href,
+      })),
+    }
+  : null;
 
 // LocalBusiness schema — presente en TODAS las páginas para SEO local
 const localBusiness = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': ['LocalBusiness', 'ProfessionalService'],
   '@id': 'https://sincronia.agency/#business',
   name: nap.name,
   alternateName: nap.shortName,
@@ -50,20 +118,141 @@ const localBusiness = {
   },
   openingHoursSpecification,
   areaServed: locations.map((l) => ({ '@type': 'City', name: l.name })),
+  sameAs: [
+    // Redes sociales (rellenar cuando existan)
+    'https://www.linkedin.com/company/sincronia-agency',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Servicios de desarrollo web y SEO',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Mantenimiento WordPress' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Desarrollo WordPress' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Desarrollo de aplicaciones web' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Posicionamiento SEO' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Hosting gestionado' } },
+    ],
+  },
 };
 
-const allSchemas = jsonLd ? [...(Array.isArray(jsonLd) ? jsonLd : [jsonLd]), localBusiness] : [localBusiness];
+// Organization schema — entidad legal separada, para que los LLMs
+// identifiquen claramente la empresa (no solo su sede física).
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://sincronia.agency/#organization',
+  name: nap.name,
+  legalName: nap.legalName ?? nap.name,
+  url: nap.url,
+  logo: 'https://sincronia.agency/logos/sincronia-logo-bg.png',
+  foundingDate: '2022',
+  founder: {
+    '@type': 'Person',
+    name: 'Roberto Carrera',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: nap.phone,
+    contactType: 'customer service',
+    areaServed: ['ES', 'CA-ES'],
+    availableLanguage: ['Spanish', 'Catalan', 'English'],
+  },
+};
+
+// WebSite schema con SearchAction — facilita que Google muestre
+// el sitelinks searchbox y que los LLMs entiendan el dominio.
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://sincronia.agency/#website',
+  url: nap.url,
+  name: nap.name,
+  inLanguage: ['es-ES', 'ca-ES', 'en'],
+  publisher: { '@id': 'https://sincronia.agency/#organization' },
+};
+
+// WebPage actual (referencia a la página concreta) — los LLMs lo usan
+// para entender el contexto de cada URL indexada.
+const webPage = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `https://sincronia.agency${currentPath}#webpage`,
+  url: `https://sincronia.agency${currentPath}`,
+  name: title,
+  description,
+  inLanguage: localeHtmlLang[locale],
+  isPartOf: { '@id': 'https://sincronia.agency/#website' },
+  about: { '@id': 'https://sincronia.agency/#business' },
+  ...(publishedTime && { datePublished: publishedTime }),
+  ...(modifiedTime && { dateModified: modifiedTime }),
+  ...(ogImage && {
+    primaryImageOfPage: {
+      '@type': 'ImageObject',
+      url: ogImage.startsWith('http') ? ogImage : `https://sincronia.agency${ogImage}`,
+    },
+  }),
+};
+
+const baseSchemas = [organization, website, webPage, localBusiness];
+const allSchemas = jsonLd
+  ? [...baseSchemas, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd]), autoBreadcrumb].filter(Boolean)
+  : [...baseSchemas, autoBreadcrumb].filter(Boolean);
 ---
 <!doctype html>
 <html lang={localeHtmlLang[locale]}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Theme + mobile -->
+    <meta name="theme-color" content="#1B3A6B" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0B1220" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light" />
+    <meta name="format-detection" content="telephone=yes" />
+
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Local SEO geo meta (legacy but still respected) -->
+    <meta name="geo.region" content="ES-CT" />
+    <meta name="geo.placename" content={nap.city} />
+    <meta name="geo.position" content={`${nap.geo.lat};${nap.geo.lng}`} />
+    <meta name="ICBM" content={`${nap.geo.lat}, ${nap.geo.lng}`} />
+
+    <!-- Dublin Core metadata (GEO: mejora citabilidad) -->
+    <meta name="DC.title" content={title} />
+    <meta name="DC.description" content={description} />
+    <meta name="DC.language" content={localeHtmlLang[locale]} />
+    <meta name="DC.creator" content="Sincronia Agency" />
+    <meta name="DC.publisher" content="Sincronia Agency" />
+    <meta name="DC.type" content="InteractiveResource" />
+    <meta name="DC.format" content="text/html" />
+    <meta name="DC.coverage" content={`${nap.city}, ${nap.region}, ${nap.country}`} />
+    <meta name="DC.rights" content={`© ${new Date().getFullYear()} Sincronia Agency`} />
+
+    <!-- Distribution / rating -->
+    <meta name="rating" content="general" />
+    <meta name="distribution" content="global" />
+    <meta name="revisit-after" content="7 days" />
+
+    <!-- Preload de fuentes críticas (Outfit body 400-500) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
     <SEO
       title={title}
       description={description}
@@ -73,6 +262,8 @@ const allSchemas = jsonLd ? [...(Array.isArray(jsonLd) ? jsonLd : [jsonLd]), loc
       noindex={noindex}
       canonical={canonical}
       jsonLd={allSchemas}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
     />
   </head>
   <body>
