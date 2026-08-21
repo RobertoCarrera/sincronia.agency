@@ -30,7 +30,7 @@ export const ui = {
     'footer.rights': 'Todos los derechos reservados',
     'footer.tagline': 'Agencia técnica de diseño, desarrollo y SEO en Tarragona',
     'footer.cookies-manage': 'Gestionar cookies',
-    'footer.built-by': 'Somos los creadores de esta web. ¿La quieres para ti?',
+    'footer.cta-made-by': 'Somos los creadores de esta web. ¿La quieres para ti?',
     'lang.switcher': 'Idioma',
   },
   ca: {
@@ -62,7 +62,7 @@ export const ui = {
     'footer.rights': 'Tots els drets reservats',
     'footer.tagline': 'Agència tècnica de disseny, desenvolupament i SEO a Tarragona',
     'footer.cookies-manage': 'Gestionar cookies',
-    'footer.built-by': 'Som els creadors d\'aquest web. El vols per a tu?',
+    'footer.cta-made-by': 'Som els creadors d\'aquesta web. La vols per a tu?',
     'lang.switcher': 'Idioma',
   },
   en: {
@@ -93,7 +93,7 @@ export const ui = {
     'footer.rights': 'All rights reserved',
     'footer.tagline': 'Technical agency for design, development and SEO in Tarragona',
     'footer.cookies-manage': 'Manage cookies',
-    'footer.built-by': 'We built this site. Want one like it?',
+    'footer.cta-made-by': 'We built this website. Want one for yourself?',
     'lang.switcher': 'Language',
   },
 } as const;
