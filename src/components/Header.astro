@@ -118,6 +118,9 @@ const isActive = (item: NavItem): boolean => {
     </div>
   </div>
 
+  <!-- Overlay oscuro detrás del drawer mobile -->
+  <div class="site-header__overlay" data-nav-overlay aria-hidden="true"></div>
+
   <!-- Mega menus a nivel de header para que se posicionen full-width con left:0/right:0 -->
   <MegaMenu type="services" locale={locale} />
   <MegaMenu type="products" locale={locale} />
@@ -283,26 +286,59 @@ const isActive = (item: NavItem): boolean => {
 
   /* --- Mobile toggle ---------------------------------------- */
   .site-header__toggle {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 28px;
-    height: 22px;
-    background: transparent;
-    border: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    background: var(--c-bg-alt);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
     padding: 0;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+  }
+  .site-header__toggle:hover {
+    background: #fff;
+    border-color: var(--c-coral-300);
   }
   .site-header__toggle span {
     display: block;
-    width: 100%;
+    width: 22px;
     height: 2px;
     background: var(--c-ink);
     border-radius: 2px;
-    transition: transform 0.25s, opacity 0.25s;
+    transition: transform 0.25s, opacity 0.2s;
   }
-  :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+  :global(.site-header.is-nav-open) .site-header__toggle {
+    background: var(--c-navy-900);
+    border-color: var(--c-navy-900);
+  }
+  :global(.site-header.is-nav-open) .site-header__toggle span { background: #fff; }
+  :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(2) { opacity: 0; }
-  :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+  :global(.site-header.is-nav-open) .site-header__toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Overlay oscuro detrás del drawer en mobile */
+  .site-header__overlay {
+    display: none;
+  }
+  :global(.site-header.is-nav-open) .site-header__overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    top: 100%; /* justo debajo del header */
+    background: rgba(11, 18, 32, 0.5);
+    z-index: 35;
+    animation: site-overlay-fade 0.2s ease;
+  }
+  @keyframes site-overlay-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
   /* --- Breakpoints ------------------------------------------ */
   @media (min-width: 1024px) {
@@ -327,9 +363,11 @@ const isActive = (item: NavItem): boolean => {
       right: 0;
       background: #fff;
       border-bottom: 1px solid var(--c-line);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 8px 24px -4px rgba(11, 18, 32, 0.12);
       max-height: calc(100vh - 64px);
       overflow-y: auto;
+      z-index: 39;
+      animation: site-drawer-slide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     :global(.site-header.is-nav-open) .main-nav__list {
       flex-direction: column;
@@ -342,10 +380,15 @@ const isActive = (item: NavItem): boolean => {
       width: 100%;
       padding: var(--s-4);
       justify-content: space-between;
+      border-radius: var(--r-md);
     }
     :global(.site-header.is-nav-open) .main-nav__link::after { display: none; }
     /* En móvil el mega menu NO se muestra — tapping Servicios va a /servicios */
     :global(.site-header .mega-menu) { display: none !important; }
+  }
+  @keyframes site-drawer-slide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 
@@ -369,8 +412,13 @@ const isActive = (item: NavItem): boolean => {
 
   // Mobile nav toggle
   const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const overlay = document.querySelector<HTMLElement>('[data-nav-overlay]');
   toggle?.addEventListener('click', () => {
     header?.classList.toggle('is-nav-open');
+  });
+  // Click en el overlay cierra el drawer
+  overlay?.addEventListener('click', () => {
+    header?.classList.remove('is-nav-open');
   });
 
   // Mega menu hover with delay (desktop only)
