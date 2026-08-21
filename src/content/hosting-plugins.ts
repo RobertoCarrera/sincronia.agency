@@ -33,7 +33,7 @@ export const hostingPlugins: Record<Locale, {
     },
     hero: {
       eyebrow: 'Stack premium',
-      title: 'Más de 90€/mes en plugins premium, incluidos con tu hosting de 35€',
+      title: 'Más de 90€/mes en plugins premium, incluidos con tu hosting desde 45€',
       subtitle: '15 plugins de WordPress (Divi, BerqWP, EWWW Premium, SEO Generator, Security Ninja, Cytrio, North Commerce…) instalados, configurados y mantenidos por nosotros. Por el precio de un hosting normal.',
     },
     savings: {
@@ -54,7 +54,7 @@ export const hostingPlugins: Record<Locale, {
     },
     cta: {
       title: '¿Listo para un hosting WordPress con stack premium?',
-      subtitle: 'Tres planes desde 35€/mes. Migración inicial gratuita, sin permanencia.',
+      subtitle: 'Tres planes desde 45€/mes con 1 mes gratis. Migración inicial gratuita, sin permanencia.',
     },
   },
   ca: {
@@ -64,7 +64,7 @@ export const hostingPlugins: Record<Locale, {
     },
     hero: {
       eyebrow: 'Stack premium',
-      title: 'Més de 90€/mes en plugins premium, inclosos amb el teu hosting de 35€',
+      title: 'Més de 90€/mes en plugins premium, inclosos amb el teu hosting des de 45€',
       subtitle: '15 plugins de WordPress (Divi, BerqWP, EWWW Premium, SEO Generator, Security Ninja, Cytrio, North Commerce…) instal·lats, configurats i mantinguts per nosaltres. Pel preu d\'un hosting normal.',
     },
     savings: {
@@ -85,7 +85,7 @@ export const hostingPlugins: Record<Locale, {
     },
     cta: {
       title: 'Llest per a un hosting WordPress amb stack premium?',
-      subtitle: 'Tres plans des de 35€/mes. Migració inicial gratuïta, sense permanència.',
+      subtitle: 'Tres plans des de 45€/mes amb 1 mes gratis. Migració inicial gratuïta, sense permanència.',
     },
   },
   en: {
@@ -95,7 +95,7 @@ export const hostingPlugins: Record<Locale, {
     },
     hero: {
       eyebrow: 'Premium stack',
-      title: 'Over €90/month in premium plugins, included with your €35 hosting',
+      title: 'Over €90/month in premium plugins, included with your hosting from €45',
       subtitle: '15 WordPress plugins (Divi, BerqWP, EWWW Premium, SEO Generator, Security Ninja, Cytrio, North Commerce…) installed, configured and maintained by us. For the price of a regular hosting.',
     },
     savings: {
@@ -116,7 +116,7 @@ export const hostingPlugins: Record<Locale, {
     },
     cta: {
       title: 'Ready for WordPress hosting with a premium stack?',
-      subtitle: 'Three plans from €35/month. Initial migration free, no commitment.',
+      subtitle: 'Three plans from €45/month with 1 month free. Initial migration free, no commitment.',
     },
   },
 };

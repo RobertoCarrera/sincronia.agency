@@ -4,6 +4,8 @@ import type { Tier } from '~/data/products';
 export interface ServiceTier extends Tier {
   /** "Ideal para..." / target audience para este tier. Se muestra bajo el nombre. Opcional. */
   target?: string;
+  /** Oferta de lanzamiento: X meses gratis antes de empezar a pagar. Opcional. */
+  offer?: { type: 'free-months'; count: number };
 }
 
 export interface ServiceMeta {
@@ -271,17 +273,18 @@ export const services: ServiceMeta[] = [
     icon: 'server',
     priceUnit: 'mes',
     shortDescription: {
-      es: 'Hosting WordPress en AWS Lightsail con stack de plugins premium incluido. Desde 35€/mes.',
-      ca: 'Hosting WordPress a AWS Lightsail amb stack de plugins premium inclòs. Des de 35€/mes.',
-      en: 'WordPress hosting on AWS Lightsail with premium plugin stack included. From €35/month.',
+      es: 'Hosting WordPress en AWS Lightsail con stack de plugins premium incluido. 1 mes gratis, luego desde 45€/mes.',
+      ca: 'Hosting WordPress a AWS Lightsail amb stack de plugins premium inclòs. 1 mes gratis, després des de 45€/mes.',
+      en: 'WordPress hosting on AWS Lightsail with premium plugin stack included. 1 month free, then from €45/month.',
     },
     cta: { label: 'Empezar', href: '/contacto' },
     tiers: [
       {
         id: 'hosting-wp-start',
         name: 'Hosting WP Start',
-        price: 35,
+        price: 45,
         target: 'WP estándar: blog, web corporativa, landing',
+        offer: { type: 'free-months', count: 1 },
         features: [
           'Servidor AWS Lightsail (2GB RAM, 60GB SSD, 3TB transfer)',
           'WordPress optimizado (PHP 8.x, MariaDB 10.x, Nginx, HTTP/3)',
@@ -298,6 +301,7 @@ export const services: ServiceMeta[] = [
         price: 60,
         target: 'WP con tráfico alto, e-commerce pequeño, hasta 3 webs',
         highlight: true,
+        offer: { type: 'free-months', count: 1 },
         features: [
           'Servidor AWS Lightsail (4GB RAM, 80GB SSD, 4TB transfer)',
           'WordPress optimizado (PHP 8.x, MariaDB 10.x, Nginx, HTTP/3)',
@@ -314,6 +318,7 @@ export const services: ServiceMeta[] = [
         name: 'Hosting WP Business',
         price: 100,
         target: 'WooCommerce medio, multi-site, alto tráfico',
+        offer: { type: 'free-months', count: 1 },
         features: [
           'Servidor AWS Lightsail (8GB RAM, 160GB SSD, 5TB transfer)',
           'WordPress optimizado (PHP 8.x, MariaDB 10.x, Nginx, HTTP/3)',

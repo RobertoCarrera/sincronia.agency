@@ -5,12 +5,12 @@ export const hosting: Record<Locale, ServiceContent> = {
   es: {
     meta: {
       title: 'Hosting especializado en Tarragona · Sincronia Agency',
-      description: 'Hosting WordPress en AWS Lightsail con stack de plugins premium incluido (Divi, BerqWP, SEO Generator, EWWW, Security Ninja y más). Soporte en español, backups diarios. Desde 35€/mes.',
+      description: 'Hosting WordPress en AWS Lightsail con stack de plugins premium incluido (Divi, BerqWP, SEO Generator, EWWW, Security Ninja y más). Soporte en español, backups diarios. 1 mes gratis, luego desde 45€/mes.',
     },
     hero: {
       eyebrow: 'Servicio',
       title: 'Hosting WordPress con plugins premium incluidos',
-      subtitle: 'Servidor en AWS Lightsail, soporte humano en español, backups diarios y un stack de plugins premium por el coste de un hosting normal. Sin sustos, sin tickets sin respuesta.',
+      subtitle: 'Servidor en AWS Lightsail, soporte humano en español, backups diarios y un stack de plugins premium por el coste de un hosting normal. 1 mes gratis en todos los planes. Sin sustos, sin tickets sin respuesta.',
     },
     intro: {
       title: 'Por qué el hosting "barato" sale caro',
@@ -44,7 +44,7 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     plugins: {
       title: 'Stack de plugins premium incluido en todos los planes',
-      subtitle: 'Estos plugins valen más de 75€/mes si los compras por separado. Con nuestro hosting desde 35€/mes vienen instalados, configurados y mantenidos por nosotros.',
+      subtitle: 'Estos plugins valen más de 90€/mes si los compras por separado. Con nuestro hosting desde 45€/mes (1 mes gratis) vienen instalados, configurados y mantenidos por nosotros.',
       categories: [
         {
           name: 'Diseño y construcción',
@@ -86,12 +86,12 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Precio y compromiso',
-      body: 'Tres planes mensuales: Hosting WP Start a 35€ (2GB RAM), Hosting WP Pro a 60€ (4GB RAM, recomendado) y Hosting WP Business a 100€ (8GB RAM). Todos los planes incluyen el stack completo de plugins premium por el coste de un hosting normal. Sin permanencia. Migración inicial gratuita.',
+      body: 'Tres planes mensuales con 1 mes gratis: Hosting WP Start a 45€ (2GB RAM), Hosting WP Pro a 60€ (4GB RAM, recomendado) y Hosting WP Business a 100€ (8GB RAM). Todos los planes incluyen el stack completo de plugins premium por el coste de un hosting normal. Sin permanencia. Migración inicial gratuita.',
     },
     faq: {
       title: 'Preguntas frecuentes',
       items: [
-        { q: '¿Cuánto cuesta el hosting?', a: 'Hosting WP Start desde 35€/mes, Hosting WP Pro a 60€/mes y Hosting WP Business a 100€/mes. Todos incluyen el stack de plugins premium.' },
+        { q: '¿Cuánto cuesta el hosting?', a: 'Hosting WP Start desde 45€/mes, Hosting WP Pro a 60€/mes y Hosting WP Business a 100€/mes. 1 mes gratis en los 3 planes al empezar. Todos incluyen el stack de plugins premium.' },
         { q: '¿Qué plugins premium están incluidos?', a: 'Más de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer Premium, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, Cytrio cookies RGPD y más. Valor de mercado: más de 90€/mes en licencias.' },
         { q: '¿Las licencias de los plugins son vuestras?', a: 'Sí. Las gestionamos nosotros como parte del servicio. Tú no te preocupas de renovar, actualizar ni mantenerlas. Si te vas del hosting, los plugins se quedan con nosotros.' },
         { q: '¿Puedo mantener mi dominio actual?', a: 'Sí. Solo necesitamos que apuntes el DNS a nuestros servidores. Te guiamos paso a paso.' },
@@ -109,12 +109,12 @@ export const hosting: Record<Locale, ServiceContent> = {
   ca: {
     meta: {
       title: 'Hosting especialitzat a Tarragona · Sincronia Agency',
-      description: 'Hosting WordPress a AWS Lightsail amb stack de plugins premium inclòs (Divi, BerqWP, SEO Generator, EWWW, Security Ninja i més). Suport en espanyol, còpies de seguretat diàries. Des de 35€/mes.',
+      description: 'Hosting WordPress a AWS Lightsail amb stack de plugins premium inclòs (Divi, BerqWP, SEO Generator, EWWW, Security Ninja i més). Suport en espanyol, còpies de seguretat diàries. 1 mes gratis, després des de 45€/mes.',
     },
     hero: {
       eyebrow: 'Servei',
       title: 'Hosting WordPress amb plugins premium inclosos',
-      subtitle: 'Servidor a AWS Lightsail, suport humà en espanyol, còpies de seguretat diàries i un stack de plugins premium pel cost d\'un hosting normal. Sense ensurts, sense tiquets sense resposta.',
+      subtitle: 'Servidor a AWS Lightsail, suport humà en espanyol, còpies de seguretat diàries i un stack de plugins premium pel cost d\'un hosting normal. 1 mes gratis a tots els plans. Sense ensurts, sense tiquets sense resposta.',
     },
     intro: {
       title: 'Per què el hosting "barat" surt car',
@@ -148,7 +148,7 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     plugins: {
       title: 'Stack de plugins premium inclòs a tots els plans',
-      subtitle: 'Aquests plugins valen més de 75€/mes si els compres per separat. Amb el nostre hosting des de 35€/mes vénen instal·lats, configurats i mantinguts per nosaltres.',
+      subtitle: 'Aquests plugins valen més de 90€/mes si els compres per separat. Amb el nostre hosting des de 45€/mes (1 mes gratis) vénen instal·lats, configurats i mantinguts per nosaltres.',
       categories: [
         {
           name: 'Disseny i construcció',
@@ -190,12 +190,12 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Preu i compromís',
-      body: 'Tres plans mensuals: Hosting WP Start a 35€ (2GB RAM), Hosting WP Pro a 60€ (4GB RAM, recomanat) i Hosting WP Business a 100€ (8GB RAM). Tots els plans inclouen el stack complet de plugins premium pel cost d\'un hosting normal. Sense permanència. Migració inicial gratuïta.',
+      body: 'Tres plans mensuals amb 1 mes gratis: Hosting WP Start a 45€ (2GB RAM), Hosting WP Pro a 60€ (4GB RAM, recomanat) i Hosting WP Business a 100€ (8GB RAM). Tots els plans inclouen el stack complet de plugins premium pel cost d\'un hosting normal. Sense permanència. Migració inicial gratuïta.',
     },
     faq: {
       title: 'Preguntes freqüents',
       items: [
-        { q: 'Quant costa el hosting?', a: 'Hosting WP Start des de 35€/mes, Hosting WP Pro a 60€/mes i Hosting WP Business a 100€/mes. Tots inclouen el stack de plugins premium.' },
+        { q: 'Quant costa el hosting?', a: 'Hosting WP Start des de 45€/mes, Hosting WP Pro a 60€/mes i Hosting WP Business a 100€/mes. 1 mes gratis als 3 plans al començar. Tots inclouen el stack de plugins premium.' },
         { q: 'Quins plugins premium estan inclosos?', a: 'Més de 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP caché, EWWW Image Optimizer Premium, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, Cytrio cookies RGPD i més. Valor de mercat: més de 90€/mes en llicències.' },
         { q: 'Les llicències dels plugins són vostres?', a: 'Sí. Les gestionem nosaltres com a part del servei. Tu no et preocupes de renovar, actualitzar ni mantenir-les. Si te\'n vas del hosting, els plugins es queden amb nosaltres.' },
         { q: 'Puc mantenir el meu domini actual?', a: 'Sí. Només necessitem que apuntis el DNS als nostres servidors. T\'acompanyem pas a pas.' },
@@ -213,12 +213,12 @@ export const hosting: Record<Locale, ServiceContent> = {
   en: {
     meta: {
       title: 'Specialised hosting in Tarragona · Sincronia Agency',
-      description: 'WordPress hosting on AWS Lightsail with a premium plugin stack included (Divi, BerqWP, SEO Generator, EWWW, Security Ninja and more). Support in Spanish, daily backups. From €35/month.',
+      description: 'WordPress hosting on AWS Lightsail with a premium plugin stack included (Divi, BerqWP, SEO Generator, EWWW, Security Ninja and more). Support in Spanish, daily backups. 1 month free, then from €45/month.',
     },
     hero: {
       eyebrow: 'Service',
       title: 'WordPress hosting with premium plugins included',
-      subtitle: 'AWS Lightsail server, human support in Spanish, daily backups and a premium plugin stack for the price of a regular hosting. No surprises, no unanswered tickets.',
+      subtitle: 'AWS Lightsail server, human support in Spanish, daily backups and a premium plugin stack for the price of a regular hosting. 1 month free on every plan. No surprises, no unanswered tickets.',
     },
     intro: {
       title: 'Why "cheap" hosting costs you more',
@@ -252,7 +252,7 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     plugins: {
       title: 'Premium plugin stack included in every plan',
-      subtitle: 'These plugins are worth over €75/month if you buy them separately. With our hosting from €35/month they come installed, configured and maintained by us.',
+      subtitle: 'These plugins are worth over €90/month if you buy them separately. With our hosting from €45/month (1 month free) they come installed, configured and maintained by us.',
       categories: [
         {
           name: 'Design and build',
@@ -294,12 +294,12 @@ export const hosting: Record<Locale, ServiceContent> = {
     },
     pricing: {
       title: 'Price and commitment',
-      body: 'Three monthly plans: Hosting WP Start at €35 (2GB RAM), Hosting WP Pro at €60 (4GB RAM, recommended) and Hosting WP Business at €100 (8GB RAM). Every plan includes the complete premium plugin stack for the price of a regular hosting. No commitment. Initial migration free.',
+      body: 'Three monthly plans with 1 month free: Hosting WP Start at €45 (2GB RAM), Hosting WP Pro at €60 (4GB RAM, recommended) and Hosting WP Business at €100 (8GB RAM). Every plan includes the complete premium plugin stack for the price of a regular hosting. No commitment. Initial migration free.',
     },
     faq: {
       title: 'Frequently asked questions',
       items: [
-        { q: 'How much does hosting cost?', a: 'Hosting WP Start from €35/month, Hosting WP Pro at €60/month and Hosting WP Business at €100/month. All include the premium plugin stack.' },
+        { q: 'How much does hosting cost?', a: 'Hosting WP Start from €45/month, Hosting WP Pro at €60/month and Hosting WP Business at €100/month. 1 month free on all 3 plans to start. All include the premium plugin stack.' },
         { q: 'Which premium plugins are included?', a: 'Over 15 plugins: Divi + Divi Next + Pee Aye Creative, BerqWP cache, EWWW Image Optimizer Premium, SEO Generator, Security Ninja, WP 301 Redirects, Sigma Media Manager, North Commerce, Cytrio GDPR cookies and more. Market value: over €90/month in licences.' },
         { q: 'Are the plugin licences yours?', a: 'Yes. We manage them as part of the service. You do not worry about renewing, updating or maintaining them. If you leave the hosting, the plugins stay with us.' },
         { q: 'Can I keep my current domain?', a: 'Yes. We just need you to point DNS to our servers. We guide you step by step.' },

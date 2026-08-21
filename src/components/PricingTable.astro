@@ -49,6 +49,8 @@ const i18n = {
       contact: 'Contactar',
     },
     setupTitle: 'Sobre el setup',
+    offerFreeMonths: (n: number) => n === 1 ? '1 mes gratis' : `${n} meses gratis`,
+    offerThen: 'luego',
   },
   ca: {
     recommended: 'RECOMENDAT',
@@ -61,6 +63,8 @@ const i18n = {
       contact: 'Contactar',
     },
     setupTitle: 'Sobre el setup',
+    offerFreeMonths: (n: number) => n === 1 ? '1 mes gratis' : `${n} mesos gratis`,
+    offerThen: 'després',
   },
   en: {
     recommended: 'RECOMMENDED',
@@ -73,6 +77,8 @@ const i18n = {
       contact: 'Get in touch',
     },
     setupTitle: 'About setup',
+    offerFreeMonths: (n: number) => n === 1 ? '1 month free' : `${n} months free`,
+    offerThen: 'then',
   },
 }[locale];
 
@@ -131,6 +137,9 @@ function resolveCtaHref(source: PricingSource, tierId: string, tierPrice: number
             aria-label={`${tier.name} — ${priceDisplay}${tier.price > 0 ? ' ' + unitLabel : ''}`}
           >
             {isHighlight && <span class="tier-card__ribbon">{i18n.recommended}</span>}
+            {'offer' in tier && tier.offer && tier.offer.type === 'free-months' && tier.offer.count > 0 && (
+              <span class="tier-card__offer">{i18n.offerFreeMonths(tier.offer.count)}</span>
+            )}
             <header class="tier-card__header">
               <h3 class="tier-card__name">{tier.name}</h3>
               {tier.target && <p class="tier-card__target">{i18n.idealFor}: {tier.target}</p>}
@@ -138,6 +147,9 @@ function resolveCtaHref(source: PricingSource, tierId: string, tierPrice: number
                 <span class="tier-card__price-amount">{priceDisplay}</span>
                 {tier.price > 0 && <span class="tier-card__price-unit">{unitLabel}</span>}
               </div>
+              {'offer' in tier && tier.offer && tier.offer.type === 'free-months' && tier.offer.count > 0 && tier.price > 0 && (
+                <p class="tier-card__offer-note">{i18n.offerFreeMonths(tier.offer.count)} · {i18n.offerThen} {priceDisplay}{unitLabel}</p>
+              )}
             </header>
 
             <ul class="tier-card__features">
@@ -232,6 +244,40 @@ function resolveCtaHref(source: PricingSource, tierId: string, tierPrice: number
     border-radius: var(--r-sm);
     white-space: nowrap;
   }
+
+  /* Offer badge (e.g. "1 mes gratis") — esquina superior derecha del card */
+  .tier-card__offer {
+    position: absolute;
+    top: var(--s-3);
+    right: var(--s-3);
+    background: var(--c-coral-50);
+    color: var(--c-coral-700);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--c-coral-200);
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+  .tier-card--highlight .tier-card__offer {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .tier-card__offer-note {
+    font-size: 0.75rem;
+    color: var(--c-coral-700);
+    font-weight: 600;
+    margin: 0.4rem 0 0;
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+  .tier-card--highlight .tier-card__offer-note { color: var(--c-coral-300); }
 
   .tier-card__header {
     padding-bottom: var(--s-4);
