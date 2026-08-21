@@ -1,57 +1,81 @@
 ---
 import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
-import Button from '~/components/Button.astro';
 import { nap } from '~/data/nap';
 
+const phoneRaw = nap.phone.replace(/[^\d]/g, '');
+const waLink = `https://wa.me/${phoneRaw}`;
+
 const content = {
-  hero: { eyebrow: 'Contacte', title: 'Explica\'ns el teu projecte', subtitle: 'Et responem en menys de 24h. Sense compromís, sense formularis estranys. Si prefereixes trucar-nos, el telèfon també funciona.' },
-  form: { name: 'Nom', email: 'Correu', phone: 'Telèfon (opcional)', company: 'Empresa (opcional)', service: 'Servei d\'interès', servicePlaceholder: 'Selecciona un servei', message: 'Explica\'ns breument el teu projecte', privacy: 'Accepto la política de privacitat i el tractament de les meves dades per rebre resposta a aquesta consulta.', submit: 'Enviar missatge', success: 'Gràcies! Et responem en menys de 24h.', error: 'Hi ha hagut un error. Escriu-nos directament a hola@sincronia.agency' },
-  alt: { title: 'O si ho prefereixes', methods: [
-    { label: 'Correu', value: nap.email, href: `mailto:${nap.email}` },
-    { label: 'Telèfon', value: nap.phoneDisplay, href: `tel:${nap.phone.replace(/\s/g, '')}` },
-    { label: 'Adreça', value: `${nap.street}, ${nap.postalCode} ${nap.city}`, href: null },
-    { label: 'Horari', value: nap.schedule, href: null },
-  ] },
+  hero: {
+    eyebrow: 'Contacte',
+    title: 'Explica\'ns el teu projecte',
+    subtitle: 'Et responem per WhatsApp en menys de 24h. Sense formularis eterns, sense cues de correu. Si prefereixes trucar-nos, el telèfon també funciona.',
+  },
+  cta: {
+    primary: 'Enviar per WhatsApp',
+    primaryHint: 'En enviar obrirem WhatsApp amb el teu missatge pre-emplenat. No emmagatzemem res.',
+    successTitle: 'Missatge preparat!',
+    successBody: 'Si WhatsApp no s\'ha obert automàticament, ',
+    successLink: 'fes clic aquí per obrir-lo',
+  },
+  form: {
+    name: 'Nom',
+    email: 'Correu (opcional)',
+    phone: 'Telèfon',
+    company: 'Empresa (opcional)',
+    service: 'Servei d\'interès',
+    servicePlaceholder: 'Selecciona un servei',
+    message: 'Explica\'ns breument el teu projecte',
+    privacy: 'Accepto la política de privacitat i el tractament de les meves dades per rebre resposta per WhatsApp.',
+  },
+  alt: {
+    title: 'O si ho prefereixes',
+    methods: [
+      { label: 'WhatsApp', value: '+34 624 34 49 17', href: waLink },
+      { label: 'Correu', value: nap.email, href: `mailto:${nap.email}` },
+      { label: 'Telèfon', value: nap.phoneDisplay, href: `tel:${nap.phone.replace(/\s/g, '')}` },
+      { label: 'Adreça', value: `${nap.street}, ${nap.postalCode} ${nap.city}`, href: null },
+      { label: 'Horari', value: nap.schedule, href: null },
+    ],
+  },
 };
 ---
-<Base title="Contacte · Sincronia Agency" description="Contacta amb Sincronia Agency a Tarragona. Et responem en menys de 24h amb un pressupost sense compromís per al teu projecte web.">
+<Base title="Contacte · Sincronia Agency" description="Contacta amb Sincronia Agency a Tarragona. Et responem per WhatsApp en menys de 24h amb un pressupost sense compromís per al teu projecte web.">
   <Hero eyebrow={content.hero.eyebrow} title={content.hero.title} subtitle={content.hero.subtitle} />
 
   <section class="section">
     <div class="container contact-grid">
       <div class="contact-form-wrap">
         <form
-          class="contact-form"
-          action="https://formsubmit.co/hola@sincronia.agency"
-          method="POST"
-          aria-label="Formulari de contacte"
+          class="whatsapp-contact-form"
+          aria-label="Formulari de contacte per WhatsApp"
+          novalidate
+          data-phone={phoneRaw}
+          data-locale="ca"
+          data-intro="Hola Sincronia, m'interessa parlar sobre un projecte."
         >
-          <input type="hidden" name="_subject" value="Nou contacte des de sincronia.agency" />
-          <input type="hidden" name="_next" value="https://sincronia.agency/ca/gracies" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_template" value="table" />
           <div class="form-field">
             <label for="name-ca">{content.form.name} *</label>
-            <input type="text" id="name-ca" name="Nom" required autocomplete="name" />
-          </div>
-          <div class="form-field">
-            <label for="email-ca">{content.form.email} *</label>
-            <input type="email" id="email-ca" name="Correu" required autocomplete="email" />
+            <input type="text" id="name-ca" name="name" required autocomplete="name" />
           </div>
           <div class="form-field-row">
             <div class="form-field">
-              <label for="phone-ca">{content.form.phone}</label>
-              <input type="tel" id="phone-ca" name="Telèfon" autocomplete="tel" />
+              <label for="email-ca">{content.form.email}</label>
+              <input type="email" id="email-ca" name="email" autocomplete="email" />
             </div>
             <div class="form-field">
-              <label for="company-ca">{content.form.company}</label>
-              <input type="text" id="company-ca" name="Empresa" autocomplete="organization" />
+              <label for="phone-ca">{content.form.phone} *</label>
+              <input type="tel" id="phone-ca" name="phone" required autocomplete="tel" />
             </div>
           </div>
           <div class="form-field">
+            <label for="company-ca">{content.form.company}</label>
+            <input type="text" id="company-ca" name="company" autocomplete="organization" />
+          </div>
+          <div class="form-field">
             <label for="service-ca">{content.form.service}</label>
-            <select id="service-ca" name="Servei" data-slug-map='{"mantenimiento-wordpress":"Manteniment WordPress","desarrollo-wordpress":"Desenvolupament WordPress","desarrollo-aplicaciones-web":"Aplicació web","posicionamiento-seo":"SEO","hosting":"Hosting","simplifica":"Simplifica","strata":"Strata"}'>
+            <select id="service-ca" name="service" data-slug-map='{"mantenimiento-wordpress":"Manteniment WordPress","desarrollo-wordpress":"Desenvolupament WordPress","desarrollo-aplicaciones-web":"Aplicació web","posicionamiento-seo":"SEO","hosting":"Hosting","simplifica":"Simplifica","strata":"Strata"}'>
               <option value="">{content.form.servicePlaceholder}</option>
               <option value="Manteniment WordPress">Manteniment WordPress</option>
               <option value="Desenvolupament WordPress">Desenvolupament WordPress</option>
@@ -65,15 +89,27 @@ const content = {
           </div>
           <div class="form-field">
             <label for="message-ca">{content.form.message} *</label>
-            <textarea id="message-ca" name="Missatge" rows="5" required></textarea>
+            <textarea id="message-ca" name="message" rows="5" required></textarea>
           </div>
           <div class="form-field form-field--check">
             <label class="checkbox-label">
-              <input type="checkbox" name="Privacitat" required />
+              <input type="checkbox" name="privacy" required />
               <span>{content.form.privacy}</span>
             </label>
           </div>
-          <Button type="submit" variant="primary" size="lg">{content.form.submit}</Button>
+
+          <button type="submit" class="whatsapp-contact-form__submit">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="22" height="22">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+            </svg>
+            <span>{content.cta.primary}</span>
+          </button>
+          <p class="whatsapp-contact-form__hint">{content.cta.primaryHint}</p>
+
+          <div class="whatsapp-contact-form__success" hidden>
+            <strong>{content.cta.successTitle}</strong>
+            <span>{content.cta.successBody}<a href="#" data-whatsapp-link>{content.cta.successLink}</a>.</span>
+          </div>
         </form>
       </div>
 
@@ -83,7 +119,7 @@ const content = {
           {content.alt.methods.map((m) => (
             <li class="contact-alt__item">
               <span class="contact-alt__label">{m.label}</span>
-              {m.href ? <a href={m.href} class="contact-alt__value">{m.value}</a> : <span class="contact-alt__value">{m.value}</span>}
+              {m.href ? <a href={m.href} class="contact-alt__value" target={m.href.startsWith('http') ? '_blank' : undefined} rel={m.href.startsWith('http') ? 'noopener' : undefined}>{m.value}</a> : <span class="contact-alt__value">{m.value}</span>}
             </li>
           ))}
         </ul>
@@ -93,9 +129,7 @@ const content = {
 </Base>
 
 <script>
-  // Pre-rellena el select de servei si la URL porta ?service={slug}
-  // (l'usen les CTAs de les pàgines de servei / mega menu).
-  const sel = document.querySelector<HTMLSelectElement>('select[name="Servei"]');
+  const sel = document.querySelector<HTMLSelectElement>('select[name="service"]');
   if (sel) {
     const slug = new URLSearchParams(window.location.search).get('service');
     if (slug) {
@@ -109,29 +143,113 @@ const content = {
       }
     }
   }
+
+  const form = document.querySelector<HTMLFormElement>('.whatsapp-contact-form');
+  if (form) {
+    const phone = form.getAttribute('data-phone') || '';
+    const intro = form.getAttribute('data-intro') || 'Hola Sincronia,';
+    const locale = (form.getAttribute('data-locale') || 'es') as 'es' | 'ca' | 'en';
+
+    const FIELD_LABELS = {
+      es: { service: 'Servicio', name: 'Nombre', email: 'Email', phone: 'Teléfono', company: 'Empresa', message: 'Mensaje' },
+      ca: { service: 'Servei', name: 'Nom', email: 'Correu', phone: 'Telèfon', company: 'Empresa', message: 'Missatge' },
+      en: { service: 'Service', name: 'Name', email: 'Email', phone: 'Phone', company: 'Company', message: 'Message' },
+    };
+    const fl = FIELD_LABELS[locale] || FIELD_LABELS.es;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const required = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('[required]');
+      let ok = true;
+      required.forEach((el) => {
+        if (el.type === 'checkbox') {
+          if (!(el as HTMLInputElement).checked) {
+            (el as HTMLInputElement).style.outline = '2px solid #b71c1c';
+            ok = false;
+          } else {
+            (el as HTMLInputElement).style.outline = '';
+          }
+        } else if (!el.value || !el.value.trim()) {
+          el.style.borderColor = '#b71c1c';
+          ok = false;
+        } else {
+          el.style.borderColor = '';
+        }
+      });
+      if (!ok) return;
+
+      const data = new FormData(form);
+      const name = (data.get('name') as string) || '';
+      const email = (data.get('email') as string) || '';
+      const phn = (data.get('phone') as string) || '';
+      const company = (data.get('company') as string) || '';
+      const service = (data.get('service') as string) || '';
+      const message = (data.get('message') as string) || '';
+
+      const lines = [intro, ''];
+      lines.push(`${fl.name}: ${name}`);
+      lines.push(`${fl.phone}: ${phn}`);
+      if (email) lines.push(`${fl.email}: ${email}`);
+      if (company) lines.push(`${fl.company}: ${company}`);
+      if (service) lines.push(`${fl.service}: ${service}`);
+      if (message) lines.push('', message);
+
+      const msg = lines.join('\n');
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+
+      const success = form.querySelector<HTMLElement>('.whatsapp-contact-form__success');
+      const link = form.querySelector<HTMLAnchorElement>('[data-whatsapp-link]');
+      if (link) link.setAttribute('href', url);
+      if (success) success.hidden = false;
+      window.open(url, '_blank', 'noopener');
+    });
+
+    form.querySelectorAll('input, textarea, select').forEach((el) => {
+      const clearError = () => {
+        if (el instanceof HTMLInputElement && el.type === 'checkbox') {
+          el.style.outline = '';
+        } else {
+          (el as HTMLInputElement).style.borderColor = '';
+        }
+      };
+      el.addEventListener('input', clearError);
+      el.addEventListener('change', clearError);
+    });
+  }
 </script>
 
 <style>
   .contact-grid { display: grid; gap: var(--s-10); grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto; }
   @media (min-width: 1024px) { .contact-grid { grid-template-columns: 1.6fr 1fr; } }
-  .contact-form { background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-lg); padding: var(--s-8); display: grid; gap: var(--s-4); }
+  .whatsapp-contact-form { background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-lg); padding: var(--s-8); display: grid; gap: var(--s-4); }
   .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
   .form-field label { font-size: 0.875rem; font-weight: 500; color: var(--c-text); }
   .form-field input, .form-field select, .form-field textarea {
     padding: 0.7rem 0.875rem; border: 1px solid var(--c-line); border-radius: var(--r-md); font-size: 0.9375rem; color: var(--c-text); background: #fff; transition: border-color 0.15s;
     font-family: inherit;
   }
-  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--c-navy-800); box-shadow: 0 0 0 3px rgba(27,58,107,0.1); }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: #25D366; box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.18); }
   .form-field-row { display: grid; gap: var(--s-4); grid-template-columns: 1fr; }
   @media (min-width: 768px) { .form-field-row { grid-template-columns: 1fr 1fr; } }
   .form-field--check .checkbox-label { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.875rem; color: var(--c-muted); cursor: pointer; }
   .form-field--check input { margin-top: 0.2rem; flex-shrink: 0; }
-  .contact-form .btn { justify-self: start; }
+  .whatsapp-contact-form__submit {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    padding: 0.95rem 1.5rem; background: #25D366; color: #fff; border: 0; border-radius: var(--r-md);
+    font: inherit; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background .15s, transform .1s;
+    margin-top: var(--s-2); justify-self: start;
+  }
+  .whatsapp-contact-form__submit:hover { background: #1ebe5a; }
+  .whatsapp-contact-form__submit:focus-visible { outline: 3px solid rgba(37, 211, 102, 0.4); outline-offset: 2px; }
+  .whatsapp-contact-form__submit:active { transform: translateY(1px); }
+  .whatsapp-contact-form__hint { font-size: 0.8125rem; color: var(--c-muted); margin: 0; }
+  .whatsapp-contact-form__success { padding: var(--s-3) var(--s-4); background: #e6f9ed; border: 1px solid #25D366; border-radius: var(--r-md); font-size: 0.9375rem; color: #1a4731; line-height: 1.5; }
+  .whatsapp-contact-form__success a { color: #1a4731; font-weight: 600; text-decoration: underline; }
   .contact-alt { padding: var(--s-6); background: var(--c-navy-50); border-radius: var(--r-lg); }
   .contact-alt__title { font-size: 1.25rem; margin-bottom: var(--s-5); }
   .contact-alt__list { list-style: none; display: flex; flex-direction: column; gap: var(--s-4); }
   .contact-alt__item { display: flex; flex-direction: column; gap: 0.2rem; }
   .contact-alt__label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--c-muted); font-weight: 600; }
-  .contact-alt__value { font-size: 0.9375rem; color: var(--c-ink); font-weight: 500; }
-  a.contact-alt__value:hover { color: var(--c-coral-500); }
+  .contact-alt__value { font-size: 0.9375rem; color: var(--c-ink); font-weight: 500; word-break: break-word; }
+  a.contact-alt__value:hover { color: #25D366; }
 </style>

@@ -17,7 +17,7 @@ type NavItem =
   | { kind: 'mega'; href: string; labelKey: UIKey; mega: 'services' | 'products'; match: 'prefix' };
 
 const navItems: NavItem[] = [
-  { kind: 'link', href: localizePath('/', locale), labelKey: 'nav.home', match: 'exact' },
+  // "Inicio" no se muestra: el logo (Sincronia) ya enlaza a /, sería redundante.
   { kind: 'mega', href: localizePath('/servicios', locale), labelKey: 'nav.services', mega: 'services', match: 'prefix' },
   { kind: 'mega', href: localizePath('/productos', locale), labelKey: 'nav.products', mega: 'products', match: 'prefix' },
   { kind: 'link', href: localizePath('/sobre-nosotros', locale), labelKey: 'nav.about', match: 'prefix' },
