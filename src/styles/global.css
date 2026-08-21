@@ -205,3 +205,40 @@ p  { font-size: 1rem; line-height: 1.65; color: var(--c-text); }
   margin-bottom: var(--s-3);
 }
 .icon-box--coral { background: var(--c-coral-50); color: var(--c-coral-700); }
+
+/* --- Product identity (hero icon + caption) ------------------------- */
+/* Usado en /productos/simplifica y /productos/strata. Hero del producto
+   con icono cuadrado (sin texto) + figcaption HTML con "by Sincronia".
+   Evita el halo de anti-aliasing que producen los PNG fuente cuando el
+   texto va dentro del lockup. */
+.product-identity { padding-block: var(--s-8) var(--s-4); }
+.product-identity__figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-4);
+}
+.product-identity__icon {
+  width: 10rem;
+  height: 10rem;
+  display: block;
+}
+.product-identity__caption {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--c-navy-900);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-align: center;
+}
+.product-identity__by {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--c-muted);
+  margin-top: 0.25rem;
+  letter-spacing: 0;
+}

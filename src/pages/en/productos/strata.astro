@@ -101,37 +101,5 @@ const productSchema = productJsonLd({
   .feature-item h3 { font-size: 1.0625rem; margin-bottom: 0.4rem; }
   .feature-item p { font-size: 0.9375rem; color: var(--c-muted); }
   .pricing-anchor { background: var(--c-bg-alt); border-block: 1px solid var(--c-line); }
-
-  /* Product visual identity: icon only, no lockup. Caption is HTML, not PNG.
-     Avoids the 'by Sincronia' bleed from the source asset. */
-  .product-identity { padding-block: var(--s-8) var(--s-4); }
-  .product-identity__figure {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--s-4);
-  }
-  .product-identity__icon {
-    width: 10rem;
-    height: 10rem;
-    display: block;
-  }
-  .product-identity__caption {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--c-ink);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-  }
-  .product-identity__by {
-    display: block;
-    font-family: var(--font-body);
-    font-size: 0.875rem;
-    font-weight: 400;
-    color: var(--c-muted);
-    letter-spacing: 0;
-    margin-top: 0.25rem;
-  }
+  /* .product-identity__* styles are in global.css (shared with Simplifica). */
 </style>

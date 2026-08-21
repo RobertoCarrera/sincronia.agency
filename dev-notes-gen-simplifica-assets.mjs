@@ -49,9 +49,14 @@ async function cleanAlpha(inputBuf) {
     // El orange del icono (255,122,77) tiene ratio ~3:1.5:1, NO matchea.
     // Los bordes anti-aliased del orange (200,100,60) tampoco matchean.
     const isRedBleed = r > 2 * g + 20 && r > 2 * b + 20 && g < 90 && b < 90;
+    // Pixels muy claros (anti-aliasing contra fondo blanco): si R>200 y
+    // (G>200 o B>200) y alpha<255, es AA contra blanco. Lo matamos solo si
+    // alpha<200 (los pixels solidos tienen alpha=255 y no entran).
+    const isAAonWhite = a < 200 && r > 200 && (g > 200 || b > 200);
+    // Ruido de borde casi invisible.
     const isEdgeNoise = a < 20;
 
-    if (isRedBleed || isEdgeNoise) {
+    if (isRedBleed || isAAonWhite || isEdgeNoise) {
       data[i + 3] = 0;
     }
   }
@@ -137,10 +142,12 @@ async function processIcon(srcFile) {
 
 async function main() {
   // Logos completos (con texto "Simplifica CRM by Sincronia").
-  // -fondo tiene fondo solido (gris) → no necesita cleanAlpha.
-  // -transp tiene alpha con bleed rojo → SÍ necesita cleanAlpha.
-  await processLogo('logo-on-light', 'logo-fondo.png', { cleanAlpha: false });
-  await processLogo('logo-on-dark', 'logo-transp.png', { cleanAlpha: true });
+  // El naming "logo-on-light"/"logo-on-dark" se refiere al FONDO donde se USA,
+  // no al fondo del propio PNG. Ambos deben tener alpha transparente para
+  // poder usarse sobre cualquier fondo. Como solo usamos el lockup sobre
+  // fondo claro (mega menu + product page), generamos solo logo-on-light
+  // desde el PNG transparente.
+  await processLogo('logo-on-light', 'logo-transp.png', { cleanAlpha: true });
 
   // Icono hexagonal (favicon del producto). El PNG fuente tiene bleed rojo → cleanAlpha.
   await processIcon('favicon-transp.png');

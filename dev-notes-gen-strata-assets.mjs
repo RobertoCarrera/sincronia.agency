@@ -30,9 +30,13 @@ async function cleanAlpha(inputBuf) {
     const a = data[i + 3];
 
     const isRedBleed = r > 2 * g + 20 && r > 2 * b + 20 && g < 90 && b < 90;
+    // Pixels muy claros (anti-aliasing contra fondo blanco): si R>200 y
+    // (G>200 o B>200) y alpha<255, es AA contra blanco. Lo matamos solo si
+    // alpha<200 (los pixels solidos tienen alpha=255 y no entran).
+    const isAAonWhite = a < 200 && r > 200 && (g > 200 || b > 200);
     const isEdgeNoise = a < 20;
 
-    if (isRedBleed || isEdgeNoise) {
+    if (isRedBleed || isAAonWhite || isEdgeNoise) {
       data[i + 3] = 0;
     }
   }
@@ -120,6 +124,13 @@ async function processPwa(srcFile) {
     writeFileSync(join(OUT, `pwa-${s}.webp`), out);
     console.log(`  -> pwa-${s}.webp (${out.length} bytes)`);
   }
+  // WebP base (sin sufijo) — el mega menu lo usa como single-size asset.
+  const baseWebp = await toWebp(buf, 256, 256, {
+    cleanAlpha: false,
+    resize: { fit: 'cover' },
+  });
+  writeFileSync(join(OUT, 'pwa.webp'), baseWebp);
+  console.log(`  -> pwa.webp (${baseWebp.length} bytes)`);
   // PNG fallback (256px, para navegadores sin WebP).
   const png = await toPng(buf, 256, 256, {
     cleanAlpha: false,

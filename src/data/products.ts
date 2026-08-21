@@ -89,11 +89,18 @@ export const products: ProductMeta[] = [
       width: 256,
       height: 256,
     },
+    // Para mega menu y product page usamos solo el icono cuadrado. El texto
+    // "Simplifica CRM" / "by Sincronia" se renderiza en HTML (figcaption o
+    // mega-menu__item-title) para evitar el halo de anti-aliasing del PNG
+    // fuente (que sangra naranja contra el texto "Simplifica" en el lockup).
+    // El src es el base sin sufijo de tamaño: el mega menu genera
+    // `icon.webp` + `icon.png` (single-size fallback), la product page usa
+    // `icon-256.webp 1x, icon-512.webp 2x` independientemente.
     logoLockup: {
-      src: '/productos/simplifica/logo-on-light-320',
-      alt: 'Simplifica CRM by Sincronia',
-      width: 320,
-      height: 137,
+      src: '/productos/simplifica/icon',
+      alt: 'Simplifica — CRM by Sincronia',
+      width: 256,
+      height: 256,
     },
     shortDescription: {
       es: 'CRM que se adapta a tu sector, no al revés.',
@@ -176,11 +183,16 @@ export const products: ProductMeta[] = [
       width: 256,
       height: 256,
     },
+    // El pwa tiene esquinas redondeadas + fondo azul oscuro, mucho más
+    // legible que el icon plano a tamaño de mega menu (7rem). El texto
+    // "Strata CMS" / "by Sincronia" va en HTML al lado. Src sin sufijo de
+    // tamaño: el mega menu genera `pwa.webp` + `pwa.png`, la product page
+    // usa `pwa-256.webp 1x, pwa-512.webp 2x` independientemente.
     logoLockup: {
-      src: '/productos/strata/logo-on-light-320',
+      src: '/productos/strata/pwa',
       alt: 'Strata CMS by Sincronia',
-      width: 320,
-      height: 180,
+      width: 256,
+      height: 256,
     },
     shortDescription: {
       es: 'CMS con editor visual y asistente IA. Reduce el coste a la mitad.',

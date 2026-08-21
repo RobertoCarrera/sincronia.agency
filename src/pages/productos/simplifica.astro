@@ -30,22 +30,20 @@ const productSchema = productJsonLd({
       <figure class="product-identity__figure">
         <picture>
           <source
-            srcset={`${assetUrl('/productos/simplifica/logo-on-light-320.webp')} 320w,
-                    ${assetUrl('/productos/simplifica/logo-on-light-480.webp')} 480w,
-                    ${assetUrl('/productos/simplifica/logo-on-light-640.webp')} 640w,
-                    ${assetUrl('/productos/simplifica/logo-on-light-800.webp')} 800w`}
-            sizes="(min-width: 768px) 640px, 90vw"
+            srcset={`${assetUrl('/productos/simplifica/icon-256.webp')} 1x, ${assetUrl('/productos/simplifica/icon-512.webp')} 2x`}
             type="image/webp"
           />
           <img
-            src={assetUrl('/productos/simplifica/logo-on-light.png')}
-            alt="Simplifica — CRM multi-sector by Sincronia"
-            width="640"
-            height="274"
+            src={assetUrl('/productos/simplifica/icon.png')}
+            alt="Simplifica — CRM by Sincronia"
+            width="256"
+            height="256"
             loading="eager"
             decoding="async"
+            class="product-identity__icon"
           />
         </picture>
+        <figcaption class="product-identity__caption">Simplifica CRM <span class="product-identity__by">by Sincronia</span></figcaption>
       </figure>
     </div>
   </section>
@@ -104,17 +102,6 @@ const productSchema = productJsonLd({
   .feature-item p { font-size: 0.9375rem; color: var(--c-muted); }
   .pricing-anchor { background: var(--c-bg-alt); border-block: 1px solid var(--c-line); }
 
-  /* Identidad visual del producto: logo a tamaño hero */
-  .product-identity { padding-block: var(--s-8) var(--s-4); }
-  .product-identity__figure {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-  }
-  .product-identity__figure picture,
-  .product-identity__figure img {
-    max-width: min(640px, 90vw);
-    height: auto;
-    display: block;
-  }
+  /* Los estilos .product-identity__* están en global.css (compartidos con
+     la página de Strata). */
 </style>
