@@ -43,6 +43,13 @@ const legal = [
         </ul>
       </nav>
     </div>
+    <a class="site-footer__built-by" href={localizePath('/contacto', locale)}>
+      <span>{t(locale, 'footer.built-by')}</span>
+      <svg class="site-footer__built-by-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14m-7-7 7 7-7 7"/>
+      </svg>
+    </a>
+
     <div class="site-footer__bottom">
       <p>© {year} {nap.name} · {t(locale, 'footer.rights')}</p>
       <button type="button" class="site-footer__manage" data-cookie-manage aria-label={t(locale, 'footer.cookies-manage')}>
@@ -102,6 +109,40 @@ const legal = [
     font-size: 0.9375rem;
   }
   .site-footer__col a:hover { color: var(--c-coral-500); }
+  /* Attribution link "we built this site" — encima del bottom strip, con prominence */
+  .site-footer__built-by {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: var(--s-12);
+    padding: var(--s-3) var(--s-4);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--r-md);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color .15s, color .15s, background .15s, transform .15s;
+  }
+  .site-footer__built-by:hover {
+    color: var(--c-coral-500);
+    border-color: rgba(255, 122, 77, 0.4);
+    background: rgba(255, 122, 77, 0.06);
+  }
+  .site-footer__built-by:focus-visible {
+    outline: 2px solid var(--c-coral-500);
+    outline-offset: 2px;
+  }
+  .site-footer__built-by-arrow {
+    width: 1rem;
+    height: 1rem;
+    transition: transform .2s;
+  }
+  .site-footer__built-by:hover .site-footer__built-by-arrow {
+    transform: translateX(3px);
+  }
+
   .site-footer__bottom {
     margin-top: var(--s-12);
     padding-top: var(--s-6);
