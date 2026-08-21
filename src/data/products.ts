@@ -63,6 +63,17 @@ export interface ProductMeta {
     /** alto intrínseco del PNG original */
     height: number;
   };
+  /**
+   * Lockup horizontal del producto (icono + texto). Se usa en el mega menu
+   * del header, donde el icono 3D a 48px no se lee. Si está presente, el
+   * MegaMenu prefiere este asset sobre `logo`.
+   */
+  logoLockup?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
 }
 
 export const products: ProductMeta[] = [
@@ -77,6 +88,12 @@ export const products: ProductMeta[] = [
       alt: 'Simplifica — CRM multi-sector by Sincronia',
       width: 256,
       height: 256,
+    },
+    logoLockup: {
+      src: '/productos/simplifica/logo-on-light-320',
+      alt: 'Simplifica CRM by Sincronia',
+      width: 320,
+      height: 137,
     },
     shortDescription: {
       es: 'CRM que se adapta a tu sector, no al revés.',
@@ -153,6 +170,18 @@ export const products: ProductMeta[] = [
     shortName: 'Strata CMS',
     icon: 'layers',
     status: 'alpha',
+    logo: {
+      src: '/productos/strata/icon',
+      alt: 'Strata — CMS con editor visual by Sincronia',
+      width: 256,
+      height: 256,
+    },
+    logoLockup: {
+      src: '/productos/strata/logo-on-light-320',
+      alt: 'Strata CMS by Sincronia',
+      width: 320,
+      height: 180,
+    },
     shortDescription: {
       es: 'CMS con editor visual y asistente IA. Reduce el coste a la mitad.',
       ca: 'CMS amb editor visual i assistent IA. Redueix el cost a la meitat.',

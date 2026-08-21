@@ -6,20 +6,54 @@ import FAQ from '~/components/FAQ.astro';
 import PricingTable from '~/components/PricingTable.astro';
 import { strata } from '~/content/products/strata';
 import { products } from '~/data/products';
+import { productJsonLd } from '~/lib/product-schema';
 import { t } from '~/i18n/ui';
 import { localizePath } from '~/lib/i18n';
 
 const c = strata.en;
 const product = products.find((p) => p.slug === 'strata')!;
+const productSchema = productJsonLd({
+  productSlug: 'strata',
+  name: c.hero.title,
+  description: c.meta.description,
+  locale: 'en',
+  imagePath: '/productos/strata/logo-on-light-640.webp',
+  faq: c.faq.items,
+});
 ---
-<Base title={c.meta.title} description={c.meta.description}>
+<Base title={c.meta.title} description={c.meta.description} jsonLd={productSchema}>
   <Hero eyebrow={c.hero.eyebrow} title={c.hero.title} subtitle={c.hero.subtitle} />
+
+  <section class="section product-identity" aria-label="Strata brand identity">
+    <div class="container">
+      <figure class="product-identity__figure">
+        <picture>
+          <source
+            srcset="/productos/strata/icon-256.webp 1x, /productos/strata/icon-512.webp 2x"
+            type="image/webp"
+          />
+          <img
+            src="/productos/strata/icon.png"
+            alt="Strata — CMS with visual editor by Sincronia"
+            width="256"
+            height="256"
+            loading="eager"
+            decoding="async"
+            class="product-identity__icon"
+          />
+        </picture>
+        <figcaption class="product-identity__caption">Strata CMS <span class="product-identity__by">by Sincronia</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container intro-block">
       <h2>{c.intro.title}</h2>
       {c.intro.paragraphs.map((p) => <p>{p}</p>)}
     </div>
   </section>
+
   <section class="section section--alt" aria-labelledby="features-heading">
     <div class="container">
       <header class="section-header">
@@ -40,6 +74,7 @@ const product = products.find((p) => p.slug === 'strata')!;
       </ul>
     </div>
   </section>
+
   <section class="pricing-anchor" aria-labelledby="pricing-heading">
     <header class="section-header" style="text-align: center; max-width: 700px; margin: 0 auto var(--s-6);">
       <h2 id="pricing-heading">{c.pricing.title}</h2>
@@ -47,7 +82,9 @@ const product = products.find((p) => p.slug === 'strata')!;
     </header>
     <PricingTable source={product} />
   </section>
+
   <FAQ title={c.faq.title} items={c.faq.items} />
+
   <CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: t('en', 'cta.demo'), href: localizePath('/contacto', 'en') }} />
 </Base>
 
@@ -63,4 +100,37 @@ const product = products.find((p) => p.slug === 'strata')!;
   .feature-item h3 { font-size: 1.0625rem; margin-bottom: 0.4rem; }
   .feature-item p { font-size: 0.9375rem; color: var(--c-muted); }
   .pricing-anchor { background: var(--c-bg-alt); border-block: 1px solid var(--c-line); }
+
+  /* Product visual identity: icon only, no lockup. Caption is HTML, not PNG.
+     Avoids the 'by Sincronia' bleed from the source asset. */
+  .product-identity { padding-block: var(--s-8) var(--s-4); }
+  .product-identity__figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-4);
+  }
+  .product-identity__icon {
+    width: 10rem;
+    height: 10rem;
+    display: block;
+  }
+  .product-identity__caption {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--c-ink);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .product-identity__by {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--c-muted);
+    letter-spacing: 0;
+    margin-top: 0.25rem;
+  }
 </style>
