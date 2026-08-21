@@ -5,6 +5,8 @@ import MegaMenu from '~/components/MegaMenu.astro';
 import Button from '~/components/Button.astro';
 import { t, type UIKey } from '~/i18n/ui';
 import { getLocaleFromUrl, getPathWithoutLocale, localizePath } from '~/lib/i18n';
+import { services } from '~/data/services';
+import { products } from '~/data/products';
 import type { Locale } from '~/i18n/locales';
 
 const locale = getLocaleFromUrl(Astro.url) as Locale;
@@ -25,6 +27,39 @@ const navItems: NavItem[] = [
 const isActive = (item: NavItem): boolean => {
   if (item.match === 'exact') return currentPath === item.href;
   return currentPath.startsWith(item.href);
+};
+
+// Submenús mobile para los items con mega. Reusan la misma data
+// que el MegaMenu de desktop pero renderizados como lista simple.
+const statusLabel: Record<'alpha' | 'beta' | 'estable', string> = {
+  alpha: 'ALPHA',
+  beta: 'BETA',
+  estable: 'ESTABLE',
+};
+
+const megaSubmenus: Record<'services' | 'products', Array<{
+  href: string;
+  label: string;
+  description: string;
+  badge?: string;
+}>> = {
+  services: services.map((s) => ({
+    href: localizePath(`/servicios/${s.slug}`, locale),
+    label: s.title,
+    description: s.shortDescription[locale],
+  })),
+  products: products.map((p) => ({
+    href: localizePath(`/productos/${p.slug}`, locale),
+    label: p.name,
+    description: p.shortDescription[locale],
+    badge: p.status !== 'estable' ? statusLabel[p.status] : undefined,
+  })),
+};
+
+const expandLabel: Record<Locale, string> = {
+  es: 'Expandir submenú',
+  ca: 'Expandir submenú',
+  en: 'Expand submenu',
 };
 ---
 <header class="site-header" data-header>
@@ -86,20 +121,76 @@ const isActive = (item: NavItem): boolean => {
               ]}
               data-mega-trigger={item.kind === 'mega' ? item.mega : undefined}
             >
-              <a
-                href={item.href}
-                class="main-nav__link"
-                aria-current={isActive(item) ? 'page' : undefined}
-                aria-haspopup={item.kind === 'mega' ? 'true' : undefined}
-                aria-expanded={item.kind === 'mega' ? 'false' : undefined}
-              >
-                <span>{t(locale, item.labelKey)}</span>
-                {item.kind === 'mega' && (
-                  <svg class="main-nav__chevron" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m6 9 6 6 6-6"></path>
-                  </svg>
-                )}
-              </a>
+              {item.kind === 'mega' ? (
+                <>
+                  <div class="main-nav__item-head">
+                    <a
+                      href={item.href}
+                      class="main-nav__link"
+                      aria-current={isActive(item) ? 'page' : undefined}
+                    >
+                      <span>{t(locale, item.labelKey)}</span>
+                      {/* Chevron integrado en el link: solo visible en desktop */}
+                      <svg class="main-nav__chevron main-nav__chevron--inline" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m6 9 6 6 6-6"></path>
+                      </svg>
+                    </a>
+                    {/* Botón expand: solo visible en mobile, toggle del submenu */}
+                    <button
+                      type="button"
+                      class="main-nav__expand"
+                      aria-label={expandLabel[locale]}
+                      aria-expanded="false"
+                      aria-controls={`submenu-${item.mega}`}
+                      data-mobile-expand={item.mega}
+                    >
+                      <svg class="main-nav__chevron main-nav__chevron--mobile" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m6 9 6 6 6-6"></path>
+                      </svg>
+                    </button>
+                  </div>
+                  {/* Submenú mobile: lista de items del mega menu */}
+                  <ul
+                    id={`submenu-${item.mega}`}
+                    class="main-nav__submenu"
+                    role="menu"
+                    aria-label={t(locale, item.labelKey)}
+                    data-mobile-submenu={item.mega}
+                    hidden
+                  >
+                    {megaSubmenus[item.mega].map((sub) => (
+                      <li role="none">
+                        <a href={sub.href} role="menuitem" class="main-nav__submenu-link">
+                          <span class="main-nav__submenu-label">
+                            {sub.label}
+                            {sub.badge && (
+                              <span class:list={['main-nav__submenu-badge', `main-nav__submenu-badge--${sub.badge.toLowerCase()}`]}>
+                                {sub.badge}
+                              </span>
+                            )}
+                          </span>
+                          <span class="main-nav__submenu-desc">{sub.description}</span>
+                        </a>
+                      </li>
+                    ))}
+                    <li role="none" class="main-nav__submenu-foot">
+                      <a href={item.href} class="main-nav__submenu-all">
+                        {item.mega === 'services'
+                          ? (locale === 'en' ? 'View all services' : locale === 'ca' ? 'Veure tots els serveis' : 'Ver todos los servicios')
+                          : (locale === 'en' ? 'View all products' : locale === 'ca' ? 'Veure tots els productes' : 'Ver todos los productos')}
+                      </a>
+                    </li>
+                  </ul>
+                </>
+              ) : (
+                <a
+                  href={item.href}
+                  class="main-nav__link"
+                  aria-current={isActive(item) ? 'page' : undefined}
+                >
+                  <span>{t(locale, item.labelKey)}</span>
+                </a>
+              )}
             </li>
           ))}
         </ul>
@@ -261,6 +352,12 @@ const isActive = (item: NavItem): boolean => {
   .main-nav__list { list-style: none; display: flex; align-items: center; gap: 0.25rem; }
 
   .main-nav__item { position: relative; }
+  .main-nav__item-head {
+    /* En desktop, el row contiene link + botón expand, pero el botón está
+       oculto y el link se ve normal. En mobile, ambos se muestran lado a lado. */
+    display: flex;
+    align-items: stretch;
+  }
   .main-nav__link {
     position: relative;
     display: inline-flex;
@@ -289,8 +386,8 @@ const isActive = (item: NavItem): boolean => {
   }
   .main-nav__item.is-active .main-nav__link { color: var(--c-ink); }
   .main-nav__item.is-active .main-nav__link::after { transform: translateX(-50%) scaleX(1); }
-  :global(.has-mega[data-mega-open="true"]) > .main-nav__link { color: var(--c-ink); background: var(--c-bg-alt); }
-  :global(.has-mega[data-mega-open="true"]) > .main-nav__link::after { transform: translateX(-50%) scaleX(1); }
+  :global(.has-mega[data-mega-open="true"]) > .main-nav__item-head > .main-nav__link { color: var(--c-ink); background: var(--c-bg-alt); }
+  :global(.has-mega[data-mega-open="true"]) > .main-nav__item-head > .main-nav__link::after { transform: translateX(-50%) scaleX(1); }
 
   .main-nav__chevron {
     width: 0.875rem;
@@ -298,7 +395,16 @@ const isActive = (item: NavItem): boolean => {
     color: currentColor;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  :global(.has-mega[data-mega-open="true"]) .main-nav__chevron { transform: rotate(180deg); }
+  /* Chevron integrado en el link: solo visible en desktop */
+  .main-nav__chevron--inline { display: inline-block; }
+  /* Chevron del botón expand: solo visible en mobile */
+  .main-nav__chevron--mobile { display: none; }
+  :global(.has-mega[data-mega-open="true"]) .main-nav__chevron--inline { transform: rotate(180deg); }
+
+  /* Botón expand: oculto en desktop */
+  .main-nav__expand { display: none; }
+  /* Submenú: oculto siempre por defecto, se muestra en mobile via JS */
+  .main-nav__submenu { display: none; }
 
   /* --- Actions (lang + CTA) --------------------------------- */
   .site-header__actions { display: flex; align-items: center; gap: var(--s-3); }
@@ -407,15 +513,119 @@ const isActive = (item: NavItem): boolean => {
       padding: var(--s-2) var(--s-2) 0;
     }
     :global(.site-header.is-nav-open) .main-nav__item { width: 100%; }
+
+    /* En mobile: el item-head (link + botón expand) se ve en fila */
+    :global(.site-header.is-nav-open) .main-nav__item-head {
+      display: flex;
+      align-items: stretch;
+      gap: 0.25rem;
+    }
     :global(.site-header.is-nav-open) .main-nav__link {
-      width: 100%;
-      /* Padding compacto (var(--s-2) = 0.5rem vertical) */
+      flex: 1;
+      min-width: 0;
       padding: var(--s-2) var(--s-3);
-      justify-content: space-between;
       border-radius: var(--r-md);
     }
     :global(.site-header.is-nav-open) .main-nav__link::after { display: none; }
-    /* En móvil el mega menu NO se muestra — tapping Servicios va a /servicios */
+    /* En mobile el chevron integrado se oculta — lo muestra el botón expand */
+    :global(.site-header.is-nav-open) .main-nav__chevron--inline { display: none; }
+    /* En mobile el chevron del botón SÍ se muestra */
+    :global(.site-header.is-nav-open) .main-nav__chevron--mobile { display: inline-block; }
+
+    /* Botón expand: 44×44 táctil, al lado del link */
+    :global(.site-header.is-nav-open) .main-nav__expand {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      flex-shrink: 0;
+      background: var(--c-bg-alt);
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-md);
+      padding: 0;
+      cursor: pointer;
+      color: var(--c-ink);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    :global(.site-header.is-nav-open) .main-nav__expand:hover {
+      border-color: var(--c-coral-300);
+    }
+    /* Chevron rota cuando el submenu está expandido */
+    :global(.site-header.is-nav-open) .main-nav__expand[aria-expanded="true"] {
+      background: var(--c-coral-500);
+      border-color: var(--c-coral-500);
+      color: #fff;
+    }
+    :global(.site-header.is-nav-open) .main-nav__expand[aria-expanded="true"] .main-nav__chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Submenú mobile: lista vertical con animación slide-down */
+    :global(.site-header.is-nav-open) .main-nav__submenu {
+      display: block;
+      list-style: none;
+      margin: 0.25rem 0 0.5rem 0;
+      padding: 0;
+      background: var(--c-bg-alt);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      animation: site-submenu-slide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    :global(.site-header.is-nav-open) .main-nav__submenu[hidden] { display: none; }
+    :global(.site-header.is-nav-open) .main-nav__submenu li { margin: 0; }
+    :global(.site-header.is-nav-open) .main-nav__submenu li + li { border-top: 1px solid var(--c-line); }
+
+    :global(.site-header.is-nav-open) .main-nav__submenu-link {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      padding: var(--s-3);
+      color: var(--c-text);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    :global(.site-header.is-nav-open) .main-nav__submenu-link:hover {
+      background: #fff;
+      color: var(--c-text);
+    }
+    :global(.site-header.is-nav-open) .main-nav__submenu-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--c-ink);
+    }
+    :global(.site-header.is-nav-open) .main-nav__submenu-desc {
+      color: var(--c-muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+    :global(.site-header.is-nav-open) .main-nav__submenu-badge {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #fff;
+      padding: 0.1rem 0.35rem;
+      border-radius: var(--r-sm);
+    }
+    :global(.site-header.is-nav-open) .main-nav__submenu-badge--alpha { background: var(--c-navy-800); }
+    :global(.site-header.is-nav-open) .main-nav__submenu-badge--beta { background: var(--c-coral-500); }
+    :global(.site-header.is-nav-open) .main-nav__submenu-foot {
+      border-top: 1px solid var(--c-line) !important;
+      background: #fff;
+    }
+    :global(.site-header.is-nav-open) .main-nav__submenu-all {
+      display: block;
+      padding: var(--s-3);
+      text-align: center;
+      color: var(--c-navy-800);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    /* Mega menu de desktop: oculto en mobile (el submenú inline hace su trabajo) */
     :global(.site-header .mega-menu) { display: none !important; }
 
     /* Footer del drawer: lang inline + CTA en la parte de abajo, más compacto */
@@ -466,6 +676,10 @@ const isActive = (item: NavItem): boolean => {
       color: #fff;
     }
   }
+  @keyframes site-submenu-slide {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
   @keyframes site-drawer-slide {
     from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: translateY(0); }
@@ -501,6 +715,38 @@ const isActive = (item: NavItem): boolean => {
     header?.classList.remove('is-nav-open');
   });
 
+  // Mobile submenu acordeón: click en el botón expand toggle el submenu.
+  // Acordeón: solo un submenu abierto a la vez.
+  const expandButtons = document.querySelectorAll<HTMLButtonElement>('[data-mobile-expand]');
+  expandButtons.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const type = btn.getAttribute('data-mobile-expand');
+      if (!type) return;
+      const submenu = document.querySelector<HTMLElement>(`[data-mobile-submenu="${type}"]`);
+      const trigger = document.querySelector<HTMLElement>(`[data-mega-trigger="${type}"]`);
+      if (!submenu || !trigger) return;
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      // Cerrar todos los submenus primero
+      expandButtons.forEach((b) => {
+        b.setAttribute('aria-expanded', 'false');
+        const t = b.getAttribute('data-mobile-expand');
+        if (t) {
+          const sm = document.querySelector<HTMLElement>(`[data-mobile-submenu="${t}"]`);
+          const tr = document.querySelector<HTMLElement>(`[data-mega-trigger="${t}"]`);
+          if (sm) sm.hidden = true;
+          if (tr) tr.removeAttribute('data-mega-open');
+        }
+      });
+      // Abrir el actual si estaba cerrado
+      if (!isOpen) {
+        submenu.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+        trigger.setAttribute('data-mega-open', 'true');
+      }
+    });
+  });
+
   // Mega menu hover with delay (desktop only)
   const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
   if (isDesktop) {
@@ -511,8 +757,8 @@ const isActive = (item: NavItem): boolean => {
     const closeAll = () => {
       document.querySelectorAll<HTMLElement>('[data-mega-trigger]').forEach((t) => {
         t.removeAttribute('data-mega-open');
-        const link = t.querySelector<HTMLElement>('.main-nav__link');
-        if (link) link.setAttribute('aria-expanded', 'false');
+        const btn = t.querySelector<HTMLButtonElement>('[data-mobile-expand]');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
       });
       document.querySelectorAll<HTMLElement>('[data-mega-menu]').forEach((m) => {
         m.removeAttribute('data-mega-open');
@@ -523,23 +769,23 @@ const isActive = (item: NavItem): boolean => {
     const open = (type: string) => {
       closeAll();
       const trigger = document.querySelector<HTMLElement>(`[data-mega-trigger="${type}"]`);
-      const link = trigger?.querySelector<HTMLElement>('.main-nav__link');
+      const btn = trigger?.querySelector<HTMLButtonElement>('[data-mobile-expand]');
       const menu = document.querySelector<HTMLElement>(`[data-mega-menu="${type}"]`);
-      if (!menu || !link || !trigger) return;
+      if (!menu || !btn || !trigger) return;
       trigger.setAttribute('data-mega-open', 'true');
       menu.setAttribute('data-mega-open', 'true');
-      link.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-expanded', 'true');
       menu.hidden = false;
     };
 
     const close = (type: string) => {
       const trigger = document.querySelector<HTMLElement>(`[data-mega-trigger="${type}"]`);
-      const link = trigger?.querySelector<HTMLElement>('.main-nav__link');
+      const btn = trigger?.querySelector<HTMLButtonElement>('[data-mobile-expand]');
       const menu = document.querySelector<HTMLElement>(`[data-mega-menu="${type}"]`);
-      if (!menu || !link || !trigger) return;
+      if (!menu || !btn || !trigger) return;
       trigger.removeAttribute('data-mega-open');
       menu.removeAttribute('data-mega-open');
-      link.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-expanded', 'false');
       menu.hidden = true;
     };
 
@@ -577,4 +823,5 @@ const isActive = (item: NavItem): boolean => {
       if (!header?.contains(target)) closeAll();
     });
   }
+</script>
 </script>
