@@ -1,0 +1,128 @@
+---
+import type { AgenciaContent } from '~/content/agencias';
+import CTA from '~/components/CTA.astro';
+import FAQ from '~/components/FAQ.astro';
+
+interface Props {
+  content: AgenciaContent;
+}
+
+const { content } = Astro.props;
+const c = content;
+---
+
+<section class="section">
+  <div class="container intro-block">
+    <h2>{c.whyAgency.title}</h2>
+    <p class="lead">{c.whyAgency.intro}</p>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="why-heading">
+  <div class="container">
+    <header class="section-header">
+      <h2 id="why-heading">Lo que ganamos contigo</h2>
+    </header>
+    <ul class="includes-list">
+      {c.whyAgency.items.map((item) => (
+        <li class="include-item">
+          <span class="include-item__check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M5 12l4 4L19 7"></path></svg>
+          </span>
+          <div>
+            <h3>{item.title}</h3>
+            <p>{item.desc}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="services-heading">
+  <div class="container">
+    <header class="section-header">
+      <h2 id="services-heading">{c.services.title}</h2>
+      <p class="lead" style="margin-top: var(--s-3);">{c.services.subtitle}</p>
+    </header>
+    <ul class="includes-list">
+      {c.services.items.map((s) => (
+        <li class="include-item include-item--link">
+          <span class="include-item__check include-item__check--link" aria-hidden="true">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M9 18l6-6-6-6"></path></svg>
+          </span>
+          <div>
+            <h3><a href={s.href}>{s.title}</a></h3>
+            <p>{s.desc}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="process-heading">
+  <div class="container">
+    <header class="section-header">
+      <h2 id="process-heading">{c.process.title}</h2>
+    </header>
+    <ol class="process-list">
+      {c.process.steps.map((step) => (
+        <li class="process-step">
+          <span class="process-step__num">{step.num}</span>
+          <h3>{step.title}</h3>
+          <p>{step.desc}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="coverage-heading">
+  <div class="container">
+    <header class="section-header">
+      <h2 id="coverage-heading">{c.coverage.title}</h2>
+      <p class="lead" style="margin-top: var(--s-3);">{c.coverage.subtitle}</p>
+    </header>
+    <ul class="coverage-list">
+      {c.coverage.municipalities.map((m) => (
+        <li class="coverage-item">
+          <span class="coverage-item__dot" aria-hidden="true">·</span>
+          <span>{m}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<FAQ title={c.faq.title} items={c.faq.items} />
+
+<CTA title={c.cta.title} subtitle={c.cta.subtitle} primaryCta={{ label: 'Hablar por WhatsApp', href: '/contacto' }} />
+
+<style>
+  .intro-block { max-width: 800px; }
+  .intro-block h2 { margin-bottom: var(--s-5); }
+  .intro-block .lead { font-size: 1.0625rem; color: var(--c-text); line-height: 1.6; }
+  .section-header { max-width: 700px; margin-bottom: var(--s-10); }
+  .includes-list { list-style: none; display: grid; grid-template-columns: 1fr; gap: var(--s-4); max-width: 900px; margin: 0 auto; }
+  @media (min-width: 768px) { .includes-list { grid-template-columns: repeat(2, 1fr); gap: var(--s-5); } }
+  .include-item { display: flex; gap: var(--s-4); align-items: flex-start; padding: var(--s-5); background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-md); }
+  .include-item__check { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: var(--r-full); background: var(--c-coral-50); color: var(--c-coral-700); flex-shrink: 0; }
+  .include-item__check .icon { width: 1.1rem; height: 1.1rem; stroke-width: 2.5; }
+  .include-item--link { transition: border-color 0.15s; }
+  .include-item--link:hover { border-color: var(--c-coral-500); }
+  .include-item__check--link { background: var(--c-navy-50); color: var(--c-navy-800); }
+  .include-item h3 { font-size: 1.0625rem; margin-bottom: 0.4rem; }
+  .include-item h3 a { color: inherit; text-decoration: none; }
+  .include-item h3 a:hover { color: var(--c-coral-700); }
+  .include-item p { font-size: 0.9375rem; color: var(--c-muted); }
+  .process-list { list-style: none; display: grid; grid-template-columns: 1fr; gap: var(--s-6); max-width: 900px; margin: 0 auto; }
+  @media (min-width: 768px) { .process-list { grid-template-columns: repeat(2, 1fr); } }
+  .process-step { position: relative; padding-left: var(--s-12); }
+  .process-step__num { position: absolute; left: 0; top: -0.5rem; font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700; color: var(--c-coral-500); line-height: 1; letter-spacing: -0.04em; }
+  .process-step h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+  .process-step p { color: var(--c-muted); font-size: 0.9375rem; }
+  .coverage-list { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-3); max-width: 900px; margin: 0 auto; padding: 0; }
+  .coverage-item { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--c-navy-50); color: var(--c-navy-900); border-radius: var(--r-full); font-size: 0.9375rem; font-weight: 500; }
+  .coverage-item__dot { color: var(--c-coral-500); font-weight: 700; }
+</style>

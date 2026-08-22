@@ -1,0 +1,14 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import AgenciaLanding from '~/components/AgenciaLanding.astro';
+import { agencias } from '~/content/agencias';
+import { serviceJsonLd } from '~/lib/service-schema';
+
+const c = agencias.wordpress.ca;
+const jsonLd = serviceJsonLd({ content: { ...c, faq: { title: c.faq.title, items: c.faq.items } }, locale: 'ca', slug: 'agencia-wordpress-tarragona' });
+---
+<Base title={c.meta.title} description={c.meta.description} jsonLd={jsonLd}>
+  <Hero eyebrow={c.hero.eyebrow} title={c.hero.title} subtitle={c.hero.subtitle} />
+  <AgenciaLanding content={c} />
+</Base>
