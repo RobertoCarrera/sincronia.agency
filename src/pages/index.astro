@@ -4,6 +4,7 @@ import Hero from '~/components/Hero.astro';
 import CTA from '~/components/CTA.astro';
 import ServiceCard from '~/components/ServiceCard.astro';
 import ProductCard from '~/components/ProductCard.astro';
+import ReviewList from '~/components/ReviewList.astro';
 import Button from '~/components/Button.astro';
 import { home } from '~/content/home';
 import { services } from '~/data/services';
@@ -119,6 +120,8 @@ const productsToShow = c.productPreviews.map((pp) => {
       </div>
     </div>
   </section>
+
+  <ReviewList />
 
   <CTA
     title={c.cta.title}

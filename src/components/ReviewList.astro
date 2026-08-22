@@ -1,0 +1,96 @@
+---
+import reviews from '~/data/google-reviews.json';
+
+const r = reviews;
+// Si no hay reseñas reales (placeholder pre-build), no renderizamos nada
+// para no mostrar una sección vacía en local/dev.
+const hasReviews = r.reviews.length > 0 && r.place.totalRatings > 0;
+
+const aggregateSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: r.place.name,
+  aggregateRating: hasReviews
+    ? {
+        '@type': 'AggregateRating',
+        ratingValue: r.place.rating,
+        reviewCount: r.place.totalRatings,
+      }
+    : undefined,
+  address: r.place.address || undefined,
+};
+// Limpiamos undefined para no meter nulls en el JSON-LD
+const cleanSchema = JSON.parse(JSON.stringify(aggregateSchema));
+---
+
+{hasReviews && (
+  <section class="section reviews" aria-label="Reseñas de clientes">
+    <div class="container">
+      <header class="reviews__header">
+        <span class="eyebrow">Reseñas verificadas</span>
+        <h2>Lo que dicen nuestros clientes</h2>
+        <p class="reviews__rating">
+          <strong>{r.place.rating.toFixed(1)}</strong>
+          <span class="reviews__stars" aria-hidden="true">{'★'.repeat(Math.round(r.place.rating))}{'☆'.repeat(5 - Math.round(r.place.rating))}</span>
+          <span class="reviews__count">de {r.place.totalRatings} reseñas en Google</span>
+        </p>
+      </header>
+
+      <ul class="reviews__list">
+        {r.reviews.map((rev) => (
+          <li class="review">
+            <div class="review__head">
+              <div class="review__avatar" aria-hidden="true">{rev.author.charAt(0).toUpperCase()}</div>
+              <div>
+                <p class="review__author">{rev.author}</p>
+                <p class="review__meta">
+                  <span class="review__stars" aria-label={`${rev.rating} de 5 estrellas`}>
+                    {'★'.repeat(rev.rating)}{'☆'.repeat(5 - rev.rating)}
+                  </span>
+                  <time datetime={new Date(rev.time * 1000).toISOString()}>{rev.relativeTime}</time>
+                </p>
+              </div>
+            </div>
+            <p class="review__text">{rev.text}</p>
+          </li>
+        ))}
+      </ul>
+
+      <a class="reviews__cta" href={r.place.mapsUrl} target="_blank" rel="noopener">
+        Ver todas las reseñas en Google →
+      </a>
+
+      <p class="reviews__attribution">
+        Reseñas proporcionadas por Google. <a href={r.place.mapsUrl} target="_blank" rel="noopener">{r.place.name}</a> en Google Maps.
+      </p>
+    </div>
+  </section>
+)}
+
+<script type="application/ld+json" set:html={JSON.stringify(cleanSchema)} />
+
+<style>
+  .reviews { background: var(--c-bg-alt, #f8fafc); }
+  .reviews__header { text-align: center; max-width: 640px; margin-inline: auto; margin-bottom: var(--s-10); }
+  .reviews__header h2 { margin-block: var(--s-3) var(--s-4); }
+  .reviews__header .eyebrow { display: inline-block; }
+  .reviews__rating { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--c-muted); flex-wrap: wrap; justify-content: center; }
+  .reviews__rating strong { font-size: 1.75rem; color: var(--c-ink); }
+  .reviews__stars { color: #f59e0b; letter-spacing: 0.05em; }
+  .reviews__count { font-size: 0.9375rem; }
+  .reviews__list {
+    list-style: none; display: grid; gap: var(--s-5);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    padding: 0; margin: 0 0 var(--s-8);
+  }
+  .review { background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-md); padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-4); }
+  .review__head { display: flex; gap: var(--s-3); align-items: center; }
+  .review__avatar { width: 2.5rem; height: 2.5rem; border-radius: var(--r-full); background: var(--c-navy-50, #eef2ff); color: var(--c-navy-900, #1B3A6B); display: grid; place-items: center; font-weight: 700; }
+  .review__author { font-weight: 600; font-size: 0.9375rem; }
+  .review__meta { display: flex; gap: var(--s-2); align-items: center; font-size: 0.8125rem; color: var(--c-muted); margin-top: 0.125rem; flex-wrap: wrap; }
+  .review__stars { color: #f59e0b; }
+  .review__text { color: var(--c-ink, #0f172a); line-height: 1.5; font-size: 0.9375rem; }
+  .reviews__cta, .reviews__attribution { text-align: center; }
+  .reviews__cta { display: inline-block; margin: 0 auto; font-weight: 600; color: var(--c-coral-700, #d83a1a); }
+  .reviews__attribution { font-size: 0.75rem; color: var(--c-muted, #64748b); margin-top: var(--s-4); }
+</style>
