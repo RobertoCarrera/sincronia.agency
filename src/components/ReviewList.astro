@@ -1,39 +1,22 @@
 ---
-// Reviews de Google Places — fetch client-side para superar la limitación
-// de "API keys with referer restrictions cannot be used with this API" en
-// Google Places API server-side. El navegador del usuario envía el header
-// Referer: https://sincronia.agency/... automáticamente, que matchea con
-// cualquier whitelist de dominio configurada en Google Cloud Console.
+// Reviews de Google Places — fetched via /api/reviews (Cloudflare Pages
+// Function server-side). La API key vive SOLO en el servidor, nunca se
+// expone al cliente. Funciona con keys restringidas por HTTP referrer
+// porque la llamada se hace desde Cloudflare (no desde el navegador).
 //
-// Env vars requeridas (deben empezar con PUBLIC_ para que Astro las exponga
-// al cliente en el bundle):
-//   PUBLIC_GOOGLE_PLACES_KEY  — API key con restriction por HTTP referrer
-//   PUBLIC_GOOGLE_PLACE_ID    — ChIJ... del negocio en Google Maps
-//
-// Coste: cada visita única del usuario hace 1 fetch a Google. Con cache de
-// 1h en navegador, en la práctica son <5 fetches/mes/usuario.
-const KEY = import.meta.env.PUBLIC_GOOGLE_PLACES_API_KEY as string | undefined;
-const PLACE = import.meta.env.PUBLIC_GOOGLE_PLACE_ID as string | undefined;
+// El cliente hace fetch a /api/reviews (mismo origen, sin CORS, sin
+// restricción) y recibe JSON cacheado 5 min en el edge de Cloudflare.
 const LANG = 'es';
-
-// Si faltan env vars, renderizamos un fallback estático (no rompe el sitio).
-const hasConfig = Boolean(KEY && PLACE);
 ---
 
 <section
   class="section reviews"
   aria-label="Reseñas de clientes"
   id="google-reviews"
-  data-key={KEY ?? ''}
-  data-place={PLACE ?? ''}
   data-lang={LANG}
-  data-configured={hasConfig ? 'true' : 'false'}
 >
   <div class="container">
     <div id="google-reviews-content" aria-live="polite">
-      <noscript>
-        <p class="reviews__fallback">Activa JavaScript para ver las reseñas de Google.</p>
-      </noscript>
       <div class="reviews__skeleton" data-skeleton>
         <header class="reviews__header">
           <span class="eyebrow">Reseñas verificadas</span>
@@ -49,46 +32,20 @@ const hasConfig = Boolean(KEY && PLACE);
 </script>
 
 <script>
-  // Fetch client-side + render + cache localStorage 1h
   (() => {
     const root = document.getElementById('google-reviews');
     if (!root) return;
-    const KEY = root.dataset.key;
-    const PLACE = root.dataset.place;
-    const LANG = root.dataset.lang || 'es';
     const content = document.getElementById('google-reviews-content');
     const schemaEl = document.getElementById('reviews-schema');
     if (!content) return;
 
-    if (!KEY || !PLACE || root.dataset.configured !== 'true') {
-      content.innerHTML = '<p class="reviews__fallback">Aún no hay reseñas configuradas.</p>';
-      return;
-    }
+    const stars = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
 
-    const CACHE_KEY = 'sincronia-reviews';
-    const CACHE_TTL = 60 * 60 * 1000; // 1 hora
-
-    const cached = (() => {
-      try {
-        const raw = localStorage.getItem(CACHE_KEY);
-        if (!raw) return null;
-        const { ts, data } = JSON.parse(raw);
-        if (Date.now() - ts > CACHE_TTL) return null;
-        return data;
-      } catch { return null; }
-    })();
-
-    const render = (data: any) => {
-      if (!data?.result || data.status !== 'OK') {
-        content.innerHTML = '<p class="reviews__fallback">No hemos podido cargar las reseñas. <a href="https://maps.app.goo.gl/qDuyVJGvNpvBT2u99" target="_blank" rel="noopener">Ver en Google Maps</a>.</p>';
-        return;
-      }
-      const place = data.result;
-      const reviews = place.reviews ?? [];
-      const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
+    const render = (data) => {
+      const place = data.place;
+      const reviews = data.reviews ?? [];
       const round = Math.round(place.rating);
 
-      // Schema JSON-LD con aggregateRating
       const schema = {
         '@context': 'https://schema.org',
         '@type': 'LocalBusiness',
@@ -96,24 +53,24 @@ const hasConfig = Boolean(KEY && PLACE);
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: place.rating,
-          reviewCount: place.user_ratings_total,
+          reviewCount: place.totalRatings,
         },
-        address: place.formatted_address,
+        address: place.address,
       };
       if (schemaEl) schemaEl.textContent = JSON.stringify(schema);
 
-      const reviewsHTML = reviews.map((r: any) => {
+      const reviewsHTML = reviews.map((r) => {
         const t = new Date(r.time * 1000);
         const tISO = t.toISOString();
         return `
           <li class="review">
             <div class="review__head">
-              <div class="review__avatar" aria-hidden="true">${(r.author_name || '?').charAt(0).toUpperCase()}</div>
+              <div class="review__avatar" aria-hidden="true">${(r.author || '?').charAt(0).toUpperCase()}</div>
               <div>
-                <p class="review__author">${r.author_name}</p>
+                <p class="review__author">${r.author}</p>
                 <p class="review__meta">
                   <span class="review__stars" aria-label="${r.rating} de 5 estrellas">${stars(r.rating)}</span>
-                  <time datetime="${tISO}">${r.relative_time_description}</time>
+                  <time datetime="${tISO}">${r.relativeTime}</time>
                 </p>
               </div>
             </div>
@@ -129,33 +86,25 @@ const hasConfig = Boolean(KEY && PLACE);
           <p class="reviews__rating">
             <strong>${place.rating.toFixed(1)}</strong>
             <span class="reviews__stars" aria-hidden="true">${stars(round)}</span>
-            <span class="reviews__count">de ${place.user_ratings_total} reseñas en Google</span>
+            <span class="reviews__count">de ${place.totalRatings} reseñas en Google</span>
           </p>
         </header>
         <ul class="reviews__list">${reviewsHTML}</ul>
-        <a class="reviews__cta" href="${place.url}" target="_blank" rel="noopener">
+        <a class="reviews__cta" href="${place.mapsUrl}" target="_blank" rel="noopener">
           Ver todas las reseñas en Google →
         </a>
         <p class="reviews__attribution">
-          Reseñas proporcionadas por Google. <a href="${place.url}" target="_blank" rel="noopener">${place.name}</a> en Google Maps.
+          Reseñas proporcionadas por Google. <a href="${place.mapsUrl}" target="_blank" rel="noopener">${place.name}</a> en Google Maps.
         </p>
       `;
     };
 
-    if (cached) {
-      render(cached);
-      return;
-    }
-
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${encodeURIComponent(PLACE)}&fields=name,rating,user_ratings_total,reviews,formatted_address,url&language=${LANG}&reviews_sort=newest&key=${encodeURIComponent(KEY)}`;
-    fetch(url)
-      .then((r) => r.json())
-      .then((data) => {
-        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch {}
-        render(data);
-      })
-      .catch(() => {
-        content.innerHTML = '<p class="reviews__fallback">No hemos podido cargar las reseñas. <a href="https://maps.app.goo.gl/qDuyVJGvNpvBT2u99" target="_blank" rel="noopener">Ver en Google Maps</a>.</p>';
+    fetch('/api/reviews')
+      .then((r) => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+      .then((data) => { if (data.error) throw new Error(data.error); render(data); })
+      .catch((err) => {
+        content.innerHTML = `<p class="reviews__fallback">No hemos podido cargar las reseñas. <a href="https://maps.app.goo.gl/qDuyVJGvNpvBT2u99" target="_blank" rel="noopener">Ver en Google Maps</a>.</p>`;
+        console.warn('[reviews] fetch failed:', err);
       });
   })();
 </script>
