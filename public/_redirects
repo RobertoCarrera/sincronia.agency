@@ -1,0 +1,4 @@
+# Cloudflare Pages redirects
+# /favicon.ico -> R2 con el favicon real de Sincronia (el .ico en R2 está
+# actualizado; el del repo era el de Simplifica por error)
+/favicon.ico        https://media.sincronia.agency/favicon.ico        301

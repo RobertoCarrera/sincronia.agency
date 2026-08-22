@@ -44,5 +44,18 @@ stderr.txt
 dev-notes-*.txt
 dev-notes-*.py
 
-# Favicon source lives in dev-assets/; output goes to public/ (committed).
-# Si quieres regenerar: node dev-notes-gen-favicons.mjs
+# Favicons SÍ se commitean. El HTML los referencia como assets
+# locales (/favicon.ico, /favicon-16x16.png, etc.) y Cloudflare Pages
+# los sirve directamente. Los mismos assets están duplicados en R2
+# (media.sincronia.agency/) para que el HTML que apunta a R2
+# (assetUrl) y el favicon canónico /favicon.ico apunten al mismo
+# recurso. Para regenerar: node dev-notes-gen-favicons.mjs
+
+# === Assets binarios servidos desde R2 (media.sincronia.agency) ===
+# NO commitear los assets finales — se suben a R2 con dev-notes-upload-r2.mjs
+# Mantenemos los fuentes RAW en dev-assets/ para regenerar.
+# Reglas de upload (whitelist): ver dev-notes-upload-r2.mjs (ALLOWED_DIRS + ALLOWED_FILES).
+public/logos/
+public/productos/
+public/og/
+# NOTA: public/robots.txt se commitea (es config SEO, no asset binario).
