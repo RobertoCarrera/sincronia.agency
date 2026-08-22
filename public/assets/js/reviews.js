@@ -33,12 +33,17 @@
 
   // ---------- DOM helpers ----------
   function $(sel) { return document.querySelector(sel); }
-  function starsSvg() {
-    return '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1l2.928 6.343 6.572.95-4.75 4.628 1.121 6.534L10 16.85l-5.871 2.65 1.121-6.534L0.5 8.293l6.572-.95z"/></svg>';
+  function starsSvg(size) {
+    // Inline width/height porque el CSS del componente está scoped por Astro
+    // y el HTML inyectado via innerHTML no lleva data-astro-cid, así que las
+    // reglas .review__stars svg { width: 14px } no se aplican. El SVG sin
+    // width/height toma el default 300x150, que es lo que se ve enorme.
+    var s = size || 14;
+    return '<svg viewBox="0 0 20 20" width="' + s + '" height="' + s + '" fill="currentColor" aria-hidden="true"><path d="M10 1l2.928 6.343 6.572.95-4.75 4.628 1.121 6.534L10 16.85l-5.871 2.65 1.121-6.534L0.5 8.293l6.572-.95z"/></svg>';
   }
-  function buildStars(n) {
+  function buildStars(n, size) {
     var s = '';
-    for (var i = 0; i < 5; i++) s += starsSvg();
+    for (var i = 0; i < 5; i++) s += starsSvg(size);
     return s;
   }
   function buildSkeleton() {
@@ -86,7 +91,7 @@
     if (starsEl) {
       starsEl.setAttribute('role', 'img');
       starsEl.setAttribute('aria-label', (rating || 0) + ' estrellas sobre 5');
-      starsEl.innerHTML = buildStars(Math.round(rating || 0));
+      starsEl.innerHTML = buildStars(Math.round(rating || 0), 18);
     }
     if (summaryEl) summaryEl.textContent = 'Verificado por Google · ' + (count || 0) + ' opiniones';
     if (linkEl) linkEl.href = 'https://search.google.com/local/reviews?placeid=' + encodeURIComponent(PLACE || '');
@@ -100,15 +105,15 @@
     var text = (r.text && r.text.text) || '';
     var stars = Math.max(0, Math.min(5, Math.round(r.rating || 0)));
     var head = photo
-      ? '<img class="review__photo" src="' + escapeHtml(photo) + '" alt="" loading="lazy" width="44" height="44" />'
-      : '<div class="review__avatar" aria-hidden="true">' + escapeHtml(initial(author)) + '</div>';
+      ? '<img class="review__photo" src="' + escapeHtml(photo) + '" alt="" loading="lazy" width="44" height="44" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;" />'
+      : '<div class="review__avatar" aria-hidden="true" style="width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1B3A6B 0%,#FF7A4D 100%);color:#fff;font-weight:700;flex-shrink:0;">' + escapeHtml(initial(author)) + '</div>';
     return [
       '<article class="review">',
         '<div class="review__head">',
           head,
           '<div>',
             '<p class="review__name">' + escapeHtml(author) + '</p>',
-            '<p class="review__stars" role="img" aria-label="' + stars + ' estrellas sobre 5">' + buildStars(stars) + '</p>',
+            '<p class="review__stars" role="img" aria-label="' + stars + ' estrellas sobre 5">' + buildStars(stars, 14) + '</p>',
           '</div>',
         '</div>',
         '<p class="review__text">' + escapeHtml(text) + '</p>',
