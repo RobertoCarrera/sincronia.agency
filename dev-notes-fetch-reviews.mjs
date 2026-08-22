@@ -50,7 +50,13 @@ async function main() {
   // Alternativa: reviews_sort=most_relevant (default de Google).
   const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE}&fields=name,rating,user_ratings_total,reviews,formatted_address,url&language=${LANG}&reviews_sort=newest&key=${KEY}`;
 
-  const res = await fetch(url);
+  // Si la API key tiene restricción por HTTP referrer (whitelist de dominios),
+  // Google rechaza las llamadas server-side porque fetch de Node no envía
+  // Referer por defecto. Forzamos uno que esté en la whitelist de la key.
+  // GOOGLE_REFERER (opcional) permite ajustar el valor en Cloudflare sin
+  // tocar código — por defecto usamos el dominio de producción.
+  const referer = process.env.GOOGLE_REFERER ?? 'https://sincronia.agency/';
+  const res = await fetch(url, { headers: { Referer: referer } });
   if (!res.ok) {
     throw new Error(`Place Details HTTP ${res.status}`);
   }
