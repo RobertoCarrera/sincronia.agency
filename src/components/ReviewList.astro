@@ -1,138 +1,122 @@
 ---
-// Reviews de Google Places — fetched via /api/reviews (Cloudflare Pages
-// Function server-side). La API key vive SOLO en el servidor, nunca se
-// expone al cliente. Funciona con keys restringidas por HTTP referrer
-// porque la llamada se hace desde Cloudflare (no desde el navegador).
-//
-// El cliente hace fetch a /api/reviews (mismo origen, sin CORS, sin
-// restricción) y recibe JSON cacheado 5 min en el edge de Cloudflare.
-const LANG = 'es';
+// Reviews de Google Places — implementación vanilla (sin build step)
+// replica de mueveme.es. La API key vive en public/assets/js/config.js
+// (público al cliente, restringida por HTTP referrer en Google Cloud).
+// El JS de cliente hace fetch directo a la Places API (New) y renderiza
+// con rotación cada 5s. Si la key falta, el JS usa un fallback "no
+// configurado" sin pintar datos falsos.
 ---
-
 <section
-  class="section reviews"
-  aria-label="Reseñas de clientes"
-  id="google-reviews"
-  data-lang={LANG}
+  class="section section--tint reviews"
+  aria-labelledby="reviews-title"
 >
   <div class="container">
-    <div id="google-reviews-content" aria-live="polite">
-      <div class="reviews__skeleton" data-skeleton>
-        <header class="reviews__header">
-          <span class="eyebrow">Reseñas verificadas</span>
-          <h2>Lo que dicen nuestros clientes</h2>
-        </header>
-      </div>
+    <h2 id="reviews-title">Lo que dicen nuestros clientes</h2>
+    <p data-reviews-count class="reviews-count-text">Cargando reseñas verificadas de Google…</p>
+
+    <div class="reviews-layout">
+      <aside class="reviews-summary">
+        <div class="reviews-summary__score" data-reviews-score>–</div>
+        <div class="reviews-summary__stars" data-reviews-stars aria-hidden="true"></div>
+        <div class="reviews-summary__src" data-reviews-summary></div>
+        <a
+          class="btn btn--outline btn--sm reviews-summary__cta"
+          data-reviews-link
+          href="#"
+          target="_blank"
+          rel="noopener"
+        >Ver todas en Google</a>
+      </aside>
+
+      <div class="reviews-grid reviews-grid--loading" data-reviews-grid></div>
     </div>
+
+    <p data-reviews-error hidden class="reviews-error">
+      No hemos podido cargar las reseñas ahora mismo.
+      <a data-reviews-link href="#" target="_blank" rel="noopener">Ver en Google</a>.
+    </p>
   </div>
 </section>
 
-<script type="application/ld+json" id="reviews-schema">
-{ "@context": "https://schema.org", "@type": "LocalBusiness", "name": "Sincronia Agency" }
-</script>
-
-<script>
-  (() => {
-    const root = document.getElementById('google-reviews');
-    if (!root) return;
-    const content = document.getElementById('google-reviews-content');
-    const schemaEl = document.getElementById('reviews-schema');
-    if (!content) return;
-
-    const stars = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
-
-    const render = (data) => {
-      const place = data.place;
-      const reviews = data.reviews ?? [];
-      const round = Math.round(place.rating);
-
-      const schema = {
-        '@context': 'https://schema.org',
-        '@type': 'LocalBusiness',
-        name: place.name,
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: place.rating,
-          reviewCount: place.totalRatings,
-        },
-        address: place.address,
-      };
-      if (schemaEl) schemaEl.textContent = JSON.stringify(schema);
-
-      const reviewsHTML = reviews.map((r) => {
-        const t = new Date(r.time * 1000);
-        const tISO = t.toISOString();
-        return `
-          <li class="review">
-            <div class="review__head">
-              <div class="review__avatar" aria-hidden="true">${(r.author || '?').charAt(0).toUpperCase()}</div>
-              <div>
-                <p class="review__author">${r.author}</p>
-                <p class="review__meta">
-                  <span class="review__stars" aria-label="${r.rating} de 5 estrellas">${stars(r.rating)}</span>
-                  <time datetime="${tISO}">${r.relativeTime}</time>
-                </p>
-              </div>
-            </div>
-            <p class="review__text">${r.text}</p>
-          </li>
-        `;
-      }).join('');
-
-      content.innerHTML = `
-        <header class="reviews__header">
-          <span class="eyebrow">Reseñas verificadas</span>
-          <h2>Lo que dicen nuestros clientes</h2>
-          <p class="reviews__rating">
-            <strong>${place.rating.toFixed(1)}</strong>
-            <span class="reviews__stars" aria-hidden="true">${stars(round)}</span>
-            <span class="reviews__count">de ${place.totalRatings} reseñas en Google</span>
-          </p>
-        </header>
-        <ul class="reviews__list">${reviewsHTML}</ul>
-        <a class="reviews__cta" href="${place.mapsUrl}" target="_blank" rel="noopener">
-          Ver todas las reseñas en Google →
-        </a>
-        <p class="reviews__attribution">
-          Reseñas proporcionadas por Google. <a href="${place.mapsUrl}" target="_blank" rel="noopener">${place.name}</a> en Google Maps.
-        </p>
-      `;
-    };
-
-    fetch('/api/reviews')
-      .then((r) => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
-      .then((data) => { if (data.error) throw new Error(data.error); render(data); })
-      .catch((err) => {
-        content.innerHTML = `<p class="reviews__fallback">No hemos podido cargar las reseñas. <a href="https://maps.app.goo.gl/qDuyVJGvNpvBT2u99" target="_blank" rel="noopener">Ver en Google Maps</a>.</p>`;
-        console.warn('[reviews] fetch failed:', err);
-      });
-  })();
-</script>
+<!-- API key + Place ID públicos. La key DEBE estar restringida por HTTP
+     referrer en Google Cloud Console (sincronia.agency/*) y SOLO a
+     Places API (New). Sin esas restricciones es una factura sorpresa. -->
+<script is:inline src="/assets/js/config.js"></script>
+<!-- defer para que no bloquee el render. ?v=N para cache-busting cuando
+     cambiemos el JS (inmutable con cache 1 año en Cloudflare Cache Rules). -->
+<script is:inline src="/assets/js/reviews.js?v=1" defer></script>
 
 <style>
-  .reviews { background: var(--c-bg-alt, #f8fafc); }
-  .reviews__header { text-align: center; max-width: 640px; margin-inline: auto; margin-bottom: var(--s-10); }
-  .reviews__header h2 { margin-block: var(--s-3) var(--s-4); }
-  .reviews__header .eyebrow { display: inline-block; }
-  .reviews__rating { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--c-muted); flex-wrap: wrap; justify-content: center; }
-  .reviews__rating strong { font-size: 1.75rem; color: var(--c-ink); }
-  .reviews__stars { color: #f59e0b; letter-spacing: 0.05em; }
-  .reviews__count { font-size: 0.9375rem; }
-  .reviews__list {
-    list-style: none; display: grid; gap: var(--s-5);
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    padding: 0; margin: 0 0 var(--s-8);
+  .reviews.section--tint { background: var(--c-bg-alt, #f8fafc); }
+  .reviews h2 { text-align: center; margin-bottom: var(--s-2); }
+  .reviews-count-text { text-align: center; color: var(--c-muted, #64748b); margin-bottom: var(--s-10); font-size: 0.9375rem; }
+
+  .reviews-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+    max-width: 1100px;
+    margin: 0 auto;
   }
-  .review { background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-md); padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-4); }
-  .review__head { display: flex; gap: var(--s-3); align-items: center; }
-  .review__avatar { width: 2.5rem; height: 2.5rem; border-radius: var(--r-full); background: var(--c-navy-50, #eef2ff); color: var(--c-navy-900, #1B3A6B); display: grid; place-items: center; font-weight: 700; }
-  .review__author { font-weight: 600; font-size: 0.9375rem; }
-  .review__meta { display: flex; gap: var(--s-2); align-items: center; font-size: 0.8125rem; color: var(--c-muted); margin-top: 0.125rem; flex-wrap: wrap; }
-  .review__stars { color: #f59e0b; }
-  .review__text { color: var(--c-ink, #0f172a); line-height: 1.5; font-size: 0.9375rem; }
-  .reviews__cta, .reviews__attribution { text-align: center; }
-  .reviews__cta { display: inline-block; margin: 0 auto; font-weight: 600; color: var(--c-coral-700, #d83a1a); }
-  .reviews__attribution { font-size: 0.75rem; color: var(--c-muted, #64748b); margin-top: var(--s-4); }
-  .reviews__fallback { text-align: center; color: var(--c-muted, #64748b); padding: var(--s-8) 0; }
-  .reviews__skeleton { min-height: 200px; }
+  @media (min-width: 900px) {
+    .reviews-layout { grid-template-columns: 280px 1fr; gap: var(--s-10); align-items: start; }
+  }
+
+  .reviews-summary {
+    background: #fff;
+    border: 1px solid var(--c-line, #e2e8f0);
+    border-radius: var(--r-md, 16px);
+    padding: var(--s-6, 1.5rem);
+    text-align: center;
+    position: sticky;
+    top: var(--s-6);
+  }
+  .reviews-summary__score { font-size: 2.75rem; font-weight: 800; color: var(--c-ink, #0f172a); line-height: 1; margin-bottom: var(--s-2); }
+  .reviews-summary__stars { display: flex; justify-content: center; gap: 0.125rem; color: #fbbf24; margin-bottom: var(--s-3); }
+  .reviews-summary__stars svg { width: 18px; height: 18px; }
+  .reviews-summary__src { font-size: 0.875rem; color: var(--c-muted, #64748b); margin-bottom: var(--s-4); }
+  .reviews-summary__cta { width: 100%; }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-4, 1rem);
+    transition: opacity 0.35s ease;
+  }
+  @media (min-width: 700px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); gap: var(--s-5, 1.25rem); } }
+  .reviews-grid--loading { min-height: 200px; }
+  .reviews-grid--fading { opacity: 0; }
+  .reviews-grid--empty { display: none; }
+
+  .review {
+    padding: var(--s-5, 1.25rem);
+    background: #fff;
+    border: 1px solid var(--c-line, #e2e8f0);
+    border-radius: var(--r-md, 16px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3, 0.75rem);
+  }
+  .review__head { display: flex; gap: var(--s-3, 0.75rem); align-items: center; }
+  .review__avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, #1B3A6B 0%, #FF7A4D 100%); color: #fff; font-weight: 700; flex-shrink: 0; }
+  .review__photo { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+  .review__name { font-weight: 700; font-size: 0.9375rem; color: var(--c-ink, #0f172a); }
+  .review__stars { display: flex; gap: 0.0625rem; color: #fbbf24; }
+  .review__stars svg { width: 14px; height: 14px; }
+  .review__text { color: #334155; line-height: 1.7; font-size: 0.9375rem; }
+  .review__src { font-size: 0.8rem; color: var(--c-muted, #64748b); border-top: 1px solid var(--c-line, #e2e8f0); padding-top: var(--s-3, 0.75rem); margin-top: auto; }
+  .review__src a { color: inherit; text-decoration: underline; }
+
+  .review--skeleton { gap: var(--s-3); }
+  .review--skeleton .sk { background: linear-gradient(90deg, #eef2f5 0%, #f6f8fa 50%, #eef2f5 100%); background-size: 200% 100%; border-radius: 6px; display: block; }
+  .review--skeleton .review__avatar.sk { width: 44px; height: 44px; border-radius: 50%; }
+  .sk-line { height: 12px; }
+  .sk-line--xs { width: 80px; }
+  .sk-line--sm { width: 60%; }
+  .sk-line--md { width: 90%; }
+  .sk-line--lg { width: 100%; height: 14px; }
+  @keyframes sk-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  .reviews-error { text-align: center; color: var(--c-muted, #64748b); padding: var(--s-6) 0; }
+  .reviews-error a { color: var(--c-coral-700, #d83a1a); text-decoration: underline; }
 </style>
