@@ -3,32 +3,21 @@
 // La API key NUNCA sale del servidor: vive solo en env vars de Cloudflare Pages,
 // y el cliente llama a este endpoint del mismo dominio (mismo origen, sin CORS).
 //
-// Env vars requeridas (de Cloudflare Pages → Settings → Environment variables):
-//   PUBLIC_GOOGLE_PLACES_API_KEY  — API key (la key con restriction por HTTP referrer)
-//   PUBLIC_GOOGLE_PLACE_ID        — ChIJ... del negocio en Google Maps
-//
-// Aunque las env vars tienen el prefijo PUBLIC_ (el mismo que usa Astro para
-// exponerlas al cliente), dentro de un Pages Function se leen como
-// context.env.PUBLIC_X y NUNCA salen al cliente (solo lo que devuelva la
-// response se expone).
+// Env vars requeridas (sin prefijo PUBLIC_ — eso es solo para Astro cliente):
+//   GOOGLE_PLACES_API_KEY  — API key con restriction por HTTP referrer
+//   GOOGLE_PLACE_ID        — ChIJ... del negocio en Google Maps
 //
 // Caching: 5 minutos en el edge (Cache-Control: public, max-age=300) para
 // no golpear la API de Google con cada visita.
 export async function onRequestGet(context) {
-  // Acepta ambos formatos: con o sin prefijo PUBLIC_. Cloudflare Pages tiene
-  // comportamientos inconsistentes entre proyectos sobre si las env vars PUBLIC_
-  // llegan a context.env de la function. El fallback al nombre sin PUBLIC_
-  // lo hace robusto a ambos setups.
-  const KEY = context.env.PUBLIC_GOOGLE_PLACES_API_KEY || context.env.GOOGLE_PLACES_API_KEY;
-  const PLACE = context.env.PUBLIC_GOOGLE_PLACE_ID || context.env.GOOGLE_PLACE_ID;
+  const KEY = context.env.GOOGLE_PLACES_API_KEY;
+  const PLACE = context.env.GOOGLE_PLACE_ID;
 
   if (!KEY || !PLACE) {
     return new Response(
       JSON.stringify({
         error: 'env vars not configured',
         debug: {
-          hasPublicKey: Boolean(context.env.PUBLIC_GOOGLE_PLACES_API_KEY),
-          hasPublicPlace: Boolean(context.env.PUBLIC_GOOGLE_PLACE_ID),
           hasKey: Boolean(context.env.GOOGLE_PLACES_API_KEY),
           hasPlace: Boolean(context.env.GOOGLE_PLACE_ID),
         },
