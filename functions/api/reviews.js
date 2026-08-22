@@ -15,12 +15,24 @@
 // Caching: 5 minutos en el edge (Cache-Control: public, max-age=300) para
 // no golpear la API de Google con cada visita.
 export async function onRequestGet(context) {
-  const KEY = context.env.PUBLIC_GOOGLE_PLACES_API_KEY;
-  const PLACE = context.env.PUBLIC_GOOGLE_PLACE_ID;
+  // Acepta ambos formatos: con o sin prefijo PUBLIC_. Cloudflare Pages tiene
+  // comportamientos inconsistentes entre proyectos sobre si las env vars PUBLIC_
+  // llegan a context.env de la function. El fallback al nombre sin PUBLIC_
+  // lo hace robusto a ambos setups.
+  const KEY = context.env.PUBLIC_GOOGLE_PLACES_API_KEY || context.env.GOOGLE_PLACES_API_KEY;
+  const PLACE = context.env.PUBLIC_GOOGLE_PLACE_ID || context.env.GOOGLE_PLACE_ID;
 
   if (!KEY || !PLACE) {
     return new Response(
-      JSON.stringify({ error: 'PUBLIC_GOOGLE_PLACES_API_KEY or PUBLIC_GOOGLE_PLACE_ID not configured' }),
+      JSON.stringify({
+        error: 'env vars not configured',
+        debug: {
+          hasPublicKey: Boolean(context.env.PUBLIC_GOOGLE_PLACES_API_KEY),
+          hasPublicPlace: Boolean(context.env.PUBLIC_GOOGLE_PLACE_ID),
+          hasKey: Boolean(context.env.GOOGLE_PLACES_API_KEY),
+          hasPlace: Boolean(context.env.GOOGLE_PLACE_ID),
+        },
+      }),
       { status: 500, headers: { 'content-type': 'application/json' } }
     );
   }
