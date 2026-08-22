@@ -1,8 +1,8 @@
-// reviews.js — Google Places reviews, render + rotación.
-// Réplica exacta del approach de mueveme.es / gaticidad.es.
-// Fetch directo a Places API (New) v1, sin SDK (el SDK rompe el parseo
-// en algunas versiones). FieldMask obligatorio (sin él, cobran más y
-// la respuesta pesa más).
+// reviews.js — Google Places reviews, 1 reseña estática grande.
+// Réplica del enfoque de mueveme.es pero adaptado a diseño Sincronia.
+// Fetch directo a Places API (New) v1, sin SDK.
+// Render via textContent (no innerHTML) para que el CSS scoped de Astro
+// controle tamaños de estrellas, padding, etc. — no más SVG gigantes.
 (function () {
   'use strict';
 
@@ -11,185 +11,145 @@
   var PLACE = CFG.GOOGLE_PLACE_ID;
   var params = new URLSearchParams(window.location.search);
   var MOCK = params.has('mock') || params.has('mock=reviews');
-  var ROTATE_MS = 5000;
-  var VISIBLE = 2;
 
-  // ---------- Datos de mock (solo ?mock=1) ----------
+  // ---------- Mock (solo ?mock=1) ----------
   var MOCK_DATA = {
     displayName: { text: 'Sincronia Agency' },
     rating: 5.0,
     userRatingCount: 8,
     reviews: [
-      { authorAttribution: { displayName: 'Carlos G.', photoUri: '', uri: '#' },
-        rating: 5, text: { text: 'Servicio impecable, resolvieron una urgencia el mismo día. Muy recomendables.' } },
-      { authorAttribution: { displayName: 'María L.', photoUri: '', uri: '#' },
-        rating: 5, text: { text: 'Web rápida, bien posicionada y con mantenimiento impecable. Cero sustos.' } },
-      { authorAttribution: { displayName: 'Jordi P.', photoUri: '', uri: '#' },
-        rating: 5, text: { text: 'Migración de hosting sin downtime y mejoras SEO claras a los 2 meses.' } },
-      { authorAttribution: { displayName: 'Anna R.', photoUri: '', uri: '#' },
-        rating: 5, text: { text: 'Atención al detalle brutal. Diseñaron algo que convierte, no solo que es bonito.' } },
+      { authorAttribution: { displayName: 'Pia Mill', photoUri: '', uri: 'https://www.google.com/maps/contrib/' },
+        rating: 5, text: { text: 'Trabajar con Roberto ha sido una experiencia increíble. Es un profesional excepcional en el desarrollo de webs y una gran capacidad para plasmar exactamente lo que necesitas. Desde el primer momento, entendió mi visión y me ayudó en todos mis proyectos. Además, su comunicación es excelente: siempre está disponible para resolver dudas y hacer mejoras. Si buscas a alguien confiable, creativo y eficiente para tu proyecto web, sin duda, Roberto es la mejor opción. ¡Recomendadísimo! 🚀💻' },
+      { authorAttribution: { displayName: 'Alberto Domínguez Jiménez', photoUri: '', uri: 'https://www.google.com/maps/contrib/' },
+        rating: 5, text: { text: 'Colaborar con Roberto ha sido, y sigue siendo, una de las mejores decisiones que he tomado en mi trabajo. Es un profesional con muchísimo conocimiento en desarrollo web y SEO, pero lo que realmente marca la diferencia es su cercanía y la atención que pone en cada detalle. Siempre está dispuesto a escuchar, proponer ideas y adaptarse a lo que necesita cada proyecto, haciendo que tanto yo como mis clientes nos sintamos acompañados y en buenas manos. Los resultados hablan por sí solos: webs funcionales, bien posicionadas y que realmente conectan con el público objetivo. Trabajar con él es sinónimo de confianza, compromiso y calidad. Si buscas a alguien resolutivo, con criterio y que además te haga sentir que forma parte de tu equipo, Roberto es esa persona. ¡Encantado de tenerlo como colaborador!' },
+      { authorAttribution: { displayName: 'Cliente 3', photoUri: '', uri: '#' },
+        rating: 5, text: { text: 'Trabajo impecable y muy profesional. Recomendado sin dudar.' } },
+      { authorAttribution: { displayName: 'Cliente 4', photoUri: '', uri: '#' },
+        rating: 5, text: { text: 'Súper atento y rápido. Resolvió todo en tiempo récord.' } },
     ],
   };
 
   // ---------- DOM helpers ----------
   function $(sel) { return document.querySelector(sel); }
-  function starsSvg(size) {
-    // Inline width/height porque el CSS del componente está scoped por Astro
-    // y el HTML inyectado via innerHTML no lleva data-astro-cid, así que las
-    // reglas .review__stars svg { width: 14px } no se aplican. El SVG sin
-    // width/height toma el default 300x150, que es lo que se ve enorme.
-    var s = size || 14;
-    return '<svg viewBox="0 0 20 20" width="' + s + '" height="' + s + '" fill="currentColor" aria-hidden="true"><path d="M10 1l2.928 6.343 6.572.95-4.75 4.628 1.121 6.534L10 16.85l-5.871 2.65 1.121-6.534L0.5 8.293l6.572-.95z"/></svg>';
-  }
-  function buildStars(n, size) {
-    var s = '';
-    for (var i = 0; i < 5; i++) s += starsSvg(size);
-    return s;
-  }
-  function buildSkeleton() {
-    return [
-      '<article class="review review--skeleton" aria-hidden="true">',
-        '<div class="review__head"><div class="review__avatar sk"></div><div><span class="sk sk-line sk-line--xs"></span></div></div>',
-        '<span class="sk sk-line sk-line--lg"></span>',
-        '<span class="sk sk-line sk-line--md"></span>',
-        '<span class="sk sk-line sk-line--sm"></span>',
-      '</article>'
-    ].join('');
-  }
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, function (c) {
-      return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c];
-    });
-  }
   function initial(name) {
     return (name || '?').trim().charAt(0).toUpperCase() || '?';
   }
 
-  // ---------- Error / hide ----------
-  function showError() {
-    var grid = $('[data-reviews-grid]');
-    if (grid) {
-      grid.classList.add('reviews-grid--empty');
-      grid.innerHTML = '';
-    }
+  // ---------- Estado ----------
+  function showSkeleton() {
+    var sk = $('[data-reviews-skeleton]');
+    var body = $('[data-reviews-body]');
     var err = $('[data-reviews-error]');
+    if (sk) sk.hidden = false;
+    if (body) body.hidden = true;
+    if (err) err.hidden = true;
+  }
+
+  function showError() {
+    var sk = $('[data-reviews-skeleton]');
+    var body = $('[data-reviews-body]');
+    var err = $('[data-reviews-error]');
+    if (sk) sk.hidden = true;
+    if (body) body.hidden = true;
     if (err) err.hidden = false;
+  }
+
+  function paintStars(rating) {
+    var stars = $('[data-reviews-stars]');
+    if (!stars) return;
+    var n = Math.round(rating || 0);
+    stars.setAttribute('aria-label', n + ' estrellas sobre 5');
+    var html = '';
+    for (var i = 0; i < 5; i++) html += '<span class="reviews__star' + (i < n ? ' is-on' : '') + '"></span>';
+    stars.innerHTML = html;
+  }
+
+  function paintReview(place, review) {
+    // Header
+    var avatar = $('[data-reviews-avatar]');
+    var name = $('[data-reviews-name]');
+    var time = $('[data-reviews-time]');
+    var text = $('[data-reviews-text]');
+    var profile = $('[data-reviews-profile]');
     var count = $('[data-reviews-count]');
-    if (count) count.textContent = 'Reseñas no disponibles';
-  }
+    var all = $('[data-reviews-all]');
 
-  // ---------- Render ----------
-  function setScore(place) {
-    var scoreEl = $('[data-reviews-score]');
-    var starsEl = $('[data-reviews-stars]');
-    var summaryEl = $('[data-reviews-summary]');
-    var linkEl = $('[data-reviews-link]');
-    var countEl = $('[data-reviews-count]');
-    var rating = place.rating;
-    var count = place.userRatingCount;
-    if (scoreEl) scoreEl.textContent = rating != null ? rating.toFixed(1) : '–';
-    if (starsEl) {
-      starsEl.setAttribute('role', 'img');
-      starsEl.setAttribute('aria-label', (rating || 0) + ' estrellas sobre 5');
-      starsEl.innerHTML = buildStars(Math.round(rating || 0), 18);
+    var author = (review.authorAttribution && review.authorAttribution.displayName) || 'Anónimo';
+    var photo = (review.authorAttribution && review.authorAttribution.photoUri) || '';
+    var authorUri = (review.authorAttribution && review.authorAttribution.uri) || '#';
+    var reviewText = (review.text && review.text.text) || '';
+    var when = review.relativePublishTimeDescription || review.relativeTimeDescription || '';
+
+    if (avatar) {
+      avatar.innerHTML = '';
+      if (photo) {
+        var img = document.createElement('img');
+        img.src = photo;
+        img.alt = '';
+        img.loading = 'lazy';
+        img.width = 48;
+        img.height = 48;
+        avatar.appendChild(img);
+      } else {
+        avatar.textContent = initial(author);
+      }
     }
-    if (summaryEl) summaryEl.textContent = 'Verificado por Google · ' + (count || 0) + ' opiniones';
-    if (linkEl) linkEl.href = 'https://search.google.com/local/reviews?placeid=' + encodeURIComponent(PLACE || '');
-    if (countEl) countEl.textContent = (count || 0) + ' reseñas verificadas de Google';
+    if (name) name.textContent = author;
+    if (time) time.textContent = when;
+    if (text) text.textContent = reviewText;
+    if (profile) {
+      profile.href = authorUri !== '#' ? authorUri : 'https://search.google.com/local/reviews?placeid=' + encodeURIComponent(PLACE || '');
+    }
+    if (count) count.textContent = (place.userRatingCount || 0) + ' reseñas verificadas de Google';
+    if (all) {
+      all.textContent = 'Ver las ' + (place.userRatingCount || 0) + ' reseñas en Google →';
+      all.href = 'https://search.google.com/local/reviews?placeid=' + encodeURIComponent(PLACE || '');
+    }
   }
 
-  function renderCard(r) {
-    var author = (r.authorAttribution && r.authorAttribution.displayName) || 'Anónimo';
-    var authorUri = (r.authorAttribution && r.authorAttribution.uri) || '#';
-    var photo = r.authorAttribution && r.authorAttribution.photoUri;
-    var text = (r.text && r.text.text) || '';
-    var stars = Math.max(0, Math.min(5, Math.round(r.rating || 0)));
-    var head = photo
-      ? '<img class="review__photo" src="' + escapeHtml(photo) + '" alt="" loading="lazy" width="44" height="44" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;" />'
-      : '<div class="review__avatar" aria-hidden="true" style="width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1B3A6B 0%,#FF7A4D 100%);color:#fff;font-weight:700;flex-shrink:0;">' + escapeHtml(initial(author)) + '</div>';
-    return [
-      '<article class="review">',
-        '<div class="review__head">',
-          head,
-          '<div>',
-            '<p class="review__name">' + escapeHtml(author) + '</p>',
-            '<p class="review__stars" role="img" aria-label="' + stars + ' estrellas sobre 5">' + buildStars(stars, 14) + '</p>',
-          '</div>',
-        '</div>',
-        '<p class="review__text">' + escapeHtml(text) + '</p>',
-        '<p class="review__src">Google · <a href="' + escapeHtml(authorUri) + '" target="_blank" rel="noopener">Ver perfil</a></p>',
-      '</article>'
-    ].join('');
-  }
+  function show(place) {
+    var reviews = (place.reviews || []).filter(function (r) { return r && r.text && r.text.text; });
+    if (reviews.length === 0) {
+      showError();
+      return;
+    }
+    paintStars(place.rating);
+    // Escogemos la primera (más reciente con reviews_sort=newest).
+    paintReview(place, reviews[0]);
 
-  // ---------- Rotación ----------
-  var rotationTimer = null;
-  var currentStart = 0;
-  var reviews = [];
-
-  function renderVisible() {
-    var grid = $('[data-reviews-grid]');
-    if (!grid) return;
-    var slice = reviews.slice(currentStart, currentStart + VISIBLE);
-    grid.classList.add('reviews-grid--fading');
-    setTimeout(function () {
-      grid.innerHTML = slice.map(renderCard).join('');
-      grid.classList.remove('reviews-grid--fading', 'reviews-grid--loading', 'reviews-grid--empty');
-    }, 350);
-  }
-
-  function startRotation() {
-    if (rotationTimer || reviews.length <= VISIBLE) return;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return;
-    var grid = $('[data-reviews-grid]');
-    if (!grid) return;
-    grid.addEventListener('mouseenter', function () { if (rotationTimer) { clearInterval(rotationTimer); rotationTimer = null; } });
-    grid.addEventListener('mouseleave', function () { if (!rotationTimer) startRotation(); });
-    rotationTimer = setInterval(function () {
-      currentStart = (currentStart + 1) % reviews.length;
-      renderVisible();
-    }, ROTATE_MS);
+    var sk = $('[data-reviews-skeleton]');
+    var body = $('[data-reviews-body]');
+    if (sk) sk.hidden = true;
+    if (body) body.hidden = false;
   }
 
   // ---------- Init ----------
   function init() {
-    var grid = $('[data-reviews-grid]');
-    if (grid) grid.innerHTML = buildSkeleton() + buildSkeleton();
+    showSkeleton();
 
-    var dataPromise;
     if (MOCK) {
-      dataPromise = Promise.resolve(MOCK_DATA);
-    } else if (!KEY || !PLACE) {
-      // Sin key configurada: ocultamos la sección entera, no pintamos nada falso.
-      showError();
+      show(MOCK_DATA);
       return;
-    } else {
-      var url = 'https://places.googleapis.com/v1/places/' + encodeURIComponent(PLACE)
-        + '?fields=displayName,rating,userRatingCount,reviews&languageCode=es';
-      dataPromise = fetch(url, {
-        headers: { 'X-Goog-Api-Key': KEY, 'Accept': 'application/json' }
-      })
-        .then(function (r) {
-          if (!r.ok) throw new Error('HTTP ' + r.status);
-          return r.json();
-        })
-        .then(function (j) {
-          if (!j.displayName) throw new Error('Empty place');
-          return j;
-        });
     }
 
-    dataPromise
-      .then(function (place) {
-        setScore(place);
-        reviews = (place.reviews || []).slice();
-        if (reviews.length === 0) {
-          showError();
-          return;
-        }
-        renderVisible();
-        startRotation();
+    if (!KEY || !PLACE) {
+      showError();
+      return;
+    }
+
+    var url = 'https://places.googleapis.com/v1/places/' + encodeURIComponent(PLACE)
+      + '?fields=displayName,rating,userRatingCount,reviews&languageCode=es';
+
+    fetch(url, {
+      headers: { 'X-Goog-Api-Key': KEY, 'Accept': 'application/json' }
+    })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (j) {
+        if (!j.displayName) throw new Error('Empty place response');
+        show(j);
       })
       .catch(function (e) {
         console.warn('[reviews] fetch failed:', e);

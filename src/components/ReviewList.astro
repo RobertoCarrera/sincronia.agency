@@ -1,122 +1,166 @@
 ---
-// Reviews de Google Places — implementación vanilla (sin build step)
-// replica de mueveme.es. La API key vive en public/assets/js/config.js
-// (público al cliente, restringida por HTTP referrer en Google Cloud).
-// El JS de cliente hace fetch directo a la Places API (New) y renderiza
-// con rotación cada 5s. Si la key falta, el JS usa un fallback "no
-// configurado" sin pintar datos falsos.
+// Reviews de Google Places — diseño Sincronia (1 reseña grande, sin grid).
+// El HTML de la card se renderiza en Astro con CSS scoped. El JS solo
+// actualiza textContent y src — no inyecta HTML con innerHTML (eso era
+// lo que hacía que las estrellas se renderizaran con tamaño default).
+// Si no hay key/place_id, se muestra fallback "Reseñas no disponibles".
 ---
-<section
-  class="section section--tint reviews"
-  aria-labelledby="reviews-title"
->
+
+<section class="section section--tint reviews" aria-labelledby="reviews-title">
   <div class="container">
-    <h2 id="reviews-title">Lo que dicen nuestros clientes</h2>
-    <p data-reviews-count class="reviews-count-text">Cargando reseñas verificadas de Google…</p>
+    <header class="reviews__head">
+      <h2 id="reviews-title">Lo que dicen nuestros clientes</h2>
+      <p class="reviews__count" data-reviews-count>8 reseñas verificadas de Google</p>
+      <div class="reviews__stars" data-reviews-stars role="img" aria-label="5 estrellas sobre 5">
+        <span class="reviews__star is-on"></span>
+        <span class="reviews__star is-on"></span>
+        <span class="reviews__star is-on"></span>
+        <span class="reviews__star is-on"></span>
+        <span class="reviews__star is-on"></span>
+      </div>
+    </header>
 
-    <div class="reviews-layout">
-      <aside class="reviews-summary">
-        <div class="reviews-summary__score" data-reviews-score>–</div>
-        <div class="reviews-summary__stars" data-reviews-stars aria-hidden="true"></div>
-        <div class="reviews-summary__src" data-reviews-summary></div>
-        <a
-          class="btn btn--outline btn--sm reviews-summary__cta"
-          data-reviews-link
-          href="#"
-          target="_blank"
-          rel="noopener"
-        >Ver todas en Google</a>
-      </aside>
+    <article class="review-card" data-reviews-card>
+      <div class="review-card__skeleton" data-reviews-skeleton>
+        <div class="review-card__head-skel">
+          <div class="sk sk-avatar"></div>
+          <div class="review-card__head-lines">
+            <div class="sk sk-line sk-line--sm"></div>
+            <div class="sk sk-line sk-line--xs"></div>
+          </div>
+        </div>
+        <div class="sk sk-line sk-line--lg"></div>
+        <div class="sk sk-line sk-line--md"></div>
+        <div class="sk sk-line sk-line--sm"></div>
+      </div>
+      <div class="review-card__body" data-reviews-body hidden>
+        <header class="review-card__head">
+          <div class="review-card__avatar" data-reviews-avatar aria-hidden="true">?</div>
+          <div>
+            <p class="review-card__name" data-reviews-name>—</p>
+            <p class="review-card__time" data-reviews-time></p>
+          </div>
+        </header>
+        <blockquote class="review-card__quote">
+          <p class="review-card__text" data-reviews-text></p>
+        </blockquote>
+        <footer class="review-card__foot">
+          <a class="review-card__profile" data-reviews-profile href="#" target="_blank" rel="noopener">Ver perfil en Google →</a>
+        </footer>
+      </div>
+    </article>
 
-      <div class="reviews-grid reviews-grid--loading" data-reviews-grid></div>
+    <div class="reviews__error" data-reviews-error hidden>
+      <p>No hemos podido cargar las reseñas ahora mismo.</p>
+      <a data-reviews-link href="https://maps.app.goo.gl/qDuyVJGvNpvBT2u99" target="_blank" rel="noopener">Ver en Google →</a>
     </div>
 
-    <p data-reviews-error hidden class="reviews-error">
-      No hemos podido cargar las reseñas ahora mismo.
-      <a data-reviews-link href="#" target="_blank" rel="noopener">Ver en Google</a>.
-    </p>
+    <div class="reviews__foot">
+      <a class="reviews__all" data-reviews-all href="https://search.google.com/local/reviews?placeid=ChIJMwrnMJFY800Rrsn96EJgBGw" target="_blank" rel="noopener">Ver las 8 reseñas en Google →</a>
+    </div>
   </div>
 </section>
 
-<!-- API key + Place ID públicos. La key DEBE estar restringida por HTTP
-     referrer en Google Cloud Console (sincronia.agency/*) y SOLO a
-     Places API (New). Sin esas restricciones es una factura sorpresa. -->
 <script is:inline src="/assets/js/config.js"></script>
-<!-- defer para que no bloquee el render. ?v=N para cache-busting cuando
-     cambiemos el JS (inmutable con cache 1 año en Cloudflare Cache Rules). -->
-<script is:inline src="/assets/js/reviews.js?v=1" defer></script>
+<script is:inline src="/assets/js/reviews.js?v=2" defer></script>
 
 <style>
   .reviews.section--tint { background: var(--c-bg-alt, #f8fafc); }
-  .reviews h2 { text-align: center; margin-bottom: var(--s-2); }
-  .reviews-count-text { text-align: center; color: var(--c-muted, #64748b); margin-bottom: var(--s-10); font-size: 0.9375rem; }
 
-  .reviews-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--s-8);
-    max-width: 1100px;
+  .reviews__head { text-align: center; margin-bottom: var(--s-8); }
+  .reviews__head h2 { margin-bottom: var(--s-3); }
+  .reviews__count { color: var(--c-muted, #64748b); font-size: 0.9375rem; margin-bottom: var(--s-4); }
+
+  .reviews__stars { display: inline-flex; gap: 0.25rem; }
+  .reviews__star {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: #e5e7eb;
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M10 1l2.928 6.343 6.572.95-4.75 4.628 1.121 6.534L10 16.85l-5.871 2.65 1.121-6.534L0.5 8.293l6.572-.95z'/></svg>") no-repeat center / contain;
+    mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M10 1l2.928 6.343 6.572.95-4.75 4.628 1.121 6.534L10 16.85l-5.871 2.65 1.121-6.534L0.5 8.293l6.572-.95z'/></svg>") no-repeat center / contain;
+  }
+  .reviews__star.is-on { background: #fbbf24; }
+
+  .review-card {
+    max-width: 720px;
     margin: 0 auto;
-  }
-  @media (min-width: 900px) {
-    .reviews-layout { grid-template-columns: 280px 1fr; gap: var(--s-10); align-items: start; }
-  }
-
-  .reviews-summary {
     background: #fff;
     border: 1px solid var(--c-line, #e2e8f0);
-    border-radius: var(--r-md, 16px);
-    padding: var(--s-6, 1.5rem);
-    text-align: center;
-    position: sticky;
-    top: var(--s-6);
+    border-radius: var(--r-md, 20px);
+    padding: var(--s-8, 2.5rem);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    position: relative;
   }
-  .reviews-summary__score { font-size: 2.75rem; font-weight: 800; color: var(--c-ink, #0f172a); line-height: 1; margin-bottom: var(--s-2); }
-  .reviews-summary__stars { display: flex; justify-content: center; gap: 0.125rem; color: #fbbf24; margin-bottom: var(--s-3); }
-  .reviews-summary__stars svg { width: 18px; height: 18px; }
-  .reviews-summary__src { font-size: 0.875rem; color: var(--c-muted, #64748b); margin-bottom: var(--s-4); }
-  .reviews-summary__cta { width: 100%; }
 
-  .reviews-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--s-4, 1rem);
-    transition: opacity 0.35s ease;
-  }
-  @media (min-width: 700px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); gap: var(--s-5, 1.25rem); } }
-  .reviews-grid--loading { min-height: 200px; }
-  .reviews-grid--fading { opacity: 0; }
-  .reviews-grid--empty { display: none; }
-
-  .review {
-    padding: var(--s-5, 1.25rem);
-    background: #fff;
-    border: 1px solid var(--c-line, #e2e8f0);
-    border-radius: var(--r-md, 16px);
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-3, 0.75rem);
-  }
-  .review__head { display: flex; gap: var(--s-3, 0.75rem); align-items: center; }
-  .review__avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, #1B3A6B 0%, #FF7A4D 100%); color: #fff; font-weight: 700; flex-shrink: 0; }
-  .review__photo { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
-  .review__name { font-weight: 700; font-size: 0.9375rem; color: var(--c-ink, #0f172a); }
-  .review__stars { display: flex; gap: 0.0625rem; color: #fbbf24; }
-  .review__stars svg { width: 14px; height: 14px; }
-  .review__text { color: #334155; line-height: 1.7; font-size: 0.9375rem; }
-  .review__src { font-size: 0.8rem; color: var(--c-muted, #64748b); border-top: 1px solid var(--c-line, #e2e8f0); padding-top: var(--s-3, 0.75rem); margin-top: auto; }
-  .review__src a { color: inherit; text-decoration: underline; }
-
-  .review--skeleton { gap: var(--s-3); }
-  .review--skeleton .sk { background: linear-gradient(90deg, #eef2f5 0%, #f6f8fa 50%, #eef2f5 100%); background-size: 200% 100%; border-radius: 6px; display: block; }
-  .review--skeleton .review__avatar.sk { width: 44px; height: 44px; border-radius: 50%; }
-  .sk-line { height: 12px; }
-  .sk-line--xs { width: 80px; }
+  /* Skeleton mientras carga */
+  .review-card__skeleton { display: flex; flex-direction: column; gap: var(--s-4, 1rem); }
+  .sk { background: linear-gradient(90deg, #eef2f5 0%, #f6f8fa 50%, #eef2f5 100%); background-size: 200% 100%; border-radius: 6px; display: block; }
+  .sk-avatar { width: 48px; height: 48px; border-radius: 50%; }
+  .sk-line { height: 14px; }
+  .sk-line--lg { width: 100%; height: 18px; }
+  .sk-line--md { width: 92%; }
   .sk-line--sm { width: 60%; }
-  .sk-line--md { width: 90%; }
-  .sk-line--lg { width: 100%; height: 14px; }
+  .sk-line--xs { width: 30%; height: 10px; }
+  .review-card__head-skel { display: flex; gap: var(--s-3); align-items: center; }
+  .review-card__head-lines { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+  .sk { animation: sk-shimmer 1.4s linear infinite; }
   @keyframes sk-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-  .reviews-error { text-align: center; color: var(--c-muted, #64748b); padding: var(--s-6) 0; }
-  .reviews-error a { color: var(--c-coral-700, #d83a1a); text-decoration: underline; }
+  /* Body cuando carga */
+  .review-card__head { display: flex; gap: var(--s-4, 1rem); align-items: center; margin-bottom: var(--s-5, 1.25rem); }
+  .review-card__avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, #1B3A6B 0%, #FF7A4D 100%);
+    color: #fff; font-weight: 700; font-size: 1.125rem;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .review-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .review-card__name { font-weight: 700; font-size: 1rem; color: var(--c-ink, #0f172a); margin: 0; }
+  .review-card__time { font-size: 0.8125rem; color: var(--c-muted, #64748b); margin: 0.125rem 0 0; }
+
+  .review-card__quote { margin: 0; }
+  .review-card__text {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: #1e293b;
+    margin: 0;
+    quotes: none;
+  }
+  .review-card__text::before, .review-card__text::after { content: none; }
+
+  .review-card__foot {
+    margin-top: var(--s-6, 1.5rem);
+    padding-top: var(--s-4, 1rem);
+    border-top: 1px solid var(--c-line, #e2e8f0);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .review-card__profile {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--c-coral-700, #d83a1a);
+    text-decoration: none;
+  }
+  .review-card__profile:hover { text-decoration: underline; }
+
+  .reviews__error { text-align: center; padding: var(--s-8) 0; color: var(--c-muted, #64748b); }
+  .reviews__error a { color: var(--c-coral-700, #d83a1a); text-decoration: underline; display: block; margin-top: var(--s-2); }
+
+  .reviews__foot { text-align: center; margin-top: var(--s-6, 1.5rem); }
+  .reviews__all {
+    display: inline-block;
+    font-weight: 600;
+    color: var(--c-navy-800, #1B3A6B);
+    text-decoration: none;
+  }
+  .reviews__all:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .review-card { padding: var(--s-6, 1.5rem); }
+    .review-card__text { font-size: 1rem; }
+  }
 </style>
