@@ -13,7 +13,6 @@
 //    sirve al cliente. Mueveme.es y gaticidad.es usan el mismo patrón.
 //    Con la key bien restringida por dominio, el riesgo es bajo.
 window.SITIO_CONFIG = window.SITIO_CONFIG || {
-  // Pegar aquí la key de Google Cloud y el Place ID. Ver README arriba.
-  GOOGLE_MAPS_API_KEY: '',     // AIza...
-  GOOGLE_PLACE_ID: ''           // places/ChIJ... (formato nuevo Places API v1)
+  GOOGLE_MAPS_API_KEY: 'AIzaSyBX1S_X9jhkQZu3qzL5YhkgtimtVBUlKH0',
+  GOOGLE_PLACE_ID: 'ChIJMwrnMJFY800Rrsn96EJgBGw',
 };
